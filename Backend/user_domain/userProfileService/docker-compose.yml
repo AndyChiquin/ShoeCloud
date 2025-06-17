@@ -17,7 +17,7 @@ services:
     environment:
       POSTGRES_DB: db-users
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres1
+      POSTGRES_PASSWORD: postgress1
     ports:
       - "5432:5432"
     volumes:
