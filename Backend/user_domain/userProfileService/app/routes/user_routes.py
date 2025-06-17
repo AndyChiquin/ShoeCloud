@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from app.services.user_service import create_user, get_user_by_id, update_user, delete_user
+from app.services.user_service import create_user, get_user_by_id, update_user, delete_user, get_all_users
+from app.models.user_model import User
 
 user_bp = Blueprint("user", __name__, url_prefix="/users")  
 
@@ -20,6 +21,20 @@ def get_user(user_id):
         "email": user.email,
         "role": user.role
     })
+
+@user_bp.route("/email/<email>", methods=["GET"])
+def get_user_by_email(email):
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    return jsonify({
+        "id": user.id,
+        "name": user.name,
+        "email": user.email,
+        "password": user.password,
+        "role": user.role
+    })
+
 
 @user_bp.route("/", methods=["GET"])
 def get_all_users_route():
