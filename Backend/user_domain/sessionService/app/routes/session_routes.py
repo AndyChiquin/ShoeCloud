@@ -1,7 +1,10 @@
 from flask import Blueprint, request, jsonify
 from app.models.session_model import Session
+import requests
 
 session_bp = Blueprint("session", __name__)
+USER_SERVICE_URL = "http://44.218.255.193:8000/users"
+
 
 @session_bp.route("/", methods=["POST"])
 def create_session():
@@ -10,6 +13,12 @@ def create_session():
 
     if not user_id:
         return jsonify({"error": "user_id is required"}), 400
+    try:
+        response = requests.get(f"{USER_SERVICE_URL}/{user_id}")
+        if response.status_code != 200:
+            return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        return jsonify({"error": "User service unavailable"}), 503
 
     session = Session(user_id)
     session.save()
