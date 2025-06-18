@@ -23,7 +23,18 @@ def login_user(email: str, password: str):
     token = create_token({"sub": user_data["id"]})
     redis_client.setex(f"token:{user_data['id']}", settings.JWT_EXPIRE_MINUTES * 60, token)
 
+    try:
+        session_response = requests.post(
+            "http://44.218.255.193:8003/session/",
+            json={"user_id": user_data["id"]}
+        )
+        if session_response.status_code != 201:
+            return {"success": False, "error": "Session creation failed"}
+    except Exception as e:
+        return {"success": False, "error": f"Session error: {str(e)}"}
+
     return {"success": True, "token": token, "user_id": user_data["id"]}
+
 
 
 def validate_token(token: str):
