@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  role-service:
+    build: .
+    container_name: role-service
+    ports:
+      - "8002:8002"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13
+    container_name: postgres-roles
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
