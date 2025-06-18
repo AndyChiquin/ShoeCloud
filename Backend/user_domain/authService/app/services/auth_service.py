@@ -65,7 +65,6 @@ def logout_user(token: str):
     user_id = result["data"]["sub"]
     redis_client.delete(f"token:{user_id}")
 
-    # Eliminar sesión del sessionService también
     try:
         session_url = f"{settings.SESSION_SERVICE_URL}/session/{user_id}"
         response = requests.delete(session_url)
