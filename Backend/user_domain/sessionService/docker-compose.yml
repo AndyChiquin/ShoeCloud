@@ -10,9 +10,10 @@ services:
       - .env
     depends_on:
       - redis-session
+    restart: always
 
   redis-session:
     image: redis:alpine
     container_name: redis-session
     ports:
-      - "6380:6379"
+      - "6378:6379"
