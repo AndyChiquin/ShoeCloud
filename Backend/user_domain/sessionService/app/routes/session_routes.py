@@ -4,10 +4,7 @@ import requests
 from app.db.redis_client import redis_client
 from datetime import datetime
 
-
-
-
-session_bp = Blueprint("session", __name__, url_prefix="/session")
+session_bp = Blueprint("session_bp", __name__, url_prefix="/session")
 USER_SERVICE_URL = "http://44.218.255.193:8000/users"
 
 
