@@ -6,7 +6,7 @@ audit_collection = db["user_audit"]
 
 def create_audit_entry(user_id, action, metadata=None):
     audit_doc = {
-        "user_id": user_id,
+        "user_id": int(user_id),
         "action": action,
         "timestamp": datetime.utcnow(),
         "metadata": metadata if metadata else {}
