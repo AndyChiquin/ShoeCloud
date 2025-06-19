@@ -1,6 +1,10 @@
 from flask import Blueprint, request, jsonify
 from app.models.session_model import Session
 import requests
+from datetime import datetime
+from app.db.extensions import redis_client
+
+
 
 session_bp = Blueprint("session", __name__)
 USER_SERVICE_URL = "http://44.218.255.193:8000/users"
@@ -35,3 +39,27 @@ def end_session(session_id):
 def get_sessions_by_user(user_id):
     sessions = Session.get_sessions_by_user(user_id)
     return jsonify({"sessions": sessions}), 200
+
+@session_bp.route("/session/<int:user_id>/close-latest", methods=["PATCH"])
+def close_latest_session(user_id):
+    keys = redis_client.keys("session:*")
+    latest_session_key = None
+    latest_start_time = None
+
+    for key in keys:
+        session = redis_client.hgetall(key)
+        if session.get("user_id") == str(user_id) and session.get("status") == "active":
+            start_time = session.get("datetime_start")
+            if start_time and (latest_start_time is None or start_time > latest_start_time):
+                latest_start_time = start_time
+                latest_session_key = key
+
+    if latest_session_key:
+        now = datetime.utcnow().isoformat()
+        redis_client.hset(latest_session_key, mapping={
+            "status": "closed",
+            "datetime_end": now
+        })
+        return jsonify({"message": f"Session {latest_session_key} closed"}), 200
+    else:
+        return jsonify({"error": "No active session found"}), 404
