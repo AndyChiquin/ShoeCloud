@@ -43,15 +43,15 @@ def get_sessions_by_user(user_id):
 def close_latest_session(user_id):
     print(f"🔍 Buscando sesiones para user_id={user_id}")
     keys = redis_client.keys("session:*")
-    print(f"🗝️ Claves encontradas: {[key.decode() for key in keys]}")
+    print(f"🗝️ Claves encontradas: {keys}")
 
     latest_session_key = None
     latest_start_time = None
 
     for key in keys:
         session_raw = redis_client.hgetall(key)
-        session = {k.decode(): v.decode() for k, v in session_raw.items()}
-        print(f"📦 Sesión analizada ({key.decode()}):", session)
+        session = dict(session_raw)
+        print(f"📦 Sesión analizada ({key}):", session)
 
         if session.get("user_id") == str(user_id) and session.get("status") == "active":
             start = session.get("datetime_start")
@@ -67,18 +67,14 @@ def close_latest_session(user_id):
             "datetime_end": now
         })
 
-        # Releer y mostrar el nuevo estado actualizado
         updated_session = redis_client.hgetall(latest_session_key)
-        updated_session = {k.decode(): v.decode() for k, v in updated_session.items()}
+        updated_session = dict(updated_session)
 
-        print(f"🛑 Sesión cerrada correctamente: {latest_session_key.decode()}")
+        print(f"🛑 Sesión cerrada correctamente: {latest_session_key}")
         return jsonify({
-            "message": f"Session {latest_session_key.decode()} closed",
+            "message": f"Session {latest_session_key} closed",
             "updated_session": updated_session
         }), 200
     else:
         print("⚠️ No se encontró ninguna sesión activa para cerrar.")
         return jsonify({"error": "No active session found"}), 404
-
-
-
