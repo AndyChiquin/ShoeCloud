@@ -1,22 +1,19 @@
+// src/routes/productRoutes.js
 const express = require('express');
-const dotenv = require('dotenv');
+const router = express.Router();
+const {
+  createProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct
+} = require('../controllers/productController');
 
-dotenv.config();
+// CRUD
+router.post('/', createProduct);
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.use(express.json());
-
-require('../config/createTable');
-
-const productRoutes = require('./routes/productRoutes');
-app.use('/api/products', productRoutes);
-
-app.get('/', (req, res) => {
-  res.send('CatalogService is running 🚀');
-});
-
-app.listen(PORT, () => {
-  console.log(`CatalogService running on port ${PORT}`);
-});
+module.exports = router;

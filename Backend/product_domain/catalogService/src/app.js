@@ -1,7 +1,6 @@
 // src/app.js
 const express = require('express');
 const dotenv = require('dotenv');
-
 dotenv.config();
 
 const app = express();
@@ -9,14 +8,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Crear tabla al iniciar
+// Crear tabla en DynamoDB Local si no existe
 require('./config/createTable');
 
-// Usar rutas del producto
+// Importar rutas de productos
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 
-// Ruta base
+// Ruta base de prueba
 app.get('/', (req, res) => {
   res.send('CatalogService is running 🚀');
 });
