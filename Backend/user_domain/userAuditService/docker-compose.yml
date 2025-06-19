@@ -19,6 +19,7 @@ services:
       - "27018:27017"
     volumes:
       - mongo_audit_data:/data/db
+    restart: always
 
 volumes:
   mongo_audit_data:
