@@ -26,8 +26,9 @@ const createProduct = async (req, res) => {
   try {
     await dynamoClient.put(params).promise();
 
+    // 🟡 Llamar al microservicio de inventario
     if (quantity && quantity > 0) {
-      await axios.post(`${process.env.INVENTORY_URL}/api/inventory`, {
+      await axios.post('http://54.166.240.10:8005/api/inventory', {
         product_id: id,
         quantity
       });
