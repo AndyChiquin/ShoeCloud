@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 // Crear producto
 const createProduct = async (req, res) => {
-  const { name, description, category_id, price, brand, stock } = req.body;
+  const { name, description, category_id, price, brand } = req.body;
   const id = uuidv4();
 
   const item = {
@@ -13,8 +13,7 @@ const createProduct = async (req, res) => {
     description,
     category_id,
     price,
-    brand,
-    stock
+    brand
   };
 
   const params = {
@@ -67,20 +66,19 @@ const getProductById = async (req, res) => {
 // Actualizar producto
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-  const { name, description, category_id, price, brand, stock } = req.body;
+  const { name, description, category_id, price, brand } = req.body;
 
   const params = {
     TableName: TABLE_NAME,
     Key: { id },
-    UpdateExpression: 'set #n = :n, description = :d, category_id = :c, price = :p, brand = :b, stock = :s',
+    UpdateExpression: 'set #n = :n, description = :d, category_id = :c, price = :p, brand = :b',
     ExpressionAttributeNames: { '#n': 'name' },
     ExpressionAttributeValues: {
       ':n': name,
       ':d': description,
       ':c': category_id,
       ':p': price,
-      ':b': brand,
-      ':s': stock
+      ':b': brand
     },
     ReturnValues: 'ALL_NEW'
   };
