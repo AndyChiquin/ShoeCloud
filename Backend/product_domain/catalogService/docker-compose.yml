@@ -10,6 +10,18 @@ services:
       - .env
     depends_on:
       - dynamodb-local
+      - inventory-service   # ✅ Añadido aquí
+    restart: always
+
+  inventory-service:  # ✅ Agregado nuevo servicio
+    build: ../inventoryService  # ruta relativa al Dockerfile del micro de inventario
+    container_name: inventory-service
+    ports:
+      - "8005:8005"
+    env_file:
+      - ../inventoryService/.env
+    depends_on:
+      - mariadb
     restart: always
 
   dynamodb-local:
@@ -22,5 +34,17 @@ services:
     command: -jar DynamoDBLocal.jar -sharedDb
     restart: always
 
+  mariadb:
+    image: mariadb:10.5
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    env_file:
+      - ../inventoryService/.env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    restart: always
+
 volumes:
   dynamodb_data:
+  mariadb_data:

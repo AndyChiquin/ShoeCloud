@@ -1,10 +1,12 @@
 // src/controllers/productController.js
 const { dynamoClient, TABLE_NAME } = require('../config/db');
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
+
 
 // Crear producto
 const createProduct = async (req, res) => {
-  const { name, description, category_id, price, brand } = req.body;
+  const { name, description, category_id, price, brand, quantity } = req.body;
   const id = uuidv4();
 
   const item = {
@@ -23,11 +25,20 @@ const createProduct = async (req, res) => {
 
   try {
     await dynamoClient.put(params).promise();
+
+    if (quantity && quantity > 0) {
+      await axios.post(`${process.env.INVENTORY_URL}/api/inventory`, {
+        product_id: id,
+        quantity
+      });
+    }
+
     res.status(201).json({ message: 'Producto creado', product: item });
   } catch (error) {
     res.status(500).json({ error: 'Error al crear producto', details: error });
   }
 };
+
 
 // Obtener todos los productos
 const getAllProducts = async (req, res) => {
