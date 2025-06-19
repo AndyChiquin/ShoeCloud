@@ -32,24 +32,6 @@ def login_user(email: str, password: str):
             return {"success": False, "error": "Session creation failed"}
     except Exception as e:
         return {"success": False, "error": f"Session error: {str(e)}"}
-    
-
-     # Registrar auditoría en userAuditService (añadir esto justo antes del return)
-    try:
-        audit_response = requests.post(
-            "http://44.218.255.193:8004/log",
-            json={
-                "user_id": user_data["id"],
-                "action": "login_success",
-                "metadata": {
-                    "email": email
-                }
-            }
-        )
-        if audit_response.status_code != 201:
-            print("Audit log not created:", audit_response.text)
-    except Exception as e:
-        print("AuditService exception:", str(e))
 
     return {"success": True, "token": token, "user_id": user_data["id"]}
 
@@ -89,21 +71,5 @@ def logout_user(token: str):
             print("Failed to close session:", response.text)
     except Exception as e:
         print("SessionService exception:", str(e))
-
-        # Registrar auditoría en userAuditService (añadir antes del return)
-    try:
-        audit_response = requests.post(
-            "http://44.218.255.193:8004/log",
-            json={
-                "user_id": user_id,
-                "action": "logout",
-                "metadata": {}
-            }
-        )
-        if audit_response.status_code != 201:
-            print("Audit log not created:", audit_response.text)
-    except Exception as e:
-        print("AuditService exception:", str(e))
-
 
     return {"success": True}
