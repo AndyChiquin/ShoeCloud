@@ -39,7 +39,7 @@ def get_sessions_by_user(user_id):
     return jsonify({"sessions": sessions}), 200
 
 
-@session_bp.route("/session/<int:user_id>/close-latest", methods=["PATCH"])
+@session_bp.route("/<int:user_id>/close-latest", methods=["PATCH"])
 def close_latest_session(user_id):
     keys = redis_client.keys("session:*")
     latest_session_key = None
