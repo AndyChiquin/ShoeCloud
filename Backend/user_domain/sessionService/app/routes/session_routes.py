@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 
-session_bp = Blueprint("session", __name__)
+session_bp = Blueprint("session", __name__, url_prefix="/session")
 USER_SERVICE_URL = "http://44.218.255.193:8000/users"
 
 

@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 
 # Registro de Blueprint
-app.register_blueprint(session_bp, url_prefix="/session")
+app.register_blueprint(session_bp)
 
 @app.route("/")
 def health():
