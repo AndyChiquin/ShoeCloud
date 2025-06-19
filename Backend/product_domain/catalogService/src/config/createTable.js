@@ -1,8 +1,6 @@
-// src/config/createTable.js
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
-// Cliente base de DynamoDB para creación de tabla
 const dynamodb = new AWS.DynamoDB({
   region: process.env.AWS_REGION,
   endpoint: process.env.DYNAMODB_LOCAL_ENDPOINT,
@@ -13,10 +11,10 @@ const dynamodb = new AWS.DynamoDB({
 const params = {
   TableName: process.env.DYNAMO_TABLE_NAME,
   KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" } // Clave primaria
+    { AttributeName: "id", KeyType: "HASH" } 
   ],
   AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "S" } // Tipo string
+    { AttributeName: "id", AttributeType: "S" } 
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 5,
@@ -24,7 +22,6 @@ const params = {
   }
 };
 
-// Crear tabla si no existe
 dynamodb.describeTable({ TableName: process.env.DYNAMO_TABLE_NAME }, (err, data) => {
   if (err && err.code === 'ResourceNotFoundException') {
     console.log("La tabla no existe. Creándola...");

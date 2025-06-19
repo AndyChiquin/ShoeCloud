@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-require('./config/createTable');
+require('../config/createTable');
 
 const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
