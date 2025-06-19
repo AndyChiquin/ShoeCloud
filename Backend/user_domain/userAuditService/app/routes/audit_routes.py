@@ -17,3 +17,11 @@ def log_action():
 
     audit_id = log_user_action(user_id, action, metadata)
     return jsonify({"message": "Audit log created", "id": audit_id}), 201
+
+@audit_bp.route("/logs/<int:user_id>", methods=["GET"])
+def get_user_logs(user_id):
+    from app.models.audit_model import audit_collection
+
+    logs = list(audit_collection.find({"user_id": user_id}, {"_id": 0}))
+    return jsonify(logs), 200
+
