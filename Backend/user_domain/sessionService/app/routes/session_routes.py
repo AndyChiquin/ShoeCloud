@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.models.session_model import Session
 import requests
-from app.utils.redis_client import redis_client
+from app.db.redis_client import redis_client
 from datetime import datetime
 
 
@@ -49,11 +49,13 @@ def close_latest_session(user_id):
     latest_start_time = None
 
     for key in keys:
-        session = redis_client.hgetall(key)
+        session_raw = redis_client.hgetall(key)
+        session = {k.decode(): v.decode() for k, v in session_raw.items()}
+
         if session.get("user_id") == str(user_id) and session.get("status") == "active":
-            start_time = session.get("datetime_start")
-            if start_time and (latest_start_time is None or start_time > latest_start_time):
-                latest_start_time = start_time
+            start = session.get("datetime_start")
+            if start and (latest_start_time is None or start > latest_start_time):
+                latest_start_time = start
                 latest_session_key = key
 
     if latest_session_key:
@@ -62,7 +64,8 @@ def close_latest_session(user_id):
             "status": "closed",
             "datetime_end": now
         })
-        return jsonify({"message": f"Session {latest_session_key} closed"}), 200
+        return jsonify({"message": f"Session {latest_session_key.decode()} closed"}), 200
     else:
         return jsonify({"error": "No active session found"}), 404
+
 
