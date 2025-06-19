@@ -1,20 +1,23 @@
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
+AWS.config.update({
+  accessKeyId: 'fake',
+  secretAccessKey: 'fake',
+  region: process.env.AWS_REGION
+});
+
 const dynamodb = new AWS.DynamoDB({
-  region: process.env.AWS_REGION,
-  endpoint: process.env.DYNAMODB_LOCAL_ENDPOINT,
-  accessKeyId: 'dummy-access-key',
-  secretAccessKey: 'dummy-secret-key'
+  endpoint: process.env.DYNAMODB_LOCAL_ENDPOINT
 });
 
 const params = {
   TableName: process.env.DYNAMO_TABLE_NAME,
   KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" } 
+    { AttributeName: 'id', KeyType: 'HASH' }  // clave primaria
   ],
   AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "S" } 
+    { AttributeName: 'id', AttributeType: 'S' } // tipo STRING
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 5,
@@ -22,19 +25,17 @@ const params = {
   }
 };
 
-dynamodb.describeTable({ TableName: process.env.DYNAMO_TABLE_NAME }, (err, data) => {
+// Crear tabla solo si no existe
+dynamodb.describeTable({ TableName: params.TableName }, function (err, data) {
   if (err && err.code === 'ResourceNotFoundException') {
-    console.log("La tabla no existe. Creándola...");
     dynamodb.createTable(params, (err, data) => {
       if (err) {
-        console.error("❌ Error creando la tabla:", err);
+        console.error('❌ Error al crear tabla:', err);
       } else {
-        console.log("✅ Tabla creada con éxito:", data.TableDescription.TableName);
+        console.log('✅ Tabla creada:', data.TableDescription.TableName);
       }
     });
-  } else if (data) {
-    console.log("✅ La tabla ya existe:", data.Table.TableName);
   } else {
-    console.error("❌ Error al verificar tabla:", err);
+    console.log('ℹ️ La tabla ya existe o hubo otro error:', err ? err.message : 'OK');
   }
 });
