@@ -41,16 +41,21 @@ def get_sessions_by_user(user_id):
 
 @session_bp.route("/user/<int:user_id>/close-latest", methods=["PATCH"])
 def close_latest_session(user_id):
+    print(f"🔍 Buscando sesiones para user_id={user_id}")
     keys = redis_client.keys("session:*")
+    print(f"🗝️ Claves encontradas: {[key.decode() for key in keys]}")
+
     latest_session_key = None
     latest_start_time = None
 
     for key in keys:
         session_raw = redis_client.hgetall(key)
         session = {k.decode(): v.decode() for k, v in session_raw.items()}
+        print(f"📦 Sesión analizada ({key.decode()}):", session)
 
         if session.get("user_id") == str(user_id) and session.get("status") == "active":
             start = session.get("datetime_start")
+            print(f"✅ Sesión ACTIVA detectada con fecha {start}")
             if start and (latest_start_time is None or start > latest_start_time):
                 latest_start_time = start
                 latest_session_key = key
@@ -61,8 +66,19 @@ def close_latest_session(user_id):
             "status": "closed",
             "datetime_end": now
         })
-        return jsonify({"message": f"Session {latest_session_key.decode()} closed"}), 200
+
+        # Releer y mostrar el nuevo estado actualizado
+        updated_session = redis_client.hgetall(latest_session_key)
+        updated_session = {k.decode(): v.decode() for k, v in updated_session.items()}
+
+        print(f"🛑 Sesión cerrada correctamente: {latest_session_key.decode()}")
+        return jsonify({
+            "message": f"Session {latest_session_key.decode()} closed",
+            "updated_session": updated_session
+        }), 200
     else:
+        print("⚠️ No se encontró ninguna sesión activa para cerrar.")
         return jsonify({"error": "No active session found"}), 404
+
 
 
