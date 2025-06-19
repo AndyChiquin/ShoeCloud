@@ -66,14 +66,15 @@ def logout_user(token: str):
     redis_client.delete(f"token:{user_id}")
 
     try:
-        session_url = f"{settings.SESSION_SERVICE_URL}/session/{user_id}/close-latest"
-        response = requests.patch(session_url)
-        if response.status_code != 200:
-            print("SessionService error:", response.text)
+       requests.patch(f"http://44.218.255.193:8003/session/{user_id}/close-latest")
     except Exception as e:
-        print("SessionService exception:", str(e))
+        print("Session close error:", str(e))
 
     return {"success": True}
+
+
+
+
 
 
 
