@@ -21,19 +21,26 @@ const client = require('./config/dynamoClient');
 
 const createTableIfNotExists = async () => {
   try {
+    // Esperar 3 segundos para que DynamoDB esté listo
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
     const command = new CreateTableCommand({
       TableName: "Categories",
       KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
       AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
-      ProvisionedThroughput: { ReadCapacityUnits: 5, WriteCapacityUnits: 5 }
+      ProvisionedThroughput: {
+        ReadCapacityUnits: 5,
+        WriteCapacityUnits: 5,
+      }
     });
+
     await client.send(command);
     console.log("✅ Table 'Categories' created.");
   } catch (err) {
-    if (err.name !== "ResourceInUseException") {
-      console.error("❌ Table creation failed:", err.message);
-    } else {
+    if (err.name === "ResourceInUseException") {
       console.log("⚠️ Table already exists.");
+    } else {
+      console.error("❌ Table creation failed:", err.message);
     }
   }
 };
