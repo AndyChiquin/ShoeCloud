@@ -1,3 +1,4 @@
+// app.js
 const express = require('express');
 const app = express();
 require('dotenv').config();
@@ -6,30 +7,27 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const { CreateTableCommand, ListTablesCommand } = require('@aws-sdk/client-dynamodb');
 const client = require('./config/dynamoClient');
 
-// Middleware
 app.use(express.json());
-
-// Rutas
 app.use('/api/category', categoryRoutes);
 
-// Puerto
 const PORT = process.env.PORT || 3001;
 
-// Crear tabla si no existe
+// 🔁 Crear tabla si no existe
 const createTableIfNotExists = async () => {
   try {
-    // Esperar que DynamoDB esté disponible
+    // Esperar 3 segundos a que Dynamo esté 100% listo
     await new Promise(resolve => setTimeout(resolve, 3000));
 
-    // Verificar si ya existe la tabla
+    // Verificar si la tabla ya existe
     const listCommand = new ListTablesCommand({});
     const tables = await client.send(listCommand);
+
     if (tables.TableNames.includes('Categories')) {
-      console.log("⚠️ Table 'Categories' already exists.");
+      console.log("⚠️ La tabla 'Categories' ya existe.");
       return;
     }
 
-    // Crear la tabla si no existe
+    // Si no existe, crearla
     const createCommand = new CreateTableCommand({
       TableName: "Categories",
       KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
@@ -41,15 +39,15 @@ const createTableIfNotExists = async () => {
     });
 
     await client.send(createCommand);
-    console.log("✅ Table 'Categories' created.");
-  } catch (error) {
-    console.error("❌ Error creating table:", error.message);
+    console.log("✅ Tabla 'Categories' creada correctamente.");
+  } catch (err) {
+    console.error("❌ Error al crear tabla:", err.message);
   }
 };
 
-// 🔁 Ejecutar creación de tabla y levantar server
+// 🔁 Primero crear tabla, luego arrancar server
 createTableIfNotExists().then(() => {
   app.listen(PORT, () => {
-    console.log(`CategoryService running on port ${PORT}`);
+    console.log(`CategoryService corriendo en el puerto ${PORT}`);
   });
 });
