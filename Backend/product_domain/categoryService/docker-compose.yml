@@ -5,13 +5,13 @@ services:
     build: .
     container_name: category-service
     ports:
-      - "${PORT}:${PORT}"
+      - "3001:3001"
     env_file:
       - .env
     depends_on:
       - dynamodb-category
     networks:
-      - category-network
+      - shared-network
     restart: always
 
   dynamodb-category:
@@ -19,14 +19,14 @@ services:
     container_name: dynamodb-category
     ports:
       - "8002:8000"
-    networks:
-      - category-network
-    restart: always
     volumes:
-      - dynamo_data:/home/dynamodblocal  # ✅ Aquí se guarda la base
-
-networks:
-  category-network:
+      - dynamodb_data:/home/dynamodblocal
+    networks:
+      - shared-network
+    restart: always
 
 volumes:
-  dynamo_data:  # ✅ Declaración del volumen persistente
+  dynamodb_data:
+
+networks:
+  shared-network:   # 🔁 Red interna que se crea sola
