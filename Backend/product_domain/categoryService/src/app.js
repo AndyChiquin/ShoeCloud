@@ -61,3 +61,5 @@ createTableIfNotExists().then(() => {
     console.log(`CategoryService corriendo en puerto ${PORT}`);
   });
 });
+
+// test of actions 
