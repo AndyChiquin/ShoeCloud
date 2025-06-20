@@ -13,6 +13,9 @@ RUN npm install
 # Copiamos el resto del código al contenedor
 COPY . .
 
+# ✅ Copiamos el archivo de variables de entorno
+COPY .env .env
+
 # Expone el puerto del microservicio
 EXPOSE 8006
 
