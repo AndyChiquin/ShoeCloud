@@ -46,8 +46,10 @@ const createProduct = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error al crear producto', details: error });
   }
+};
 
-  // Obtener productos por category_id
+
+// ✅ ESTA función va fuera de createProduct
 const getProductsByCategory = async (req, res) => {
   const { category_id } = req.params;
 
@@ -65,9 +67,6 @@ const getProductsByCategory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener productos por categoría', details: error });
   }
-};
-
-
 };
 
 
@@ -157,5 +156,6 @@ module.exports = {
   getAllProducts,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductsByCategory
 };

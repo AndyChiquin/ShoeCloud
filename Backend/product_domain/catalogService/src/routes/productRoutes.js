@@ -6,7 +6,8 @@ const {
   getAllProducts,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getProductsByCategory
 } = require('../controllers/productController');
 
 // CRUD
