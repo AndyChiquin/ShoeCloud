@@ -1,4 +1,3 @@
-// app.js
 const express = require('express');
 const app = express();
 require('dotenv').config();
@@ -12,42 +11,35 @@ app.use('/api/category', categoryRoutes);
 
 const PORT = process.env.PORT || 3001;
 
-// 🔁 Crear tabla si no existe
 const createTableIfNotExists = async () => {
   try {
-    // Esperar 3 segundos a que Dynamo esté 100% listo
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise(resolve => setTimeout(resolve, 3000)); // espera 3 segundos
 
-    // Verificar si la tabla ya existe
-    const listCommand = new ListTablesCommand({});
-    const tables = await client.send(listCommand);
-
+    const tables = await client.send(new ListTablesCommand({}));
     if (tables.TableNames.includes('Categories')) {
-      console.log("⚠️ La tabla 'Categories' ya existe.");
+      console.log("⚠️ La tabla ya existe");
       return;
     }
 
-    // Si no existe, crearla
-    const createCommand = new CreateTableCommand({
+    const command = new CreateTableCommand({
       TableName: "Categories",
       KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
       AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
       ProvisionedThroughput: {
         ReadCapacityUnits: 5,
         WriteCapacityUnits: 5,
-      }
+      },
     });
 
-    await client.send(createCommand);
-    console.log("✅ Tabla 'Categories' creada correctamente.");
+    await client.send(command);
+    console.log("✅ Tabla 'Categories' creada automáticamente");
   } catch (err) {
     console.error("❌ Error al crear tabla:", err.message);
   }
 };
 
-// 🔁 Primero crear tabla, luego arrancar server
 createTableIfNotExists().then(() => {
   app.listen(PORT, () => {
-    console.log(`CategoryService corriendo en el puerto ${PORT}`);
+    console.log(`CategoryService corriendo en puerto ${PORT}`);
   });
 });
