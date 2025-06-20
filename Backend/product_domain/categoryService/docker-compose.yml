@@ -5,23 +5,28 @@ services:
     build: .
     container_name: category-service
     ports:
-      - "${PORT}:${PORT}"        # Usa el puerto definido en .env (ej: 3001)
+      - "${PORT}:${PORT}"
     env_file:
-      - .env                     # Carga variables sensibles desde .env
+      - .env
     depends_on:
       - dynamodb-category
     networks:
-      - category-network         # Red aislada
+      - category-network
     restart: always
 
   dynamodb-category:
     image: amazon/dynamodb-local
     container_name: dynamodb-category
     ports:
-      - "8002:8000"              # Externo 8002 para Postman; interno 8000 obligatorio
+      - "8002:8000"
     networks:
-      - category-network         # Misma red para comunicar con category-service
+      - category-network
     restart: always
+    volumes:
+      - dynamo_data:/home/dynamodblocal  # ✅ Aquí se guarda la base
 
 networks:
   category-network:
+
+volumes:
+  dynamo_data:  # ✅ Declaración del volumen persistente
