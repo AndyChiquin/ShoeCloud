@@ -17,7 +17,7 @@ app.listen(PORT, () => {
 });
 
 const { CreateTableCommand } = require("@aws-sdk/client-dynamodb");
-const client = require('./src/config/dynamoClient');
+const client = require('./config/dynamoClient');
 
 const createTableIfNotExists = async () => {
   try {
