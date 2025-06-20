@@ -1,6 +1,6 @@
- version: '3.8'
+version: '3.8'
 
- services:
+services:
   catalog-service:
     build: .
     container_name: catalog-service
@@ -10,6 +10,8 @@
       - .env
     depends_on:
       - dynamodb-local
+    networks:
+      - shared-network
     restart: always
 
   dynamodb-local:
@@ -20,7 +22,12 @@
     volumes:
       - dynamodb_data:/home/dynamodblocal/data
     command: -jar DynamoDBLocal.jar -sharedDb
+    networks:
+      - shared-network
     restart: always
 
- volumes:
+volumes:
   dynamodb_data:
+
+networks:
+  shared-network:   # 🔁 Mismo nombre de red

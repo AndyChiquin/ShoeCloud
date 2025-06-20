@@ -2,6 +2,8 @@
 const { dynamoClient, TABLE_NAME } = require('../config/db');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
+const { checkCategoryExists } = require('../services/categoryClient');
+
 
 
 // Crear producto
@@ -38,6 +40,12 @@ const createProduct = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: 'Error al crear producto', details: error });
   }
+
+  const validCategory = await checkCategoryExists(category_id);
+if (!validCategory) {
+  return res.status(400).json({ error: 'La categoría no existe en category-service' });
+}
+
 };
 
 
