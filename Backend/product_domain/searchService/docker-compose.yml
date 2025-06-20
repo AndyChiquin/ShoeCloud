@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  search-service:
+    build: .
+    container_name: search-service
+    ports:
+      - "8006:8006"
+    env_file:
+      - .env
+    depends_on:
+      - cassandra
+    restart: always
+
+  cassandra:
+    image: cassandra:4.1
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    environment:
+      CASSANDRA_CLUSTER_NAME: "ShoeCluster"
+    restart: always
+
+volumes:
+  cassandra_data:
