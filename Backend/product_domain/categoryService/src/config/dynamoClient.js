@@ -1,17 +1,16 @@
-// config/dynamoClient.js
+// src/config/dynamoClient.js
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient } = require('@aws-sdk/lib-dynamodb');
+require('dotenv').config();
 
-// DynamoDB local en el contenedor 'dynamodb-category' usando el puerto 8001
 const client = new DynamoDBClient({
   region: 'us-east-1',
-  endpoint: process.env.DYNAMO_ENDPOINT || 'http://dynamodb-category:8002',
+  endpoint: process.env.DYNAMO_ENDPOINT, 
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'fakeMyKeyId',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'fakeSecretAccessKey',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
 
 const dynamo = DynamoDBDocumentClient.from(client);
-
 module.exports = dynamo;
