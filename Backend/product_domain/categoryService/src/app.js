@@ -11,13 +11,31 @@ app.use('/api/category', categoryRoutes);
 
 const PORT = process.env.PORT || 3001;
 
+// Función que verifica si Dynamo está disponible
+const waitForDynamo = async (retries = 5) => {
+  const { ListTablesCommand } = require('@aws-sdk/client-dynamodb');
+
+  for (let i = 0; i < retries; i++) {
+    try {
+      await client.send(new ListTablesCommand({}));
+      console.log("✅ DynamoDB is ready");
+      return;
+    } catch (err) {
+      console.log(`⏳ Esperando que Dynamo esté listo... (${i + 1}/${retries})`);
+      await new Promise(resolve => setTimeout(resolve, 3000));
+    }
+  }
+  throw new Error("❌ DynamoDB no respondió tras varios intentos");
+};
+
+// Crear tabla si no existe
 const createTableIfNotExists = async () => {
   try {
-    await new Promise(resolve => setTimeout(resolve, 3000)); // espera 3 segundos
+    await waitForDynamo();
 
     const tables = await client.send(new ListTablesCommand({}));
     if (tables.TableNames.includes('Categories')) {
-      console.log("⚠️ La tabla ya existe");
+      console.log("⚠️ Tabla 'Categories' ya existe");
       return;
     }
 
@@ -28,11 +46,11 @@ const createTableIfNotExists = async () => {
       ProvisionedThroughput: {
         ReadCapacityUnits: 5,
         WriteCapacityUnits: 5,
-      },
+      }
     });
 
     await client.send(command);
-    console.log("✅ Tabla 'Categories' creada automáticamente");
+    console.log("✅ Tabla 'Categories' creada correctamente");
   } catch (err) {
     console.error("❌ Error al crear tabla:", err.message);
   }
