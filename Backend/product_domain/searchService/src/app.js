@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const createTable = require('./models/createTable');
+createTable();
+
 const searchRoutes = require('./routes/searchRoutes');
 
 const app = express();
