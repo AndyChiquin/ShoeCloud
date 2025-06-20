@@ -1,8 +1,8 @@
 const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
-const uri = process.env.MONGODB_URI;
-const dbName = process.env.MONGODB_NAME;
+const uri = process.env.MONGO_URI;
+const dbName = process.env.MONGO_DB_NAME;
 
 async function createCollection() {
   const client = new MongoClient(uri);
@@ -27,4 +27,4 @@ async function createCollection() {
   }
 }
 
-createCollection();
+module.exports = createCollection;
