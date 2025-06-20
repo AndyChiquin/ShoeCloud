@@ -20,3 +20,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`InventoryService running on port ${PORT}`);
 });
+
+//test actions 
