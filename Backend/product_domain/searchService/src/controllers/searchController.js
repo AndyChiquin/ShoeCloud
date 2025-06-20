@@ -32,4 +32,26 @@ const search = async (req, res) => {
   }
 };
 
-module.exports = { search };
+const indexProduct = async (req, res) => {
+  const { name, description, category, price } = req.body;
+
+  if (!name || !description || !category || !price) {
+    return res.status(400).json({ error: 'Faltan campos requeridos' });
+  }
+
+  try {
+    const db = client.db(process.env.MONGO_DB_NAME);
+    const collection = db.collection('products');
+
+    await collection.insertOne({ name, description, category, price });
+
+    res.status(201).json({ message: 'Producto indexado correctamente' });
+  } catch (err) {
+    res.status(500).json({
+      error: 'Error al indexar producto',
+      details: err.message,
+    });
+  }
+};
+
+module.exports = { search, indexProduct };

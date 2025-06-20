@@ -42,6 +42,19 @@ const createProduct = async (req, res) => {
       });
     }
 
+    // 🟢 Llamar al microservicio de búsqueda (searchService)
+    try {
+      await axios.post('http://100.24.79.116:8006/api/search/index', {
+        name,
+        description,
+        category: category_id, // por ahora enviamos el ID, luego puedes mapear el nombre si deseas
+        price
+      });
+    } catch (searchError) {
+      console.error('Error al indexar en search-service:', searchError.message);
+    }
+
+
     res.status(201).json({ message: 'Producto creado', product: item });
   } catch (error) {
     res.status(500).json({ error: 'Error al crear producto', details: error });
