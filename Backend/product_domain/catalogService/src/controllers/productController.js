@@ -51,7 +51,8 @@ const createProduct = async (req, res) => {
         price
       });
     } catch (searchError) {
-      console.error('Error al indexar en search-service:', searchError.message);
+      console.error('❌ ERROR DETECTADO:', error);
+      res.status(500).json({ error: 'Error al crear producto', details: error });
     }
 
 
