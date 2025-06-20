@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3001
 
 # Comando para iniciar el servicio
-CMD ["node", "app.js"]
+CMD ["node", "src/app.js"]
