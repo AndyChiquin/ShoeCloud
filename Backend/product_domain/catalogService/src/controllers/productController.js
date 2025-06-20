@@ -32,36 +32,28 @@ const createProduct = async (req, res) => {
   };
 
   try {
-    await dynamoClient.put(params).promise();
+  await dynamoClient.put(params).promise();
 
-    // 🟡 Llamar al microservicio de inventario
-    if (quantity && quantity > 0) {
+  // 🟡 Llamar a inventoryService (protegido)
+  if (quantity && quantity > 0) {
+    try {
       await axios.post('http://54.166.240.10:8005/api/inventory', {
         product_id: id,
         quantity
       });
+    } catch (invError) {
+      console.error('❌ Error al conectar con inventoryService:', invError.message);
+      // No detenemos la creación del producto
     }
-
-    // 🟢 Llamar al microservicio de búsqueda (searchService)
-    //try {
-      //await axios.post('http://100.24.79.116:8006/api/search/index', {
-      //  name,
-       // description,
-       // category: category_id, // por ahora enviamos el ID, luego puedes mapear el nombre si deseas
-       // price
-      //});
-    //} catch (searchError) {
-    //  console.error('❌ ERROR DETECTADO:', error);
-    //  res.status(500).json({ error: 'Error al crear producto', details: error });
-   // }
-
-
-    res.status(201).json({ message: 'Producto creado', product: item });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al crear producto', details: error });
   }
-};
 
+  res.status(201).json({ message: 'Producto creado', product: item });
+
+} catch (error) {
+  console.error('❌ Error creando producto:', error.message);
+  res.status(500).json({ error: 'Error al crear producto', details: error.message });
+}
+};
 
 // ✅ ESTA función va fuera de createProduct
 const getProductsByCategory = async (req, res) => {
