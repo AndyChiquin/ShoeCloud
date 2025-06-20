@@ -1,15 +1,31 @@
-const searchService = require('../services/searchService');
+const { client } = require('../config/mongodb');
+require('dotenv').config();
 
 const search = async (req, res) => {
+  const searchTerm = req.query.query; // <- este parámetro debe estar presente
+
+  if (!searchTerm || typeof searchTerm !== 'string') {
+    return res.status(400).json({
+      error: 'Search failed',
+      details: '$regex has to be a string',
+    });
+  }
+
   try {
-    const keyword = req.query.q;
-    const results = await searchService.searchProducts(keyword);
-    res.json(results);
-  } catch (error) {
-    res.status(500).json({ error: 'Search failed', details: error.message });
+    const db = client.db(process.env.MONGO_DB_NAME);
+    const collection = db.collection('products');
+
+    const results = await collection.find({
+      name: { $regex: searchTerm, $options: 'i' }
+    }).toArray();
+
+    res.json({ results });
+  } catch (err) {
+    res.status(500).json({
+      error: 'Search failed',
+      details: err.message,
+    });
   }
 };
 
-module.exports = {
-  search,
-};
+module.exports = { search };
