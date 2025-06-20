@@ -47,6 +47,27 @@ const createProduct = async (req, res) => {
     res.status(500).json({ error: 'Error al crear producto', details: error });
   }
 
+  // Obtener productos por category_id
+const getProductsByCategory = async (req, res) => {
+  const { category_id } = req.params;
+
+  const params = {
+    TableName: TABLE_NAME,
+    FilterExpression: 'category_id = :c',
+    ExpressionAttributeValues: {
+      ':c': category_id
+    }
+  };
+
+  try {
+    const data = await dynamoClient.scan(params).promise();
+    res.json(data.Items);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener productos por categoría', details: error });
+  }
+};
+
+
 };
 
 

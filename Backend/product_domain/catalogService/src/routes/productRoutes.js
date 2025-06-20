@@ -11,6 +11,7 @@ const {
 
 // CRUD
 router.post('/', createProduct);
+router.get('/category/:category_id', getProductsByCategory);
 router.get('/', getAllProducts);
 router.get('/:id', getProductById);
 router.put('/:id', updateProduct);
