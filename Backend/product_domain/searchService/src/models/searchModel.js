@@ -1,10 +1,14 @@
-// Aquí definimos funciones para consultas a Cassandra
-const client = require('../config/cassandra');
+const { client } = require('../config/mongodb');
 
 const getProductsByKeyword = async (keyword) => {
-  const query = 'SELECT * FROM products WHERE name CONTAINS ? ALLOW FILTERING';
-  const result = await client.execute(query, [keyword], { prepare: true });
-  return result.rows;
+  const db = client.db(process.env.MONGO_DB_NAME);
+  const collection = db.collection('products');
+
+  const results = await collection.find({
+    name: { $regex: keyword, $options: 'i' }
+  }).toArray();
+
+  return results;
 };
 
 module.exports = {
