@@ -2,7 +2,7 @@ const { client } = require('../config/mongodb');
 require('dotenv').config();
 
 const search = async (req, res) => {
-  const searchTerm = req.query.query; // <- este parámetro debe estar presente
+  const searchTerm = req.query.query;
 
   if (!searchTerm || typeof searchTerm !== 'string') {
     return res.status(400).json({
@@ -16,7 +16,11 @@ const search = async (req, res) => {
     const collection = db.collection('products');
 
     const results = await collection.find({
-      name: { $regex: searchTerm, $options: 'i' }
+      $or: [
+        { name: { $regex: searchTerm, $options: 'i' } },
+        { description: { $regex: searchTerm, $options: 'i' } },
+        { category: { $regex: searchTerm, $options: 'i' } }
+      ]
     }).toArray();
 
     res.json({ results });
