@@ -1,19 +1,30 @@
-const { client } = require('../config/mongodb');
+const { MongoClient } = require('mongodb');
+require('dotenv').config();
 
-const createCollection = async () => {
+const uri = process.env.MONGODB_URI;
+const dbName = process.env.MONGODB_NAME;
+
+async function createCollection() {
+  const client = new MongoClient(uri);
+
   try {
-    const db = client.db(process.env.MONGO_DB_NAME);
+    await client.connect();
+    console.log('✅ Conectado a MongoDB');
+
+    const db = client.db(dbName);
+
     const collections = await db.listCollections({ name: 'products' }).toArray();
-
-    if (collections.length === 0) {
-      await db.createCollection('products');
-      console.log('✔️ Colección "products" creada');
+    if (collections.length > 0) {
+      console.log('ℹ️ La colección "products" ya existe.');
     } else {
-      console.log('✔️ Colección "products" ya existe');
+      await db.createCollection('products');
+      console.log('✅ Colección "products" creada.');
     }
-  } catch (err) {
-    console.error('❌ Error al crear la colección:', err);
+  } catch (error) {
+    console.error('❌ Error al crear la colección:', error);
+  } finally {
+    await client.close();
   }
-};
+}
 
-module.exports = createCollection;
+createCollection();

@@ -3,6 +3,7 @@ const { connectDB } = require('./config/mongodb');
 const createCollection = require('./models/createCollection');
 const routes = require('./routes/searchRoutes');
 
+
 const app = express();
 const port = process.env.PORT || 8006;
 
@@ -14,3 +15,6 @@ app.listen(port, async () => {
   await connectDB();
   await createCollection();
 });
+
+require('./models/createCollection');
+
