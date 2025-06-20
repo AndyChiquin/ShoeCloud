@@ -1,23 +1,18 @@
-const { DynamoDBClient, CreateTableCommand } = require("@aws-sdk/client-dynamodb");
-require('dotenv').config();
+const { DynamoDBClient, CreateTableCommand } = require('@aws-sdk/client-dynamodb');
 
 const client = new DynamoDBClient({
   region: 'us-east-1',
-  endpoint: process.env.DYNAMO_ENDPOINT,
+  endpoint: "http://54.166.240.10:8002", // 👈 Reemplaza con tu IP pública
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    accessKeyId: "fakeMyKeyId",
+    secretAccessKey: "fakeSecretAccessKey"
   }
 });
 
 const command = new CreateTableCommand({
   TableName: "Categories",
-  KeySchema: [
-    { AttributeName: "id", KeyType: "HASH" }
-  ],
-  AttributeDefinitions: [
-    { AttributeName: "id", AttributeType: "S" }
-  ],
+  KeySchema: [{ AttributeName: "id", KeyType: "HASH" }],
+  AttributeDefinitions: [{ AttributeName: "id", AttributeType: "S" }],
   ProvisionedThroughput: {
     ReadCapacityUnits: 5,
     WriteCapacityUnits: 5
@@ -27,8 +22,8 @@ const command = new CreateTableCommand({
 (async () => {
   try {
     await client.send(command);
-    console.log("✅ Table 'Categories' created successfully.");
+    console.log("✅ Table created");
   } catch (err) {
-    console.error("❌ Error creating table:", err.message);
+    console.error("❌ Error:", err.message);
   }
 })();
