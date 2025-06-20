@@ -114,7 +114,9 @@ const deleteProduct = async (req, res) => {
 
   try {
     await dynamoClient.delete(params).promise();
-    res.json({ message: 'Producto eliminado' });
+    await axios.delete(`http://54.166.240.10:8005/api/inventory/${id}`);
+
+    res.json({ message: 'Producto eliminado y stock removido' });
   } catch (error) {
     res.status(500).json({ error: 'Error al eliminar producto', details: error });
   }
