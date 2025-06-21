@@ -15,5 +15,3 @@ app.listen(port, async () => {
   await connectDB();
   await createCollection();
 });
-
-//second test
