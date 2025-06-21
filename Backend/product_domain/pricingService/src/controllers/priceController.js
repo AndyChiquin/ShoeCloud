@@ -73,7 +73,7 @@ const updatePriceByProductId = async (req, res) => {
 
       // 🔁 También actualiza en catalogService
       try {
-        await axios.put(`http://54.166.240.10:3000/api/products/${product_id}`, {
+        await axios.put(`http://54.166.240.10:3000/api/products/by-product/${product_id}`, {
           price: updatedPrice.price
         });
       } catch (catError) {
