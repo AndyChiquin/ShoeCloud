@@ -1,0 +1,28 @@
+name: Deploy SerachService to EC2
+
+on:
+  push:
+    branches:
+      - test
+    paths:
+      - 'Backend/product_domain/searchService/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy SearchService via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PRODUCT_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRODUCT_PEM }}
+          script: |
+            cd ShoeCloud/Backend/product_domain/searchService
+            sudo docker-compose down
+            git pull origin test
+            sudo docker-compose up --build -d
