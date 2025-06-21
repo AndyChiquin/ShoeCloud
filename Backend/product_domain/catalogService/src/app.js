@@ -23,3 +23,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`CatalogService running on port ${PORT}`);
 });
+
+//test
