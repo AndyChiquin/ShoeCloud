@@ -190,6 +190,33 @@ const updateProduct = async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar producto', details: error });
   }
 };
+// Actulizar precio por product_id
+const updateProductByProductId = async (req, res) => {
+  const { product_id } = req.params;
+  const { price } = req.body;
+
+  if (typeof price === 'undefined') {
+    return res.status(400).json({ error: 'Falta el precio para actualizar' });
+  }
+
+  const params = {
+    TableName: TABLE_NAME,
+    Key: { id: product_id },
+    UpdateExpression: 'set price = :p',
+    ExpressionAttributeValues: {
+      ':p': price
+    },
+    ReturnValues: 'ALL_NEW'
+  };
+
+  try {
+    const result = await dynamoClient.update(params).promise();
+    res.json({ message: 'Precio actualizado por product_id', product: result.Attributes });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar precio con product_id', details: error.message });
+  }
+};
+
 
 // Eliminar producto
 const deleteProduct = async (req, res) => {
@@ -233,5 +260,6 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
-  getProductsByCategory
+  getProductsByCategory,
+  updateProductByProductId
 };
