@@ -34,6 +34,23 @@ const createProduct = async (req, res) => {
   try {
   await dynamoClient.put(params).promise();
 
+    // 🟢 Llamar a pricingService (protegido)
+  if (price) {
+    try {
+      await axios.post('http://100.24.79.116:8008/api/price', {
+        product_id: id,
+        value: price,
+        discount_type: "ninguno",
+        percentage: 0,
+        valid_until: null
+      });
+    } catch (pricingError) {
+      console.error('❌ Error al conectar con pricingService:', pricingError.message);
+      // No detenemos la creación del producto
+    }
+  }
+
+
   // 🟡 Llamar a inventoryService (protegido)
   if (quantity && quantity > 0) {
     try {
