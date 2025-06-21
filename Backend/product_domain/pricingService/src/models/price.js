@@ -8,7 +8,7 @@ const Price = sequelize.define('Price', {
     autoIncrement: true
   },
   product_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false
   },
   value: {

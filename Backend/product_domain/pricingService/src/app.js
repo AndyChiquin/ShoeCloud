@@ -8,7 +8,7 @@ app.use('/api', priceRoutes);
 
 const PORT = process.env.PORT || 8008;
 
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   app.listen(PORT, () => {
     console.log(`PricingService running on port ${PORT}`);
   });
