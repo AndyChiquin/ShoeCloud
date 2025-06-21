@@ -18,7 +18,7 @@ jobs:
       - name: Deploy SearchService via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_PRODUCT_HOST }}
+          host: ${{ secrets.EC2_PRODUCT2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_PRODUCT_PEM }}
           script: |
