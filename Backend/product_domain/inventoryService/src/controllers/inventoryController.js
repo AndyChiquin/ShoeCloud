@@ -85,7 +85,7 @@ const deleteInventory = async (req, res) => {
 
   try {
     const connection = await pool.getConnection();
-    const sql = 'DELETE FROM inventory WHERE id = ?';
+    const sql = 'DELETE FROM inventory WHERE product_id = ?';
     await connection.query(sql, [id]);
     connection.release();
 
