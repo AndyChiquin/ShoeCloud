@@ -47,6 +47,21 @@ const createProduct = async (req, res) => {
     }
   }
 
+  // 🟢 Llamar a searchService (protegido)
+  try {
+    await axios.post('http://100.24.79.116:8006/api/search/index', {
+      id,
+      name,
+      description,
+      category: category_id,
+      price
+    });
+  } catch (searchError) {
+    console.error('❌ Error al conectar con searchService:', searchError.message);
+    // No detenemos la creación del producto
+  }
+
+
   res.status(201).json({ message: 'Producto creado', product: item });
 
 } catch (error) {
