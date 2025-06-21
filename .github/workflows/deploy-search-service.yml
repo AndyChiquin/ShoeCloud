@@ -1,4 +1,4 @@
-name: Deploy SerachService to EC2
+name: Deploy SearchService to EC2
 
 on:
   push:
