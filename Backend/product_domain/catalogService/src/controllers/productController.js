@@ -147,6 +147,27 @@ const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, description, category_id, price, brand } = req.body;
 
+    // Si solo se desea actualizar el precio (caso desde pricingService)
+  if (price && !name && !description && !category_id && !brand) {
+    const soloPrecio = {
+      TableName: TABLE_NAME,
+      Key: { id },
+      UpdateExpression: 'set price = :p',
+      ExpressionAttributeValues: {
+        ':p': price
+      },
+      ReturnValues: 'ALL_NEW'
+    };
+
+    try {
+      const result = await dynamoClient.update(soloPrecio).promise();
+      return res.json({ message: 'Precio actualizado', product: result.Attributes });
+    } catch (error) {
+      return res.status(500).json({ error: 'Error al actualizar solo el precio', details: error.message });
+    }
+  }
+
+
   const params = {
     TableName: TABLE_NAME,
     Key: { id },

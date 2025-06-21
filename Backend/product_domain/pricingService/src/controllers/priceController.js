@@ -48,6 +48,16 @@ const updatePrice = async (req, res) => {
 
     if (updated) {
       const updatedPrice = await Price.findByPk(id);
+
+      // 🔁 Llamar a catalogService para actualizar el precio en DynamoDB
+      try {
+        await axios.put(`http://54.166.240.10:3000/api/products/${updatedPrice.product_id}`, {
+          price: updatedPrice.price
+        });
+      } catch (catError) {
+        console.error('❌ Error actualizando precio en catalogService:', catError.message);
+      }
+
       res.json(updatedPrice);
     } else {
       res.status(404).json({ error: "Price not found" });
@@ -56,6 +66,7 @@ const updatePrice = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // Eliminar un precio
 const deletePrice = async (req, res) => {
