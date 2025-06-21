@@ -148,10 +148,10 @@ const updateProduct = async (req, res) => {
   const { name, description, category_id, price, brand } = req.body;
 
     // Si solo se desea actualizar el precio (caso desde pricingService)
-  if (price && !name && !description && !category_id && !brand) {
+  if (typeof price !== 'undefined' && !name && !description && !category_id && !brand) {
     const soloPrecio = {
       TableName: TABLE_NAME,
-      Key: { id },
+      Key: { id: String(id) },
       UpdateExpression: 'set price = :p',
       ExpressionAttributeValues: {
         ':p': price
