@@ -4,5 +4,8 @@ const { createPrice, getAllPrices } = require('../controllers/priceController');
 
 router.post('/price', createPrice);
 router.get('/price', getAllPrices);
+router.put('/price/:id', updatePrice);
+router.delete('/price/:id', deletePrice);   
+router.get('/price/product/:product_id', getPricesByProduct);
 
 module.exports = router;
