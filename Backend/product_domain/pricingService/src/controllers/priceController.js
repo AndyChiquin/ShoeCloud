@@ -1,4 +1,5 @@
 const Price = require('../models/price');
+const { get } = require('../routes/priceRoutes');
 
 // Crear precio
 const createPrice = async (req, res) => {
@@ -19,6 +20,23 @@ const getAllPrices = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Obtener un precio por ID
+const getPriceById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const price = await Price.findByPk(id);
+
+    if (price) {
+      res.json(price);
+    } else {
+      res.status(404).json({ error: "Price not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 // Actualizar un precio
 const updatePrice = async (req, res) => {
@@ -80,7 +98,8 @@ module.exports = {
   getAllPrices,
   updatePrice,
   deletePrice,
-  getPricesByProduct
+  getPricesByProduct,
+  getPriceById
 };
 
 
