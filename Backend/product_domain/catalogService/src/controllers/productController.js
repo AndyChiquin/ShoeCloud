@@ -39,7 +39,7 @@ const createProduct = async (req, res) => {
     try {
       await axios.post('http://100.24.79.116:8008/api/price', {
         product_id: id,
-        value: price,
+        price: price,
         discount_type: "ninguno",
         percentage: 0,
         valid_until: null
