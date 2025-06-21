@@ -142,20 +142,37 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
-  const params = {
+  // Paso 1: Obtener el producto para extraer su product_id
+  const getParams = {
     TableName: TABLE_NAME,
     Key: { id }
   };
 
   try {
-    await dynamoClient.delete(params).promise();
-    await axios.delete(`http://54.166.240.10:8005/api/inventory/${id}`);
+    const data = await dynamoClient.get(getParams).promise();
+    if (!data.Item) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
+    const productId = data.Item.id; // este es el que se usó como product_id en inventory
+
+    // Paso 2: Eliminar el producto
+    await dynamoClient.delete(getParams).promise();
+
+    // Paso 3: Llamar al microservicio de inventario para eliminar el stock
+    try {
+      await axios.delete(`http://54.166.240.10:8005/api/inventory/${productId}`);
+    } catch (invError) {
+      console.error('❌ Error eliminando inventario:', invError.message);
+    }
 
     res.json({ message: 'Producto eliminado y stock removido' });
+
   } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar producto', details: error });
+    res.status(500).json({ error: 'Error al eliminar producto', details: error.message });
   }
 };
+
 
 module.exports = {
   createProduct,
