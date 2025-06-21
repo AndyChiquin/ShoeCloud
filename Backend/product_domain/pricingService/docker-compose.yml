@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  pricing-service:
+    build: .
+    container_name: pricing-service
+    ports:
+      - "8008:8008"
+    env_file:
+      - .env
+    restart: always
+  postgres:
+    image: postgres:13
+    container_name: postgres-pricing
+    ports:
+      - "5434:5432"
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
