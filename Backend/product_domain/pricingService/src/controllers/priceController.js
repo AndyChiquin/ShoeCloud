@@ -48,16 +48,6 @@ const updatePrice = async (req, res) => {
 
     if (updated) {
       const updatedPrice = await Price.findByPk(id);
-
-      // 🔁 Llamar a catalogService para actualizar el precio en DynamoDB
-      try {
-        await axios.put(`http://54.166.240.10:3000/api/products/${updatedPrice.product_id}`, {
-          price: updatedPrice.price
-        });
-      } catch (catError) {
-        console.error('❌ Error actualizando precio en catalogService:', catError.message);
-      }
-
       res.json(updatedPrice);
     } else {
       res.status(404).json({ error: "Price not found" });
@@ -67,6 +57,37 @@ const updatePrice = async (req, res) => {
   }
 };
 
+// Actualizar precio por product_id
+const updatePriceByProductId = async (req, res) => {
+  const { product_id } = req.params;
+  const { price, percentage } = req.body;
+
+  try {
+    const [updated] = await Price.update(
+      { price, percentage },
+      { where: { product_id } }
+    );
+
+    if (updated) {
+      const updatedPrice = await Price.findOne({ where: { product_id } });
+
+      // 🔁 También actualiza en catalogService
+      try {
+        await axios.put(`http://54.166.240.10:3000/api/products/${product_id}`, {
+          price: updatedPrice.price
+        });
+      } catch (catError) {
+        console.error('❌ Error actualizando precio en catalogService:', catError.message);
+      }
+
+      res.json(updatedPrice);
+    } else {
+      res.status(404).json({ error: "No se encontró el precio con ese product_id" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // Eliminar un precio
 const deletePrice = async (req, res) => {
@@ -110,7 +131,8 @@ module.exports = {
   updatePrice,
   deletePrice,
   getPricesByProduct,
-  getPriceById
+  getPriceById,
+  updatePriceByProductId
 };
 
 
