@@ -26,8 +26,10 @@ jobs:
             echo "📁 Entrando a carpeta imageService"
             cd ShoeCloud/Backend/product_domain/imageService
 
-            echo "📦 Haciendo git pull"
-            git pull origin test
+            echo "🧹 Limpiando referencias anteriores (fix ref error)"
+            git remote set-head origin -a
+            git fetch --all
+            git reset --hard origin/test
 
             echo "🛑 Apagando servicios anteriores"
             sudo docker-compose down
