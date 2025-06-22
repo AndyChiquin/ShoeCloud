@@ -9,17 +9,17 @@ services:
     env_file:
       - .env
     depends_on:
-      - mongo
+      - mongo-image-service
     restart: always
 
-  mongo:
+  mongo-image-service:
     image: mongo:6
-    container_name: mongo
+    container_name: mongo-image-service
     ports:
       - "27018:27017"
     volumes:
-      - mongo_data:/data/db
+      - mongo_image_data:/data/db
     restart: always
 
 volumes:
-  mongo_data:
+  mongo_image_data:
