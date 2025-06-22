@@ -7,7 +7,14 @@ order_bp = Blueprint('order_bp', __name__)
 def create():
     data = request.json
     result = order_service.create_order(data)
+
+    # Si result es una tupla (respuesta, código), es porque hubo error
+    if isinstance(result, tuple):
+        return jsonify(result[0]), result[1]
+
+    # Si no, está todo bien → retornar con código 201
     return jsonify(result), 201
+
 
 @order_bp.route('/orders', methods=['GET'])
 def get_all():

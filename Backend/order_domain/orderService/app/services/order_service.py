@@ -1,10 +1,24 @@
 from app.models.order_model import Order
 from app.config.db import db
+import requests
 
 def create_order(data):
+    user_id = data['user_id']
+
+    # VALIDAR que el usuario existe en el microservicio de usuarios
+    user_url = f"http://<IP_USER_SERVICE>:<PUERTO>/users/{user_id}"  # ← AJUSTA AQUÍ
+
+    try:
+        response = requests.get(user_url, timeout=5)
+        if response.status_code != 200:
+            return {"error": "Usuario no encontrado en userService"}, 400
+    except requests.exceptions.RequestException as e:
+        return {"error": "Error al conectar con userService", "details": str(e)}, 500
+
+    # Si usuario válido, crear orden
     new_order = Order(
-        user_id=data['user_id'],
-        date=data.get('date'),  # opcional, por defecto es ahora
+        user_id=user_id,
+        date=data.get('date'),
         status=data['status'],
         total=data['total']
     )
