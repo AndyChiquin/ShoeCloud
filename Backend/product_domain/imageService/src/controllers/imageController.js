@@ -27,6 +27,30 @@ const getImagesByProductId = async (req, res) => {
   }
 };
 
+// Actualizar imagen por ID de producto
+const updateImageByProductId = async (req, res) => {
+  const { product_id } = req.params;
+  const { image_url } = req.body;
+
+  try {
+    const updated = await Image.findOneAndUpdate(
+      { product_id },
+      { image_url, uploaded_at: new Date() },
+      { new: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: 'No se encontró imagen para ese producto' });
+    }
+
+    res.status(200).json({ message: 'Imagen actualizada correctamente', data: updated });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al actualizar imagen', details: error.message });
+  }
+};
+
+
+
 // Eliminar imagen por ID de producto (opcional)
 const deleteImagesByProductId = async (req, res) => {
   const { product_id } = req.params;
@@ -42,5 +66,6 @@ const deleteImagesByProductId = async (req, res) => {
 module.exports = {
   uploadImage,
   getImagesByProductId,
-  deleteImagesByProductId
+  deleteImagesByProductId,
+  updateImageByProductId
 };
