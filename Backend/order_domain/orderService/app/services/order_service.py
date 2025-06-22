@@ -6,7 +6,7 @@ def create_order(data):
     user_id = data['user_id']
 
     # VALIDAR que el usuario existe en el microservicio de usuarios
-    user_url = f"http://<IP_USER_SERVICE>:<PUERTO>/users/{user_id}"  # ← AJUSTA AQUÍ
+    user_url = f"http://44.218.255.193:8000/users/{user_id}" 
 
     try:
         response = requests.get(user_url, timeout=5)
