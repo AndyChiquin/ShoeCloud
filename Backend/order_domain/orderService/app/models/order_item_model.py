@@ -1,4 +1,6 @@
 from app.config.db import db
+from app.models.order_item_model import OrderItem
+
 
 class OrderItem(db.Model):
     __tablename__ = 'order_items'
