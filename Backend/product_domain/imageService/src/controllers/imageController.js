@@ -23,6 +23,15 @@ const uploadImage = async (req, res) => {
   }
 };
 
+// Obtener todas las imágenes (opcional)
+const getAllImages = async (req, res) => {
+  try {
+    const images = await Image.find({});
+    res.status(200).json(images);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener imágenes', details: error.message });
+  }
+};
 
 // Obtener imagen(es) por ID de producto
 const getImagesByProductId = async (req, res) => {
@@ -70,6 +79,11 @@ const updateImageByProductId = async (req, res) => {
 const deleteImagesByProductId = async (req, res) => {
   const { product_id } = req.params;
 
+  const exists = await checkProductExists(product_id);
+  if (!exists) {
+    return res.status(404).json({ error: 'Producto no encontrado en catalogService' });
+  }
+
   try {
     await Image.deleteMany({ product_id });
     res.status(200).json({ message: 'Imágenes eliminadas correctamente' });
@@ -78,9 +92,11 @@ const deleteImagesByProductId = async (req, res) => {
   }
 };
 
+
 module.exports = {
   uploadImage,
   getImagesByProductId,
   deleteImagesByProductId,
-  updateImageByProductId
+  updateImageByProductId,
+  getAllImages
 };
