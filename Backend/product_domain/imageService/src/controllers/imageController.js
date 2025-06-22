@@ -37,6 +37,12 @@ const getAllImages = async (req, res) => {
 const getImagesByProductId = async (req, res) => {
   const { product_id } = req.params;
 
+  // Validar que el producto exista en catalogService
+  const exists = await checkProductExists(product_id);
+  if (!exists) {
+    return res.status(404).json({ error: 'Producto no encontrado en catalogService' });
+  }
+
   try {
     const images = await Image.find({ product_id });
     res.status(200).json(images);
@@ -44,6 +50,7 @@ const getImagesByProductId = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener imágenes', details: error.message });
   }
 };
+
 
 // Actualizar imagen por ID de producto
 const updateImageByProductId = async (req, res) => {
