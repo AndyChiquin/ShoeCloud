@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 from app.db.redis_client import redis_client
 
+# SOLID - SRP: This class handles only session-related data operations
 class Session:
     def __init__(self, user_id, status="active"):
         self.id = str(uuid.uuid4())
@@ -10,6 +11,7 @@ class Session:
         self.datetime_end = None
         self.status = status
 
+    # KISS: Simple and clear method to persist session data in Redis
     def save(self):
         redis_client.hset(f"session:{self.id}", mapping={
             "id": self.id,
@@ -19,6 +21,8 @@ class Session:
             "status": self.status
         })
 
+    # DRY: Reusable method to end any session by ID
+    # SOLID - SRP: Encapsulates session-ending logic inside the model
     @staticmethod
     def end_session(session_id):
         key = f"session:{session_id}"
@@ -30,6 +34,8 @@ class Session:
             return True
         return False
 
+    # KISS: Retrieves all sessions by user, filtering from Redis
+    # DRY: Centralized logic to avoid repeating Redis scan in other parts
     @staticmethod
     def get_sessions_by_user(user_id):
         keys = redis_client.keys("session:*")

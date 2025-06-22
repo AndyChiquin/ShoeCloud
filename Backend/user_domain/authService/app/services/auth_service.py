@@ -4,9 +4,10 @@ from app.config.settings import settings
 from app.services.redis_client import redis_client
 from app.utils.jwt_utils import create_token, verify_token
 
-
+# KISS: Handles the login process in a clear, step-by-step flow
+# SOLID - SRP: Only responsible for authenticating the user and managing token/session/audit
 def login_user(email: str, password: str):
-    # Consulta al user-profile-service
+    # DRY: Uses external user service to retrieve user by email
     url = f"{settings.USER_SERVICE_URL}/users/email/{email}"
     response = requests.get(url)
 
@@ -15,14 +16,15 @@ def login_user(email: str, password: str):
 
     user_data = response.json()
 
-    # Validar contraseña
+    # KISS: Uses a clear method for password hash verification
     if not check_password_hash(user_data["password"], password):
         return {"success": False, "error": "Invalid password"}
 
-    # Generar y guardar JWT en Redis
+    # SOLID + DRY: Generates token using shared JWT utility
     token = create_token({"sub": user_data["id"]})
     redis_client.setex(f"token:{user_data['id']}", settings.JWT_EXPIRE_MINUTES * 60, token)
 
+    # POLA: Tries to create a session in the session service
     try:
         session_response = requests.post(
             "http://44.218.255.193:8003/session/",
@@ -32,8 +34,8 @@ def login_user(email: str, password: str):
             return {"success": False, "error": "Session creation failed"}
     except Exception as e:
         return {"success": False, "error": f"Session error: {str(e)}"}
-    
-    # Registrar auditoría en userAuditService (añadir esto justo antes del return)
+
+    # DRY + SOLID: Sends audit log to the audit service
     try:
         audit_response = requests.post(
             "http://44.218.255.193:8004/log",
@@ -52,28 +54,28 @@ def login_user(email: str, password: str):
 
     return {"success": True, "token": token, "user_id": user_data["id"]}
 
-
-
+# KISS: Validates token and checks consistency with Redis
+# SOLID - SRP: Only validates token, doesn't handle other user logic
 def validate_token(token: str):
     result = verify_token(token)
-    print("🔍 TOKEN RECIBIDO:", token)
+    print("🔍 TOKEN RECEIVED:", token)
 
     if not result["valid"]:
-        print("❌ Token inválido por firma.")
+        print("❌ Invalid token signature.")
         return {"valid": False}
 
     user_id = result["data"]["sub"]
     stored_token = redis_client.get(f"token:{user_id}")
-    print("📦 TOKEN GUARDADO EN REDIS:", stored_token)
+    print("📦 TOKEN STORED IN REDIS:", stored_token)
 
     if stored_token != token:
-        print("❌ Token no coincide.")
+        print("❌ Token mismatch.")
         return {"valid": False}
 
-    print("✅ Token válido.")
+    print("✅ Token is valid.")
     return {"valid": True, "user_id": user_id}
 
-
+# SRP: Responsible only for logging out and invalidating session/token
 def logout_user(token: str):
     result = verify_token(token)
     if not result["valid"]:
@@ -82,6 +84,7 @@ def logout_user(token: str):
     user_id = result["data"]["sub"]
     redis_client.delete(f"token:{user_id}")
 
+    # KISS + DRY: Session service is responsible for session state
     try:
         response = requests.patch(f"http://44.218.255.193:8003/session/user/{user_id}/close-latest")
         if response.status_code != 200:
@@ -89,7 +92,7 @@ def logout_user(token: str):
     except Exception as e:
         print("SessionService exception:", str(e))
 
-        # Registrar auditoría en userAuditService (añadir antes del return)
+    # Sends logout event to audit service
     try:
         audit_response = requests.post(
             "http://44.218.255.193:8004/log",
@@ -103,6 +106,5 @@ def logout_user(token: str):
             print("Audit log not created:", audit_response.text)
     except Exception as e:
         print("AuditService exception:", str(e))
-
 
     return {"success": True}

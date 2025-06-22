@@ -4,16 +4,19 @@ from app.models.user_model import User
 import requests
 from app.db.connection import db
 
+# KISS: Using Blueprint to organize routes and keep the app modular
 user_bp = Blueprint("user", __name__, url_prefix="/users")  
 
 @user_bp.route("/", methods=["POST"])
 def register_user():
+    # KISS: Clean separation between request input and service logic
     data = request.json
     user = create_user(data)
     return jsonify({"id": user.id, "name": user.name}), 201
 
 @user_bp.route("/<int:user_id>", methods=["GET"])
 def get_user(user_id):
+    # DRY: Using centralized function to retrieve a user
     user = get_user_by_id(user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
@@ -26,6 +29,7 @@ def get_user(user_id):
 
 @user_bp.route("/email/<email>", methods=["GET"])
 def get_user_by_email(email):
+    # KISS + POLA: Query is simple and behaves as expected for developers
     user = User.query.filter_by(email=email).first()
     if not user:
         return jsonify({"error": "User not found"}), 404
@@ -37,9 +41,9 @@ def get_user_by_email(email):
         "role": user.role
     })
 
-
 @user_bp.route("/", methods=["GET"])
 def get_all_users_route():
+    # DRY: Logic to retrieve users is reused from service layer
     users = get_all_users()
     result = []
     for user in users:
@@ -51,9 +55,9 @@ def get_all_users_route():
         })
     return jsonify(result)
 
-
 @user_bp.route("/<int:user_id>", methods=["PUT"])
 def update_user_route(user_id):
+    # SOLID (SRP): Route only handles input/output; logic is in the service
     data = request.json
     user = update_user(user_id, data)
     if not user:
@@ -68,7 +72,7 @@ def update_user_role(user_id):
     if not new_role:
         return jsonify({"error": "Role is required"}), 400
 
-    # 🔁 Verificar que el rol exista en el roleService
+    # POLA: Intuitive external validation against roleService
     try:
         response = requests.get(f"http://44.218.255.193:8002/roles/exists/{new_role}")
         if response.status_code != 200:
@@ -76,7 +80,7 @@ def update_user_role(user_id):
     except:
         return jsonify({"error": "Role service not reachable"}), 503
 
-    # 🧩 Buscar el usuario y actualizar su rol
+    # KISS + SRP: Simple logic for updating user role
     user = User.query.get(user_id)
     if not user:
         return jsonify({"error": "User not found"}), 404
@@ -86,11 +90,10 @@ def update_user_role(user_id):
 
     return jsonify({"message": f"User role updated to '{new_role}'"}), 200
 
-
 @user_bp.route("/<int:user_id>", methods=["DELETE"])
 def delete_user_route(user_id):
+    # KISS: Clear control flow for deletion
     result = delete_user(user_id)
     if not result:
         return jsonify({"error": "User not found"}), 404
     return jsonify({"msg": f"User {user_id} deleted"})
-
