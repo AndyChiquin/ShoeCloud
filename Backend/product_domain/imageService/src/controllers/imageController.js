@@ -1,6 +1,8 @@
 // src/controllers/imageController.js
 
 const Image = require('../models/Image');
+const { checkProductExists } = require('../services/productService');
+
 
 // Crear una nueva imagen
 const uploadImage = async (req, res) => {
@@ -31,6 +33,12 @@ const getImagesByProductId = async (req, res) => {
 const updateImageByProductId = async (req, res) => {
   const { product_id } = req.params;
   const { image_url } = req.body;
+
+  // Validar que el producto exista en catalogService
+  const exists = await checkProductExists(product_id);
+  if (!exists) {
+    return res.status(404).json({ error: 'Producto no encontrado en catalogService' });
+  }
 
   try {
     const updated = await Image.findOneAndUpdate(
