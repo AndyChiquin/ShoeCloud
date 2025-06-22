@@ -10,6 +10,8 @@ const {
 
 const tableName = 'Categories';
 
+// SOLID - SRP: This function handles only category creation
+// KISS: Uses clear structure to add a new item to DynamoDB
 const createCategory = async (category) => {
   const command = new PutCommand({
     TableName: tableName,
@@ -18,6 +20,8 @@ const createCategory = async (category) => {
   await dynamo.send(command);
 };
 
+// SRP: Retrieves a single category by ID
+// POLA: Uses standard DynamoDB GetCommand
 const getCategoryById = async (id) => {
   const command = new GetCommand({
     TableName: tableName,
@@ -27,6 +31,7 @@ const getCategoryById = async (id) => {
   return result.Item;
 };
 
+// DRY: Centralized function to scan and return all categories
 const getAllCategories = async () => {
   const command = new ScanCommand({
     TableName: tableName,
@@ -35,6 +40,7 @@ const getAllCategories = async () => {
   return result.Items;
 };
 
+// SRP + KISS: Updates only 'name' and 'description' attributes
 const updateCategory = async (id, data) => {
   const command = new UpdateCommand({
     TableName: tableName,
@@ -53,6 +59,7 @@ const updateCategory = async (id, data) => {
   return result.Attributes;
 };
 
+// SRP: Removes a category by its ID
 const deleteCategory = async (id) => {
   const command = new DeleteCommand({
     TableName: tableName,

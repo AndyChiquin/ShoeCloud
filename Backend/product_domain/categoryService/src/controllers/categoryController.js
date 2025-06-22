@@ -8,6 +8,11 @@ const {
 
 const Category = require('../models/categoryModel');
 
+// ✅ CONTROLLER: Handles the HTTP request/response cycle
+// ✅ SRP (Single Responsibility): Each function handles only one thing
+// ✅ KISS: Clear and direct logic
+// ✅ Clean Architecture: Calls to the service layer for business logic
+
 const create = async (req, res) => {
   try {
     const category = new Category(req.body);

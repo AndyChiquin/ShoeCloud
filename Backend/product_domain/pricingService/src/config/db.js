@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false // útil si no usas certificado propio en RDS
+        rejectUnauthorized: false 
       }
     },
     logging: false

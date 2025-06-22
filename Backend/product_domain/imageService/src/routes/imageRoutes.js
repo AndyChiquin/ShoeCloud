@@ -10,20 +10,21 @@ const {
   getAllImages
 } = require('../controllers/imageController');
 
-// Ruta para subir una imagen
+// 📦 [Routing Layer] — Defines HTTP endpoints for image-related operations
+
+// 🔼 Upload an image (POST /api/images/)
 router.post('/', uploadImage);
 
-// Ruta para obtener imágenes por ID de producto
+// 🔍 Get images by product ID (GET /api/images/:product_id)
 router.get('/:product_id', getImagesByProductId);
 
-// Ruta para obtener todas las imágenes 
+// 🔄 Get all images (GET /api/images/)
 router.get('/', getAllImages);
 
-//Ruta para actualizar imagen por ID de producto
+// ✏️ Update image by product ID (PUT /api/images/:product_id)
 router.put('/:product_id', updateImageByProductId);
 
-// Ruta para eliminar imágenes por ID de producto 
+// ❌ Delete images by product ID (DELETE /api/images/:product_id)
 router.delete('/:product_id', deleteImagesByProductId);
-
 
 module.exports = router;

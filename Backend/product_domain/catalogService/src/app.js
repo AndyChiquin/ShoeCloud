@@ -1,25 +1,26 @@
-// src/app.js
 const express = require('express');
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config(); // DRY: Loads environment variables from .env file
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(express.json()); // POLA: Parses incoming JSON, expected behavior for APIs
 
-// Crear tabla en DynamoDB Local si no existe
+// DRY: Table creation logic is centralized in a config file
 require('./config/createTable');
 
-// Importar rutas de productos
 const productRoutes = require('./routes/productRoutes');
+
+// KISS + SRP: Routes are separated into a dedicated module
 app.use('/api/products', productRoutes);
 
-// Ruta base de prueba
+// KISS: Simple health check route
 app.get('/', (req, res) => {
   res.send('CatalogService is running 🚀');
 });
 
+// POLA: Starts the service in a predictable, conventional way
 app.listen(PORT, () => {
   console.log(`CatalogService running on port ${PORT}`);
 });

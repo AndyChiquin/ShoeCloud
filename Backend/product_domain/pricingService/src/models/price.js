@@ -1,6 +1,9 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
+// ✅ SRP - Single Responsibility Principle
+// This model defines only the structure and configuration of the "Price" entity
+
 const Price = sequelize.define('Price', {
   id: {
     type: DataTypes.INTEGER,
@@ -31,5 +34,8 @@ const Price = sequelize.define('Price', {
   tableName: 'prices',
   timestamps: false
 });
+
+// ✅ KISS - Keep It Simple, Stupid
+// The model is clean, minimal, and easy to maintain without unnecessary complexity
 
 module.exports = Price;

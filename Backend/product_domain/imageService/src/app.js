@@ -1,5 +1,3 @@
-// src/app.js
-
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
@@ -9,13 +7,15 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
+// ✅ MIDDLEWARE LAYER: Express JSON body parser
+// ✅ SRP: Separation of request parsing from route logic
 app.use(express.json());
 
-// Rutas
+// ✅ ROUTING LAYER (Controller): Routes decoupled in their own module
 app.use('/api/images', imageRoutes);
 
-// Conexión a la BD y arranque del servidor
+// ✅ INFRASTRUCTURE LAYER: Database connection is handled externally
+// ✅ CLEAN ARCHITECTURE: Startup logic separated from business logic
 const PORT = process.env.PORT || 8007;
 
 connectDB().then(() => {
@@ -24,4 +24,3 @@ connectDB().then(() => {
   });
 });
 
-//test for actions 

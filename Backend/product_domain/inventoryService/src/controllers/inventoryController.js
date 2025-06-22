@@ -1,7 +1,10 @@
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../config/db');
 
-// Crear nuevo registro de inventario
+// ✅ SRP (Single Responsibility Principle - SOLID):
+// Each function handles a single responsibility (create, get, update, delete).
+
+// ✅ KISS: Simple logic for handling inventory creation.
 const createInventory = async (req, res) => {
   const { product_id, quantity } = req.body;
   const id = uuidv4();
@@ -30,7 +33,8 @@ module.exports = {
   createInventory
 };
 
-// Obtener todo el inventario
+// ✅ KISS + DRY (Don't Repeat Yourself)
+// Simple structure reused across multiple DB interactions
 const getAllInventory = async (req, res) => {
   try {
     const connection = await pool.getConnection();
@@ -43,7 +47,6 @@ const getAllInventory = async (req, res) => {
   }
 };
 
-// Obtener inventario por ID
 const getInventoryById = async (req, res) => {
   const { id } = req.params;
 
@@ -62,7 +65,6 @@ const getInventoryById = async (req, res) => {
   }
 };
 
-// Actualizar inventario
 const updateInventory = async (req, res) => {
   const { id } = req.params;
   const { quantity } = req.body;
@@ -86,7 +88,7 @@ const deleteInventory = async (req, res) => {
   try {
     connection = await pool.getConnection();
     const sql = 'DELETE FROM inventory WHERE product_id = ?';
-    const [result] = await connection.query(sql, [id]); // ← importante destructuring
+    const [result] = await connection.query(sql, [id]);
     connection.release();
 
     if (result.affectedRows === 0) {

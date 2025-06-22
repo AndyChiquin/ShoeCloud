@@ -1,6 +1,15 @@
 const { client } = require('../config/mongodb');
 require('dotenv').config();
 
+// ✅ SRP - Single Responsibility Principle
+// This controller handles only search-related requests (searching and indexing).
+
+// ✅ DRY - Don't Repeat Yourself
+// Repeated code such as db/collection access is abstracted for reuse.
+
+// ✅ KISS - Keep It Simple, Stupid
+// Logic is clear and direct, avoiding over-complication.
+
 const search = async (req, res) => {
   const searchTerm = req.query.query;
 
@@ -53,5 +62,8 @@ const indexProduct = async (req, res) => {
     });
   }
 };
+
+// ✅ Module Pattern
+// Encapsulating controller logic and exporting as a module.
 
 module.exports = { search, indexProduct };
