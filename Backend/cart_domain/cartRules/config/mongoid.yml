@@ -1,0 +1,7 @@
+development:
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] %>
+  options:
+    use_activesupport_time_zone: true
+    use_utc: false
