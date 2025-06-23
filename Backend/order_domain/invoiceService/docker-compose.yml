@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  invoice-service:
+    build: .
+    container_name: invoice-service
+    ports:
+      - "8009:8009"
+    env_file:
+      - .env
+    depends_on:
+      - invoice-db
+    restart: always
+
+  invoice-db:
+    image: mariadb:10.5
+    container_name: invoice-db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123
+      MYSQL_DATABASE: invoicedb
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+    ports:
+      - "3309:3306"
+    volumes:
+      - invoice_db_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  invoice_db_data:

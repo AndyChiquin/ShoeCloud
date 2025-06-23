@@ -1,0 +1,11 @@
+.env
+
+*.log
+*.tmp
+
+main
+*.out
+
+/vendor/
+/bin/
+/obj/
