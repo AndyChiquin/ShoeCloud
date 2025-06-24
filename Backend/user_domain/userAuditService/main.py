@@ -1,6 +1,7 @@
 from flask import Flask
-from app.routes.audit_routes import audit_bp
 from dotenv import load_dotenv
+from createAudit.routes.create_route import create_bp
+from readAudit.routes.read_route import read_bp
 import os
 
 # DRY: Environment variables are loaded from a centralized .env file
@@ -9,7 +10,8 @@ load_dotenv()
 app = Flask(__name__)
 
 # KISS + POLA: Registering a modular route structure using blueprint
-app.register_blueprint(audit_bp)
+app.register_blueprint(create_bp)
+app.register_blueprint(read_bp)
 
 # POLA: Defaulting to port 8004 if not specified in environment — standard practice
 PORT = int(os.getenv("PORT", 8004))
