@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from readUser.services.user_service import get_user_by_id, get_all_users, get_user_by_email
+from app.services.user_service import get_user_by_id, get_all_users, get_user_by_email
 from app.models.user_model import User
 
 user_read_bp = Blueprint("user_read", __name__, url_prefix="/users")

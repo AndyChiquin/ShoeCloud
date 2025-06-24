@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from updateUser.services.user_service import update_user, update_user_role
+from app.services.user_service import update_user, update_user_role
 import requests
 
 user_update_bp = Blueprint("user_update", __name__, url_prefix="/users")

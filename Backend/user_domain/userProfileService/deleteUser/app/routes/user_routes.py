@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from deleteUser.services.user_service import delete_user
+from app.services.user_service import delete_user
 
 user_delete_bp = Blueprint("user_delete", __name__, url_prefix="/users")
 
