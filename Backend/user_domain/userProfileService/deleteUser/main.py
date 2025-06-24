@@ -1,10 +1,7 @@
 from flask import Flask
 from app.config.settings import settings
 from app.db.connection import db
-from createUser.routes.user_routes import user_create_bp  
-from readUser.routes.user_routes import user_read_bp
-from updateUser.routes.user_routes import user_update_bp
-from deleteUser.routes.user_routes import user_delete_bp
+from app.routes.user_routes import user_delete_bp
 
 
 # KISS: Simple initialization of Flask app with clear and direct configuration loading
@@ -17,9 +14,6 @@ with app.app_context():
     db.create_all()  # KISS: Auto-creation of tables for simplicity in local/dev environments
 
 # POLA: Registering blueprint so all routes are organized and easy to find in 'user_routes'
-app.register_blueprint(user_create_bp)
-app.register_blueprint(user_read_bp)
-app.register_blueprint(user_update_bp)
 app.register_blueprint(user_delete_bp)
 
 
