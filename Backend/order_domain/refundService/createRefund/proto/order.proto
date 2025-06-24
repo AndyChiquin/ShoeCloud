@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package orderpb;
+
+option go_package = "createRefund/app/grpc/orderpb";
+
+// Servicio expuesto por orderService
+service OrderService {
+  rpc CheckOrder (CheckOrderRequest) returns (CheckOrderResponse);
+}
+
+// Solicitud para verificar si una orden existe
+message CheckOrderRequest {
+  int32 order_id = 1;
+}
+
+// Respuesta: true si existe, false si no
+message CheckOrderResponse {
+  bool exists = 1;
+}
