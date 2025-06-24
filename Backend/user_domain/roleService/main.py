@@ -2,7 +2,10 @@ from flask import Flask
 from dotenv import load_dotenv
 from app.config.config import Config
 from app.db.extensions import db
-from app.routes.role_routes import role_bp
+from createRole.routes.create_route import create_bp
+from readRole.routes.read_route import read_bp
+from updateRole.routes.update_route import update_bp
+from deleteRole.routes.delete_route import delete_bp
 
 # DRY: Environment variables loaded once and reused across the app
 load_dotenv()
@@ -17,7 +20,10 @@ app.config['JSON_SORT_KEYS'] = False  # POLA: Keeps JSON output in the same orde
 db.init_app(app)
 
 # KISS: Routes are registered clearly using Blueprints
-app.register_blueprint(role_bp)
+app.register_blueprint(create_bp)
+app.register_blueprint(read_bp)
+app.register_blueprint(update_bp)
+app.register_blueprint(delete_bp)
 
 # KISS: Health check endpoint for observability
 @app.route("/")
