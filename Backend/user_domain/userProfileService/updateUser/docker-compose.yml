@@ -5,7 +5,7 @@ services:
     build: .
     container_name: update-user-service
     ports:
-      - "8000:8000"
+      - "8002:8000"
     env_file:
       - .env
     restart: always
