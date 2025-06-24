@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  auth-service-validate:
+    build: .
+    container_name: auth-service-validate
+    ports:
+      - "8012:8000"  
+    env_file:
+      - .env
+    depends_on:
+      - redis-auth-validate
+    restart: always
+
+  redis-auth-validate:
+    image: redis:alpine
+    container_name: redis-auth-validate
+    ports:
+      - "6382:6379"  
+    restart: always

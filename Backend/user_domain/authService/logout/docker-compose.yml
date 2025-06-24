@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  auth-service-logout:
+    build: .
+    container_name: auth-service-logout
+    ports:
+      - "8011:8000"  
+    env_file:
+      - .env
+    depends_on:
+      - redis-auth-logout
+    restart: always
+
+  redis-auth-logout:
+    image: redis:alpine
+    container_name: redis-auth-logout
+    ports:
+      - "6381:6379"  
+    restart: always
