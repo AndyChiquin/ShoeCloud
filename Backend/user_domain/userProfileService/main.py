@@ -2,6 +2,13 @@ from flask import Flask
 from app.config.settings import settings
 from app.db.connection import db
 from app.routes.user_routes import user_bp
+import os
+from dotenv import load_dotenv
+
+if os.environ.get("FLASK_ENV") == "testing":
+    load_dotenv(".env.test")
+else:
+    load_dotenv()
 
 # KISS: Simple initialization of Flask app with clear and direct configuration loading
 app = Flask(__name__)
