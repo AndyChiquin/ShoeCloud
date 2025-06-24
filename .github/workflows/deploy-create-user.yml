@@ -3,7 +3,7 @@ name: Deploy CreateUser to EC2
 on:
   push:
     branches:
-      - tes2
+      - test2
     paths:
       - 'Backend/user_domain/userProfileService/createUser/**'
 
