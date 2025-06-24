@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  user-profile-service:
+  update-user-service:
     build: .
     container_name: update-user-service
     ports:
