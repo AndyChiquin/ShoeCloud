@@ -1,0 +1,37 @@
+name: Test UserProfileService
+
+on:
+  push:
+    branches:
+      - test
+    paths:
+      - 'Backend/user_domain/userProfileService/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Backend/user_domain/userProfileService/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          cd Backend/user_domain/userProfileService
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: |
+          cd Backend/user_domain/userProfileService
+          pytest tests
