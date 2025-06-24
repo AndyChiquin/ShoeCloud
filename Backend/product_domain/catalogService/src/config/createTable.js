@@ -14,10 +14,10 @@ const dynamodb = new AWS.DynamoDB({
 const params = {
   TableName: process.env.DYNAMO_TABLE_NAME,
   KeySchema: [
-    { AttributeName: 'id', KeyType: 'HASH' }  // clave primaria
+    { AttributeName: 'id', KeyType: 'HASH' }  
   ],
   AttributeDefinitions: [
-    { AttributeName: 'id', AttributeType: 'S' } // tipo STRING
+    { AttributeName: 'id', AttributeType: 'S' } 
   ],
   ProvisionedThroughput: {
     ReadCapacityUnits: 5,
@@ -25,7 +25,6 @@ const params = {
   }
 };
 
-// Crear tabla solo si no existe
 dynamodb.describeTable({ TableName: params.TableName }, function (err, data) {
   if (err && err.code === 'ResourceNotFoundException') {
     dynamodb.createTable(params, (err, data) => {
