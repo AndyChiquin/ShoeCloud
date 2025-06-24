@@ -11,7 +11,7 @@ class UserProfileServiceTestCase(unittest.TestCase):
         self.client.testing = True
 
     def test_health_check(self):
-        """Test de verificación del estado del microservicio"""
+        """Test """
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertIn("status", response.get_json())
