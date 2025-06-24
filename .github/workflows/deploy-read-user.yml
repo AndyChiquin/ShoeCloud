@@ -1,0 +1,27 @@
+name: Deploy ReadUser to EC2
+
+on:
+  push:
+    branches:
+      - test2
+    paths:
+      - 'Backend/user_domain/userProfileService/readUser/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy ReadUser via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userProfileService/readUser
+            git pull origin test2
+            sudo docker-compose down
+            sudo docker-compose up -d --build
