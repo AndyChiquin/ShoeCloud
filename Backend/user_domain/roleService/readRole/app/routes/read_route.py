@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from readRole.services.read_service import get_all_roles, get_role_by_id, role_exists
+from app.services.read_service import get_all_roles, get_role_by_id, role_exists
 
 read_bp = Blueprint('read_role', __name__)
 

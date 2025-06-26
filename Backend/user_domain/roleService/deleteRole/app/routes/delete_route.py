@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from deleteRole.services.delete_service import delete_role
+from app.services.delete_service import delete_role
 
 delete_bp = Blueprint('delete_role', __name__)
 

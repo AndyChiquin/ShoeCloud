@@ -1,15 +1,13 @@
 version: '3.8'
 
 services:
-  role-service:
+  update-role-service:
     build: .
-    container_name: role-service
+    container_name: update-role-service
     ports:
-      - "8002:8002"
+      - "8009:8002"
     env_file:
       - .env
-    depends_on:
-      - postgres
     restart: always
 
   postgres:
