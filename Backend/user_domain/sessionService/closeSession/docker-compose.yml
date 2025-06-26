@@ -1,15 +1,13 @@
 version: '3.8'
 
 services:
-  session-service:
+  close-session-service:
     build: .
-    container_name: session-service
+    container_name: close-session-service
     ports:
-      - "8003:8003"
+      - "8013:8003"
     env_file:
       - .env
-    depends_on:
-      - redis-session
     restart: always
 
   redis-session:

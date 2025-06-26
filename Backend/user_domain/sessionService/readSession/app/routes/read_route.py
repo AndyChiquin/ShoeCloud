@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from app.db.redis_client import redis_client
 from datetime import datetime
-from readSession.services.read_service import get_user_sessions
+from app.services.read_service import get_user_sessions
 
 read_bp = Blueprint("read_bp", __name__, url_prefix="/session")
 
