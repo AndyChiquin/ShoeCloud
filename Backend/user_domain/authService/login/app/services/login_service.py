@@ -6,13 +6,19 @@ from app.utils.jwt_utils import create_token
 
 
 def login_user(email: str, password: str):
-    url = f"{settings.USER_SERVICE_URL}/users/email/{email}"
-    response = requests.get(url)
+    from app.config.db import SessionLocal
+    from app.models.user_model import User
 
-    if response.status_code != 200:
+    db = SessionLocal()
+    user = db.query(User).filter(User.email == email).first()
+
+    if not user:
         return {"success": False, "error": "User not found"}
 
-    user_data = response.json()
+    user_data = {
+        "id": user.id,
+        "password": user.password
+    }
 
     if not check_password_hash(user_data["password"], password):
         return {"success": False, "error": "Invalid password"}
