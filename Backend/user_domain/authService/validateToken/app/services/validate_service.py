@@ -1,8 +1,7 @@
 from app.services.redis_client import redis_client
 from app.utils.jwt_utils import verify_token
 
-# KISS: Validates token and checks consistency with Redis
-# SRP: Only validates token, doesn't handle other user logic
+
 def validate_token(token: str):
     result = verify_token(token)
     print("🔍 TOKEN RECEIVED:", token)

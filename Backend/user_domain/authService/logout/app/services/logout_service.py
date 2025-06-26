@@ -2,7 +2,6 @@ import requests
 from app.services.redis_client import redis_client
 from app.utils.jwt_utils import verify_token
 
-# SRP: Responsible only for logging out and invalidating session/token
 def logout_user(token: str):
     result = verify_token(token)
     if not result["valid"]:

@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  auth-service-logout:
+  auth-logout-service:
     build: .
-    container_name: auth-service-logout
+    container_name: auth-logout-service
     ports:
-      - "8011:8000"  
+      - "8005:8001"  
     env_file:
       - .env
     depends_on:

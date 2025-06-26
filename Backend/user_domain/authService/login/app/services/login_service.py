@@ -4,8 +4,7 @@ from app.config.settings import settings
 from app.services.redis_client import redis_client
 from app.utils.jwt_utils import create_token
 
-# KISS: Handles the login process in a clear, step-by-step flow
-# SOLID - SRP: Only responsible for authenticating the user and managing token/session/audit
+
 def login_user(email: str, password: str):
     url = f"{settings.USER_SERVICE_URL}/users/email/{email}"
     response = requests.get(url)
