@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  role-service:
+  delete-role-service:
     build: .
-    container_name: role-service
+    container_name: delete-role-service
     ports:
       - "8010:8002"
     env_file:
