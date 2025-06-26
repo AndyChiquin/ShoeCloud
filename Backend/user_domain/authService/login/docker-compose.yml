@@ -14,7 +14,7 @@ services:
 
   redis-auth:
     image: redis:alpine
-    container_name: redis-auth
+    container_name: ${REDIS_CONTAINER_NAME}
     ports:
-      - "6380:6379"  
+      - "${REDIS_PORT}:6379"
     restart: always
