@@ -1,11 +1,22 @@
 import requests
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash as werkzeug_verify
+from passlib.context import CryptContext
+from passlib.exc import UnknownHashError
+
 from app.config.settings import settings
 from app.services.redis_client import redis_client
 from app.utils.jwt_utils import create_token
-from passlib.context import CryptContext
 
 pwd_context = CryptContext(schemes=["scrypt"], deprecated="auto")
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """
+    Verifica el hash del password ya sea con passlib o werkzeug.
+    """
+    try:
+        return pwd_context.verify(plain_password, hashed_password)
+    except UnknownHashError:
+        return werkzeug_verify(hashed_password, plain_password)
 
 
 def login_user(email: str, password: str):
@@ -16,7 +27,7 @@ def login_user(email: str, password: str):
     if response.status_code == 200:
         user_data = response.json()
 
-        if not pwd_context.verify(password, user_data["password"]):
+        if not verify_password(password, user_data["password"]):
             return {"success": False, "error": "Invalid password"}
 
         token = create_token({"sub": user_data["id"]})
