@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from createRole.services.create_service import create_role
+from app.services.create_service import create_role
 
 create_bp = Blueprint('create_role', __name__)
 
