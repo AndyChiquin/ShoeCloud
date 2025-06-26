@@ -4,7 +4,7 @@ from app.db.redis_client import redis_client
 from app.models.session_model import Session
 
 create_session_bp = Blueprint("create_session_bp", __name__, url_prefix="/session")
-USER_SERVICE_URL = "http://44.218.255.193:8000/users"
+USER_SERVICE_URL = "http://52.200.35.19:8001/users"
 
 @create_session_bp.route("/", methods=["POST"])
 def create_session():

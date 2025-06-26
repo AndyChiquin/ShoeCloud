@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  create-session-service:
+    build: .
+    container_name: create-session-service
+    ports:
+      - "8011:8003"
+    env_file:
+      - .env
+    restart: always
+
+  redis-session:
+    image: redis:alpine
+    container_name: redis-session
+    ports:
+      - "6378:6379"
+    restart: always
