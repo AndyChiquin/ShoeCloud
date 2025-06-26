@@ -1,27 +1,50 @@
-name: Deploy UpdateUser to EC2
+name: Deploy updateUser to EC2
 
 on:
   push:
     branches:
       - test2
+      - main
     paths:
       - 'Backend/user_domain/userProfileService/updateUser/**'
 
 jobs:
-  deploy:
+  deploy-qa:
+    if: github.ref == 'refs/heads/test2'
     runs-on: ubuntu-latest
+    name: Deploy to QA (test2)
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy UpdateUser via SSH
+      - name: Deploy to QA via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_USER_IP }}
+          host: ${{ secrets.EC2_USER_DOMAIN_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_USER_PEM_KEY }}
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
             cd ShoeCloud/Backend/user_domain/userProfileService/updateUser
             git pull origin test2
+            sudo docker-compose down
+            sudo docker-compose up -d --build
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy to Production (main)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN_PROD_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PROD_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userProfileService/updateUser
+            git pull origin main
             sudo docker-compose down
             sudo docker-compose up -d --build
