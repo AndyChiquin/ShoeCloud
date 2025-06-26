@@ -8,13 +8,11 @@ services:
       - "8006:8001"  
     env_file:
       - .env
-    depends_on:
-      - redis-auth-validate
     restart: always
 
-  redis-auth-validate:
+  redis-auth:
     image: redis:alpine
-    container_name: redis-auth-validate
+    container_name: ${REDIS_CONTAINER_NAME}
     ports:
-      - "6382:6379"  
+      - "${REDIS_PORT}:6379"
     restart: always

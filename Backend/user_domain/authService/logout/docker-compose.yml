@@ -8,13 +8,11 @@ services:
       - "8005:8001"  
     env_file:
       - .env
-    depends_on:
-      - redis-auth-logout
     restart: always
 
-  redis-auth-logout:
+  redis-auth:
     image: redis:alpine
-    container_name: redis-auth-logout
+    container_name: ${REDIS_CONTAINER_NAME}
     ports:
-      - "6381:6379"  
+      - "${REDIS_PORT}:6379"
     restart: always
