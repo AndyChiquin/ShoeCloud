@@ -2,14 +2,15 @@ from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from app.config.settings import settings
 
+
 def create_token(data: dict):
     to_encode = data.copy()
     to_encode["sub"] = str(to_encode.get("sub"))  
-
     expire = datetime.utcnow() + timedelta(minutes=settings.JWT_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     token = jwt.encode(to_encode, settings.JWT_SECRET, algorithm=settings.JWT_ALGORITHM)
     return token
+
 
 def verify_token(token: str):
     try:
