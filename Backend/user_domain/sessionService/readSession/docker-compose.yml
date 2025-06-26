@@ -5,7 +5,7 @@ services:
     build: .
     container_name: read-session-service
     ports:
-      - "80012:8003"
+      - "8012:8003"
     env_file:
       - .env
     restart: always
