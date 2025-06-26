@@ -10,7 +10,9 @@ class Settings:
     JWT_EXPIRE_MINUTES = int(os.getenv("JWT_EXPIRE_MINUTES", 30))
 
     # Redis
-    REDIS_URL = os.getenv("REDIS_URL")
+    REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
+    REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+    REDIS_DB = int(os.getenv("REDIS_DB", 0))
 
     # Servicio de perfil
     USER_SERVICE_URL = os.getenv("USER_SERVICE_URL")
