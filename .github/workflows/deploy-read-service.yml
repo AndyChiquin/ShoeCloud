@@ -1,0 +1,50 @@
+name: Deploy readSessionService to EC2
+
+on:
+  push:
+    branches:
+      - test2
+      - main
+    paths:
+      - 'Backend/user_domain/sessionService/readSession/**'
+
+jobs:
+  deploy-qa:
+    if: github.ref == 'refs/heads/test2'
+    runs-on: ubuntu-latest
+    name: Deploy readSessionService - QA (test2)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to QA via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN2_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/sessionService/readSession
+            git pull origin test2
+            sudo docker-compose down
+            sudo docker-compose up -d --build -d read-session-service
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy readSessionService - Production (main)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN2_PROD_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/sessionService/readSession
+            git pull origin main
+            sudo docker-compose down
+            sudo docker-compose up -d --build -d read-session-service
