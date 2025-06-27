@@ -35,7 +35,7 @@ def login_user(email: str, password: str):
 
         try:
             session_response = requests.post(
-                "http://http://3.209.221.173:8011/session/",
+                "http://3.209.221.173:8011/session/",
                 json={"user_id": user_data["id"]}
             )
             if session_response.status_code != 201:
