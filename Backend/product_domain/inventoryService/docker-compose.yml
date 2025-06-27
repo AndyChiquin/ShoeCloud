@@ -8,8 +8,6 @@ services:
       - "8005:8005"
     env_file:
       - .env
-    depends_on:
-      - mariadb-inventory
     restart: always
 
   mariadb-inventory:
