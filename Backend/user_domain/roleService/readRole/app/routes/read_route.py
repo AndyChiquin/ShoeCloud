@@ -17,5 +17,8 @@ def get(role_id):
 
 @read_bp.route('/roles/exists/<string:role_name>', methods=['GET'])
 def exists(role_name):
-    exists = role_exists(role_name)
-    return jsonify({"exists": exists}), 200 if exists else (jsonify({"exists": False}), 404)
+    try:
+        exists = role_exists(role_name)
+        return jsonify({"exists": exists}), 200
+    except Exception as e:
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500

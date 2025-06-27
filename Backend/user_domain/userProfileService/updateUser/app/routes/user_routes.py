@@ -21,22 +21,24 @@ def update_role_route(user_id):
         return jsonify({"error": "Role is required"}), 400
 
     try:
+        # Hacer la petición al microservicio de roles
         response = requests.get(f"http://3.209.221.173:8008/roles/exists/{new_role}")
         
-        # ⚠️ Si la respuesta no es 200, asumimos que no existe
+        # Manejar errores HTTP como 404 o 500
         if response.status_code != 200:
-            return jsonify({"error": "Invalid role"}), 400
-        
-        role_data = response.json()
-        if not role_data.get("exists", False):
+            return jsonify({"error": "Role does not exist"}), 400
+
+        data = response.json()
+        if not data.get("exists"):
             return jsonify({"error": "Role does not exist"}), 400
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": "Role service not reachable", "details": str(e)}), 503
 
-    # ✅ Si pasa todas las validaciones, actualiza el rol
+    # Si todo bien, actualiza el rol del usuario
     user = update_user_role(user_id, new_role)
     if not user:
         return jsonify({"error": "User not found"}), 404
 
     return jsonify({"message": f"User role updated to '{new_role}'"}), 200
+
