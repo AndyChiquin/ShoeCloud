@@ -1,15 +1,13 @@
 version: '3.8'
 
 services:
-  category-service:
+  update-category-service:
     build: .
-    container_name: category-service
+    container_name: update-category-service
     ports:
-      - "3001:3001"
+      - "3010:3002"
     env_file:
       - .env
-    depends_on:
-      - dynamodb-category
     networks:
       - shared-network
     restart: always
