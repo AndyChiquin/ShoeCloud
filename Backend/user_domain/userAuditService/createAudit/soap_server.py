@@ -34,3 +34,5 @@ if __name__ == '__main__':
     server = make_server('0.0.0.0', 8004, wsgi_app)
     print("SOAP server running on http://0.0.0.0:8004")
     server.serve_forever()
+
+#test
