@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  create-category-service:
+    build: .
+    container_name: create-category-service
+    ports:
+      - "3008:3002"
+    env_file:
+      - .env
+    networks:
+      - shared-network
+    restart: always
+
+  dynamodb-category:
+    image: amazon/dynamodb-local
+    container_name: dynamodb-category
+    ports:
+      - "8002:8000"
+    volumes:
+      - dynamodb_data:/home/dynamodblocal
+    networks:
+      - shared-network
+    restart: always
+
+volumes:
+  dynamodb_data:
+
+networks:
+  shared-network:   # 🔁 Red interna que se crea sola
