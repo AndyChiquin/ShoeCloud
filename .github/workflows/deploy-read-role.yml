@@ -20,7 +20,7 @@ jobs:
       - name: Deploy to QA via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_USER_DOMAIN_IP }}
+          host: ${{ secrets.EC2_USER_DOMAIN2_IP }}
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
@@ -42,7 +42,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_USER_DOMAIN_PROD_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          key: ${{ secrets.EC2_USER_DOMAIN2_PEM_KEY }}
           script: |
             cd ShoeCloud/Backend/user_domain/roleService/readRole
             git pull origin main
