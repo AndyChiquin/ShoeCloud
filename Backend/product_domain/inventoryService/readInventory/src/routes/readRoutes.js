@@ -4,7 +4,7 @@ const router = express.Router();
 const {
   getAllInventory,
   getInventoryById
-} = require('../controllers/inventoryController');
+} = require('../controllers/readController');
 
 router.get('/', getAllInventory);      
 
