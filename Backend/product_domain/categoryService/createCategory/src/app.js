@@ -9,7 +9,7 @@ const client = require('./config/dynamoClient');
 app.use(express.json());
 app.use('/api/category', categoryRoutes);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 // Espera a que DynamoDB esté listo
 const waitForDynamo = async (retries = 5) => {
