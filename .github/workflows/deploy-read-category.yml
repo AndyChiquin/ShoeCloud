@@ -20,7 +20,7 @@ jobs:
       - name: Deploy to QA via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_PRODUCT_DOMAIN_IP }}
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN2_IP }}
           username: ubuntu
           key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
           script: |
