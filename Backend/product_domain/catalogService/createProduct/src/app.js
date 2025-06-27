@@ -7,10 +7,8 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Crear tabla si no existe (opcional, solo en este microservicio)
 require('./config/createTable');
 
-// Usar solo las rutas de creación de productos
 const createRoutes = require('./routes/createRoutes');
 app.use('/api/products', createRoutes);
 
@@ -22,5 +20,3 @@ app.listen(PORT, () => {
   console.log(`🟢 createProduct microservice running on port ${PORT}`);
 });
 
-
-//test

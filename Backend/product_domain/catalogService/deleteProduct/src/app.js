@@ -17,3 +17,6 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🟢 deleteProduct microservice running on port ${PORT}`);
 });
+
+
+// test
