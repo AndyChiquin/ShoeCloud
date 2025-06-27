@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  create-inventory-service:
+    build: .
+    container_name: create-inventory-service
+    ports:
+      - "3004:3001"
+    env_file:
+      - .env
+    restart: always
+
+  mariadb-inventory:
+    image: mariadb:10.7
+    container_name: mariadb-inventory
+    ports:
+      - "3308:3306"
+    env_file:
+      - .env
+    volumes:
+      - inventory_db_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  inventory_db_data:
