@@ -3,24 +3,20 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8005;
+const PORT = process.env.PORT || 3001; 
 
-app.use(express.json()); 
-
+app.use(express.json());
 
 const createInventoryTable = require('./models/Inventory');
-createInventoryTable(); 
+createInventoryTable();
 
-
-const inventoryRoutes = require('./routes/inventoryRoutes');
-app.use('/api/inventory', inventoryRoutes); 
-
+const readRoutes = require('./routes/readRoutes');
+app.use('/api/inventory', readRoutes);
 
 app.get('/', (req, res) => {
-  res.send('InventoryService is running 🚀');
+  res.send('✅ readInventory microservice is running 🚀');
 });
 
-
 app.listen(PORT, () => {
-  console.log(`InventoryService running on port ${PORT}`); // ✅ KISS
+  console.log(`🟢 readInventory microservice running on port ${PORT}`);
 });

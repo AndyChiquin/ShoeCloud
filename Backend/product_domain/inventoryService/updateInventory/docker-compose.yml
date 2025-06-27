@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  inventory-service:
+  update-inventory-service:
     build: .
-    container_name: inventory-service
+    container_name: update-inventory-service
     ports:
-      - "8005:8005"
+      - "3006:3001"
     env_file:
       - .env
     restart: always
