@@ -7,9 +7,6 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 
-const createInventoryTable = require('./models/Inventory');
-createInventoryTable();
-
 const updateRoutes = require('./routes/updateRoutes');
 app.use('/api/inventory', updateRoutes);
 
