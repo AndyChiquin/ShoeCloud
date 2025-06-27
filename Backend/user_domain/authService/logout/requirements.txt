@@ -4,3 +4,4 @@ redis
 python-dotenv
 python-jose[cryptography]
 werkzeug
+zeep
