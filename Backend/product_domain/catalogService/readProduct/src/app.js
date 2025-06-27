@@ -7,16 +7,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json()); 
 
-require('./config/createTable');
-
-const productRoutes = require('./routes/productRoutes');
-
-app.use('/api/products', productRoutes);
+const readRoutes = require('./routes/readRoutes');
+app.use('/api/products', readRoutes);
 
 app.get('/', (req, res) => {
-  res.send('CatalogService is running 🚀');
+  res.send('✅ readProduct microservice is running 🚀');
 });
 
 app.listen(PORT, () => {
-  console.log(`CatalogService running on port ${PORT}`);
+  console.log(`🟢 readProduct microservice running on port ${PORT}`);
 });
