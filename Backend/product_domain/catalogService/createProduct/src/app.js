@@ -1,22 +1,23 @@
 const express = require('express');
 const dotenv = require('dotenv');
-dotenv.config(); 
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json()); 
+app.use(express.json());
 
-require('./config/createTable');
+// Crear tabla si no existe (opcional, solo en este microservicio)
+require('./src/config/createTable');
 
-const productRoutes = require('./routes/productRoutes');
-
-app.use('/api/products', productRoutes);
+// Usar solo las rutas de creación de productos
+const createRoutes = require('./src/routes/createRoutes');
+app.use('/api/products', createRoutes);
 
 app.get('/', (req, res) => {
-  res.send('CatalogService is running 🚀');
+  res.send('✅ createProduct microservice is running 🚀');
 });
 
 app.listen(PORT, () => {
-  console.log(`CatalogService running on port ${PORT}`);
+  console.log(`🟢 createProduct microservice running on port ${PORT}`);
 });
