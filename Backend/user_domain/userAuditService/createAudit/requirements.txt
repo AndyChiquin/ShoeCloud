@@ -3,3 +3,5 @@ pymongo==4.6.0
 dnspython==2.3.0
 python-dotenv==1.0.0
 requests==2.31.0
+spyne==2.13.16
+lxml
