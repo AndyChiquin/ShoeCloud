@@ -8,11 +8,11 @@ const createProduct = async (req, res) => {
   const { name, description, category_id, price, brand, quantity } = req.body;
   const id = uuidv4();
 
-  // Validar existencia de la categoría
-  const categoryExists = await checkCategoryExists(category_id);
-  if (!categoryExists) {
-    return res.status(400).json({ error: 'La categoría no existe en category-service' });
-  }
+  // // Validar existencia de la categoría
+  // const categoryExists = await checkCategoryExists(category_id);
+  // if (!categoryExists) {
+  //   return res.status(400).json({ error: 'La categoría no existe en category-service' });
+  // }
 
   const item = {
     id,
