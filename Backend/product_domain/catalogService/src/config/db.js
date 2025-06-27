@@ -1,7 +1,6 @@
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
-// 🔒 Forzar las credenciales falsas antes de instanciar el cliente
 AWS.config.update({
   accessKeyId: 'fakeMyKeyId',
   secretAccessKey: 'fakeSecretAccessKey',

@@ -1,4 +1,3 @@
-// SOLID - SRP: This class is responsible only for modeling the product data structure
 class Product {
   constructor({ id, name, description, category_id, price, brand }) {
     this.id = id;

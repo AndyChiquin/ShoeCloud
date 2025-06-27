@@ -30,4 +30,4 @@ volumes:
   dynamodb_data:
 
 networks:
-  shared-network:   # 🔁 Mismo nombre de red
+  shared-network:   
