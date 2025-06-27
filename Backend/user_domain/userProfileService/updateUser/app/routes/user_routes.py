@@ -21,7 +21,7 @@ def update_role_route(user_id):
         return jsonify({"error": "Role is required"}), 400
 
     try:
-        response = requests.get(f"http://52.200.35.19:8008/roles/exists/{new_role}")
+        response = requests.get(f"http://3.209.221.173:8008/roles/exists/{new_role}")
         if response.status_code != 200:
             return jsonify({"error": "Invalid role"}), 400
     except:
