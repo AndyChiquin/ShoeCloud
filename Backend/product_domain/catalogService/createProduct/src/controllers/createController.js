@@ -32,45 +32,45 @@ const createProduct = async (req, res) => {
     // Crear producto en DynamoDB
     await dynamoClient.put(params).promise();
 
-    // Llamar a pricingService
-    if (price) {
-      try {
-        await axios.post('http://100.24.79.116:8008/api/price', {
-          product_id: id,
-          price: price,
-          discount_type: "ninguno",
-          percentage: 0,
-          valid_until: null
-        });
-      } catch (pricingError) {
-        console.error('❌ Error al conectar con pricingService:', pricingError.message);
-      }
-    }
+    // // Llamar a pricingService
+    // if (price) {
+    //   try {
+    //     await axios.post('http://100.24.79.116:8008/api/price', {
+    //       product_id: id,
+    //       price: price,
+    //       discount_type: "ninguno",
+    //       percentage: 0,
+    //       valid_until: null
+    //     });
+    //   } catch (pricingError) {
+    //     console.error('❌ Error al conectar con pricingService:', pricingError.message);
+    //   }
+    // }
 
-    // Llamar a inventoryService
-    if (quantity && quantity > 0) {
-      try {
-        await axios.post('http://54.166.240.10:8005/api/inventory', {
-          product_id: id,
-          quantity
-        });
-      } catch (invError) {
-        console.error('❌ Error al conectar con inventoryService:', invError.message);
-      }
-    }
+    // // Llamar a inventoryService
+    // if (quantity && quantity > 0) {
+    //   try {
+    //     await axios.post('http://54.166.240.10:8005/api/inventory', {
+    //       product_id: id,
+    //       quantity
+    //     });
+    //   } catch (invError) {
+    //     console.error('❌ Error al conectar con inventoryService:', invError.message);
+    //   }
+    // }
 
-    // Llamar a searchService
-    try {
-      await axios.post('http://100.24.79.116:8006/api/search/index', {
-        id,
-        name,
-        description,
-        category: category_id,
-        price
-      });
-    } catch (searchError) {
-      console.error('❌ Error al conectar con searchService:', searchError.message);
-    }
+    // // Llamar a searchService
+    // try {
+    //   await axios.post('http://100.24.79.116:8006/api/search/index', {
+    //     id,
+    //     name,
+    //     description,
+    //     category: category_id,
+    //     price
+    //   });
+    // } catch (searchError) {
+    //   console.error('❌ Error al conectar con searchService:', searchError.message);
+    // }
 
     res.status(201).json({ message: 'Producto creado', product: item });
   } catch (error) {
