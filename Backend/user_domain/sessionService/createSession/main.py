@@ -1,8 +1,6 @@
 from flask import Flask
 from app.routes.create_route import create_session_bp
 
-
-# KISS: Simple Flask app initialization
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False  
 
