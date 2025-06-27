@@ -22,11 +22,17 @@ def update_role_route(user_id):
 
     try:
         response = requests.get(f"http://3.209.221.173:8008/roles/exists/{new_role}")
-        if response.status_code != 200:
-            return jsonify({"error": "Invalid role"}), 400
-    except:
-        return jsonify({"error": "Role service not reachable"}), 503
+        if response.status_code == 200:
+            role_data = response.json()
+            if not role_data.get("exists", False):
+                return jsonify({"error": "Invalid role"}), 400
+        else:
+            return jsonify({"error": "Role not found"}), 400
 
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": "Role service not reachable", "details": str(e)}), 503
+    
+    # Si pasó todas las validaciones, actualiza el rol
     user = update_user_role(user_id, new_role)
     if not user:
         return jsonify({"error": "User not found"}), 404
