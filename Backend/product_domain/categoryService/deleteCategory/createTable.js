@@ -30,3 +30,6 @@ const command = new CreateTableCommand({
     console.error("❌ Error:", err.message);
   }
 })();
+
+
+//test

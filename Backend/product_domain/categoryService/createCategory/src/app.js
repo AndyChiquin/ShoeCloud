@@ -59,3 +59,5 @@ createTableIfNotExists().then(() => {
     console.log(`✅ createCategory microservice running on port ${PORT}`);
   });
 });
+
+//test
