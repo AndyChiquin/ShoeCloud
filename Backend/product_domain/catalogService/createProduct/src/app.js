@@ -11,7 +11,7 @@ app.use(express.json());
 require('./config/createTable');
 
 // Usar solo las rutas de creación de productos
-const createRoutes = require('./src/routes/createRoutes');
+const createRoutes = require('./routes/createRoutes');
 app.use('/api/products', createRoutes);
 
 app.get('/', (req, res) => {
