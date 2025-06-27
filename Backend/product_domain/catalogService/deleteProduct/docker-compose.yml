@@ -1,15 +1,13 @@
 version: '3.8'
 
 services:
-  catalog-service:
+  delete-product-service:
     build: .
-    container_name: catalog-service
+    container_name: delete-product-service
     ports:
-      - "3000:3000"
+      - "3003:3000"
     env_file:
       - .env
-    depends_on:
-      - dynamodb-local
     networks:
       - shared-network
     restart: always

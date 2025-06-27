@@ -1,15 +1,13 @@
 version: '3.8'
 
 services:
-  catalog-service:
+  update-product-service:
     build: .
-    container_name: catalog-service
+    container_name: update-product-service
     ports:
-      - "3000:3000"
+      - "3002:3000"
     env_file:
       - .env
-    depends_on:
-      - dynamodb-local
     networks:
       - shared-network
     restart: always
