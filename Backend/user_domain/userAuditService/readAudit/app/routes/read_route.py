@@ -7,3 +7,11 @@ read_bp = Blueprint("read_bp", __name__, url_prefix="/audit")
 def read_logs(user_id):
     logs = get_user_logs(user_id)
     return jsonify(logs), 200
+
+@read_bp.route("/logs", methods=["GET"])
+def read_all_logs():
+    from app.db.mongo import db
+    logs = list(db.user_audit.find())
+    for log in logs:
+        log["_id"] = str(log["_id"])
+    return jsonify(logs), 200
