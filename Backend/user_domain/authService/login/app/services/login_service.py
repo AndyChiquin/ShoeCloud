@@ -42,12 +42,13 @@ def login_user(email: str, password: str):
                 return {"success": False, "error": "Session creation failed"}
         except Exception as e:
             return {"success": False, "error": f"Session error: {str(e)}"}
-
+        
+        #SOAP
         log_user_action_soap(
             user_id=user_data["id"],
             action="login_success",
             metadata={"email": email}
-     )
+        )
 
         return {"success": True, "token": token, "user_id": user_data["id"]}
 
@@ -75,24 +76,16 @@ def login_user(email: str, password: str):
             json={"user_id": user_data["id"]}
         )
         if session_response.status_code != 201:
-            return {"success": False, "error": "Session creation failed"}
+         return {"success": False, "error": "Session creation failed"}
     except Exception as e:
-        return {"success": False, "error": f"Session error: {str(e)}"}
+       return {"success": False, "error": f"Session error: {str(e)}"}
 
-    try:
-        audit_response = requests.post(
-            "http://3.209.221.173:8014/log",
-            json={
-                "user_id": user_data["id"],
-                "action": "login_success",
-                "metadata": {
-                    "email": email
-                }
-            }
-        )
-        if audit_response.status_code != 201:
-            print("Audit log not created:", audit_response.text)
-    except Exception as e:
-        print("AuditService exception:", str(e))
+    # SOAP
+    log_user_action_soap(
+        user_id=user_data["id"],
+        action="login_success",
+        metadata={"email": email}
+    )
 
     return {"success": True, "token": token, "user_id": user_data["id"]}
+
