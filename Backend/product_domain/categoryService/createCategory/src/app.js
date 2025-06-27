@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 
-const categoryRoutes = require('./routes/categoryRoutes');
+const categoryRoutes = require('./routes/createRoutes');
 const { CreateTableCommand, ListTablesCommand } = require('@aws-sdk/client-dynamodb');
 const client = require('./config/dynamoClient');
 
