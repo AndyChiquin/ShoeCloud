@@ -31,5 +31,3 @@ const command = new CreateTableCommand({
   }
 })();
 
-
-//test

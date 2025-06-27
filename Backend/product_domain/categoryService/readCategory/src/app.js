@@ -31,5 +31,3 @@ waitForDynamo().then(() => {
     console.log(`✅ readCategory microservice running on port ${PORT}`);
   });
 });
-
-//test
