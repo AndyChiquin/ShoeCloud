@@ -7,5 +7,4 @@ load_dotenv()
 mongo_uri = os.getenv("MONGO_URI")
 client = MongoClient(mongo_uri)
 
-# Conectamos a la base de datos 'user_audit_db'
 db = client.get_database()

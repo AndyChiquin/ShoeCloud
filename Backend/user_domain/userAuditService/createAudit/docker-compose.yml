@@ -1,15 +1,13 @@
 version: '3.8'
 
 services:
-  user-audit-service:
+  create-audit-service:
     build: .
-    container_name: user-audit-service
+    container_name: create-audit-service
     ports:
-      - "8004:8004"
+      - "8014:8004"
     env_file:
       - .env
-    depends_on:
-      - mongo-audit
     restart: always
 
   mongo-audit:

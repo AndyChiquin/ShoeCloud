@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  read-audit-service:
+    build: .
+    container_name: read-audit-service
+    ports:
+      - "8015:8004"
+    env_file:
+      - .env
+    restart: always
+
+  mongo-audit:
+    image: mongo:5.0
+    container_name: mongo-audit
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_audit_data:/data/db
+    restart: always
+
+volumes:
+  mongo_audit_data:
