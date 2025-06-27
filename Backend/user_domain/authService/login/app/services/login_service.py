@@ -2,6 +2,8 @@ import requests
 from werkzeug.security import check_password_hash as werkzeug_verify
 from passlib.context import CryptContext
 from passlib.exc import UnknownHashError
+from app.services.audit_soap_client import log_user_action_soap
+
 
 from app.config.settings import settings
 from app.services.redis_client import redis_client
@@ -10,9 +12,7 @@ from app.utils.jwt_utils import create_token
 pwd_context = CryptContext(schemes=["scrypt"], deprecated="auto")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """
-    Verifica el hash del password ya sea con passlib o werkzeug.
-    """
+
     try:
         return pwd_context.verify(plain_password, hashed_password)
     except UnknownHashError:
@@ -43,21 +43,11 @@ def login_user(email: str, password: str):
         except Exception as e:
             return {"success": False, "error": f"Session error: {str(e)}"}
 
-        try:
-            audit_response = requests.post(
-                "http://3.209.221.173:8014/log",
-                json={
-                    "user_id": user_data["id"],
-                    "action": "login_success",
-                    "metadata": {
-                        "email": email
-                    }
-                }
-            )
-            if audit_response.status_code != 201:
-                print("Audit log not created:", audit_response.text)
-        except Exception as e:
-            print("AuditService exception:", str(e))
+        log_user_action_soap(
+            user_id=user_data["id"],
+            action="login_success",
+            metadata={"email": email}
+     )
 
         return {"success": True, "token": token, "user_id": user_data["id"]}
 

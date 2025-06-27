@@ -7,4 +7,6 @@ werkzeug
 passlib
 sqlalchemy
 psycopg2-binary
+zeep
+
 
