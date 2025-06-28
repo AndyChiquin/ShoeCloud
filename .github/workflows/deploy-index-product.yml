@@ -1,0 +1,50 @@
+name: Deploy indexProductService to EC2
+
+on:
+  push:
+    branches:
+      - test2
+      - main
+    paths:
+      - 'Backend/product_domain/searchService/indexProduct/**'
+
+jobs:
+  deploy-qa:
+    if: github.ref == 'refs/heads/test2'
+    runs-on: ubuntu-latest
+    name: Deploy indexProductService - QA (test2)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to QA via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN3_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/product_domain/searchService/indexProduct
+            git pull origin test2
+            sudo docker-compose down
+            sudo docker-compose up --build -d index-service
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy indexProductService - Production (main)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN_PROD3_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/product_domain/searchService/indexProduct
+            git pull origin main
+            sudo docker-compose down
+            sudo docker-compose up --build -d index-service
