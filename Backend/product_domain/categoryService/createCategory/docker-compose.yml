@@ -17,8 +17,9 @@ services:
     container_name: dynamodb-category
     ports:
       - "8002:8000"
+    command: -jar DynamoDBLocal.jar -sharedDb
     volumes:
-      - dynamodb_data:/home/dynamodblocal
+      - dynamodb_data:/home/dynamodblocal/data
     networks:
       - shared-network
     restart: always
