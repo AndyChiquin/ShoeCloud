@@ -1,5 +1,5 @@
 const Image = require('../models/Image');
-const { checkProductExists } = require('../services/productService');
+// const { checkProductExists } = require('../services/readService');
 
 const getAllImages = async (req, res) => {
   try {
@@ -13,10 +13,10 @@ const getAllImages = async (req, res) => {
 const getImagesByProductId = async (req, res) => {
   const { product_id } = req.params;
 
-  const exists = await checkProductExists(product_id);
-  if (!exists) {
-    return res.status(404).json({ error: 'Product not found in catalogService' });
-  }
+  // const exists = await checkProductExists(product_id);
+  // if (!exists) {
+  //   return res.status(404).json({ error: 'Product not found in catalogService' });
+  // }
 
   try {
     const images = await Image.find({ product_id });
