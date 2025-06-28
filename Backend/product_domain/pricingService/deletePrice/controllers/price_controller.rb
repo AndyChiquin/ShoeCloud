@@ -1,12 +1,12 @@
 require './models/price'
 
 class PriceController
-  def self.update_price(id, data)
+  def self.delete_price(id)
     price = Price.find_by(id: id)
 
     if price
-      price.update(data)
-      { success: true, updated: price }
+      price.destroy
+      { success: true, message: "Price deleted" }
     else
       { success: false, error: "Price not found" }
     end
