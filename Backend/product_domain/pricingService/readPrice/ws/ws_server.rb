@@ -25,7 +25,7 @@ class WebSocketServer
         ws = nil
       end
 
-      return ws.rack_response
+      ws.rack_response
     else
       [200, { 'Content-Type' => 'text/plain' }, ['WebSocket activo']]
     end

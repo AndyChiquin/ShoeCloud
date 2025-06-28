@@ -1,14 +1,16 @@
+require 'sinatra'
+require 'faye/websocket'
 require 'eventmachine'
-require 'rack'
 require_relative './config/database'
+require_relative './routes/pricing_routes'
 require_relative './ws/ws_server'
 
-EM.run do
-  puts "[WebSocket] Servidor WebSocket escuchando en ws://0.0.0.0:4567/ws/price"
+set :bind, '0.0.0.0'
 
-  app = Proc.new do |env|
-    WebSocketServer.handle(env)
+# WebSocket + Sinatra combo
+Thread.new do
+  EM.run do
+    app = Proc.new { |env| WebSocketServer.handle(env) }
+    Rack::Handler::Thin.run(app, Port: 4567)
   end
-
-  Rack::Handler::Thin.run(app, Port: 4567)
 end
