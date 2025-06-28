@@ -5,7 +5,7 @@ services:
     build: .
     container_name: pricing-service
     ports:
-      - "8008:8008"
+      - "3018:8007"
     env_file:
       - .env
     restart: always
