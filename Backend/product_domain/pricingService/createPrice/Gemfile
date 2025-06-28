@@ -4,3 +4,6 @@ gem 'sinatra'
 gem 'sinatra-activerecord'
 gem 'pg'
 gem 'dotenv'
+gem 'rackup'
+gem 'puma'
+
