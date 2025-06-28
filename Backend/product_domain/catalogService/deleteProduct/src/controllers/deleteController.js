@@ -1,5 +1,5 @@
 const { dynamoClient, TABLE_NAME } = require('../config/db');
-// const axios = require('axios'); // ❌ Desactivado porque aún no usamos inventoryService
+const axios = require('axios'); // ❌ Desactivado porque aún no usamos inventoryService
 
 // Eliminar producto
 const deleteProduct = async (req, res) => {
@@ -22,14 +22,14 @@ const deleteProduct = async (req, res) => {
     // Paso 2: Eliminar el producto de la tabla
     await dynamoClient.delete(getParams).promise();
 
-    /*
+    
     // Paso 3: Llamar al microservicio de inventario para eliminar el stock
     try {
-      await axios.delete(`http://54.166.240.10:8005/api/inventory/${productId}`);
+      await axios.delete(`http://13.216.150.108:3007/api/inventory/${productId}`);
     } catch (invError) {
       console.error('❌ Error eliminando inventario:', invError.message);
     }
-    */
+    
 
     res.json({ message: 'Producto eliminado' });
 

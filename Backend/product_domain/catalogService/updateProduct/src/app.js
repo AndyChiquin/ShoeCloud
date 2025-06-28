@@ -17,6 +17,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🟢 updateProduct microservice running on port ${PORT}`);
 });
-
-
-//test

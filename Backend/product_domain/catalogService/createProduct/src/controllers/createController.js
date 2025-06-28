@@ -3,16 +3,15 @@ const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 const { checkCategoryExists } = require('../services/categoryClient');
 
-// Crear producto
 const createProduct = async (req, res) => {
   const { name, description, category_id, price, brand, quantity } = req.body;
   const id = uuidv4();
 
-  // // Validar existencia de la categoría
-  // const categoryExists = await checkCategoryExists(category_id);
-  // if (!categoryExists) {
-  //   return res.status(400).json({ error: 'La categoría no existe en category-service' });
-  // }
+  // Validar existencia de la categoría
+  const categoryExists = await checkCategoryExists(category_id);
+  if (!categoryExists) {
+    return res.status(400).json({ error: 'La categoría no existe en category-service' });
+  }
 
   const item = {
     id,
@@ -47,17 +46,17 @@ const createProduct = async (req, res) => {
     //   }
     // }
 
-    // // Llamar a inventoryService
-    // if (quantity && quantity > 0) {
-    //   try {
-    //     await axios.post('http://54.166.240.10:8005/api/inventory', {
-    //       product_id: id,
-    //       quantity
-    //     });
-    //   } catch (invError) {
-    //     console.error('❌ Error al conectar con inventoryService:', invError.message);
-    //   }
-    // }
+    // Llamar a inventoryService
+    if (quantity && quantity > 0) {
+      try {
+        await axios.post('http://13.216.150.108:3004/api/inventory', {
+          product_id: id,
+          quantity
+        });
+      } catch (invError) {
+        console.error('❌ Error al conectar con inventoryService:', invError.message);
+      }
+    }
 
     // // Llamar a searchService
     // try {

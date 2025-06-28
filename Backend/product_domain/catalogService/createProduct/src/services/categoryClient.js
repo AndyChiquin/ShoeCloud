@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const CATEGORY_SERVICE_URL = process.env.CATEGORY_SERVICE_URL || 'http://category-service:3001/api/category'; // local version
-const CATEGORY_SERVICE_PROD = 'http://54.166.240.10:3001/api/category';
+const CATEGORY_SERVICE_PROD = 'http://34.200.87.1:3009/api/category';
 
 
 async function checkCategoryExists(categoryId) {
