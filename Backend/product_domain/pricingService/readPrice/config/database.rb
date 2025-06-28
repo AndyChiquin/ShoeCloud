@@ -1,4 +1,4 @@
-require 'sinatra/activerecord'
+require 'activerecord'
 require 'dotenv/load'
 
 set :database, {

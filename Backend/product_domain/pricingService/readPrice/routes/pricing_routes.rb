@@ -1,4 +1,3 @@
-require 'sinatra'
 require 'json'
 require_relative '../controllers/price_controller'
 
