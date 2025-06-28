@@ -1,5 +1,5 @@
 const Image = require('../models/Image');
-const { checkProductExists } = require('../services/readService');
+const { checkProductExists } = require('../services/productService');
 
 const getAllImages = async (req, res) => {
   try {
