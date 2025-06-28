@@ -58,18 +58,14 @@ const createProduct = async (req, res) => {
       }
     }
 
-    // // Llamar a searchService
-    // try {
-    //   await axios.post('http://100.24.79.116:8006/api/search/index', {
-    //     id,
-    //     name,
-    //     description,
-    //     category: category_id,
-    //     price
-    //   });
-    // } catch (searchError) {
-    //   console.error('❌ Error al conectar con searchService:', searchError.message);
-    // }
+      // Notificar a searchService vía WebHook (solo se envía product_id)
+      try {
+        await axios.post('http://52.2.232.26:3017/index', {
+          product_id: id
+        });
+      } catch (searchError) {
+        console.error('❌ Error al conectar con searchService (WebHook):', searchError.message);
+      }
 
     res.status(201).json({ message: 'Producto creado', product: item });
   } catch (error) {
