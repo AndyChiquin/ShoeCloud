@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.use('/api/images', imageRoutes);
 
-const PORT = process.env.PORT || 8007;
+const PORT = process.env.PORT || 3003;
 
 connectDB().then(() => {
   app.listen(PORT, () => {
