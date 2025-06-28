@@ -20,11 +20,17 @@ const getImagesByProductId = async (req, res) => {
 
   try {
     const images = await Image.find({ product_id });
+
+    if (!images || images.length === 0) {
+      return res.status(404).json({ error: 'No images found for this product_id' });
+    }
+
     res.status(200).json(images);
   } catch (error) {
     res.status(500).json({ error: 'Error retrieving images', details: error.message });
   }
 };
+
 
 module.exports = {
   getAllImages,
