@@ -12,11 +12,26 @@ class WebSocketServer
       end
 
       ws.on :message do |event|
-        if event.data == "get_all_prices"
-          prices = Price.all.to_json
-          ws.send(prices)
-        else
-          ws.send({ error: "Comando no válido" }.to_json)
+        begin
+          data = JSON.parse(event.data)
+
+          if data["type"] == "update_price"
+            id = data["id"]
+            update_fields = data["fields"]
+
+            price = Price.find_by(id: id)
+
+            if price
+              price.update(update_fields)
+              ws.send({ success: true, updated: price }.to_json)
+            else
+              ws.send({ success: false, error: "Price ID not found" }.to_json)
+            end
+          else
+            ws.send({ error: "Comando no válido" }.to_json)
+          end
+        rescue => e
+          ws.send({ error: "Error en el servidor: #{e.message}" }.to_json)
         end
       end
 

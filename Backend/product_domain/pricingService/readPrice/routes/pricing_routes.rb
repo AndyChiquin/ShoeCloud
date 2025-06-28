@@ -2,14 +2,10 @@ require 'sinatra'
 require 'json'
 require_relative '../controllers/price_controller'
 
-get '/api/price' do
-  PriceController.get_all.to_json
-end
+put '/api/price/:id' do
+  data = JSON.parse(request.body.read)
+  result = PriceController.update_price(params[:id], data)
 
-get '/api/price/:id' do
-  PriceController.get_by_id(params[:id]).to_json
-end
-
-get '/api/price/product/:product_id' do
-  PriceController.get_by_product(params[:product_id]).to_json
+  status result[:success] ? 200 : 404
+  result.to_json
 end

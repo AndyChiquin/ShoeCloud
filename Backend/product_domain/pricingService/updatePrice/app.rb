@@ -7,7 +7,7 @@ require_relative './ws/ws_server'
 
 set :bind, '0.0.0.0'
 
-# WebSocket + Sinatra combo (puerto distinto para evitar conflicto)
+# WebSocket + Sinatra combo
 Thread.new do
   EM.run do
     app = Proc.new { |env| WebSocketServer.handle(env) }
