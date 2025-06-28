@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  image-service:
+  read-image-service:
     build: .
-    container_name: image-service
+    container_name: read-image-service
     ports:
-      - "300:3003"
+      - "3013:3003"
     env_file:
       - .env
     restart: always

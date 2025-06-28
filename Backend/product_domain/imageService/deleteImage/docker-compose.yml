@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  image-service:
+  delete-image-service:
     build: .
-    container_name: image-service
+    container_name: delete-image-service
     ports:
-      - "300:3003"
+      - "3015:3003"
     env_file:
       - .env
     restart: always
