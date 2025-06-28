@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  read-price-service:
+    build: .
+    container_name: read-price-service
+    ports:
+      - "3019:4567"
+    env_file:
+      - .env
+    restart: always
