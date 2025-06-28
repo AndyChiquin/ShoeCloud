@@ -2,6 +2,8 @@ const { dynamoClient, TABLE_NAME } = require('../config/db');
 const { v4: uuidv4 } = require('uuid');
 const axios = require('axios');
 const { checkCategoryExists } = require('../services/categoryClient');
+const WebSocket = require('ws');
+
 
 const createProduct = async (req, res) => {
   const { name, description, category_id, price, brand, quantity } = req.body;
@@ -31,20 +33,29 @@ const createProduct = async (req, res) => {
     // Crear producto en DynamoDB
     await dynamoClient.put(params).promise();
 
-    // // Llamar a pricingService
-    // if (price) {
-    //   try {
-    //     await axios.post('http://100.24.79.116:8008/api/price', {
-    //       product_id: id,
-    //       price: price,
-    //       discount_type: "ninguno",
-    //       percentage: 0,
-    //       valid_until: null
-    //     });
-    //   } catch (pricingError) {
-    //     console.error('❌ Error al conectar con pricingService:', pricingError.message);
-    //   }
-    // }
+    // Llamar a pricingService vía WebSocket si se proporciona un precio
+    if (price) {
+  const ws = new WebSocket('ws://52.2.232.26:4567/ws/price');
+
+  ws.on('open', () => {
+    const payload = {
+      action: "create",
+      data: {
+        product_id: id,
+        price: price,
+        discount_type: "ninguno",
+        percentage: 0,
+        valid_until: null
+      }
+    };
+    ws.send(JSON.stringify(payload));
+    ws.close(); // cerramos inmediatamente tras enviar
+  });
+
+  ws.on('error', (err) => {
+    console.error('❌ Error al conectar con pricingService (WebSocket):', err.message);
+  });
+}
 
     // Llamar a inventoryService
     if (quantity && quantity > 0) {
