@@ -1,0 +1,50 @@
+name: Deploy updateImageService to EC2
+
+on:
+  push:
+    branches:
+      - test2
+      - main
+    paths:
+      - 'Backend/product_domain/imageService/updateImage/**'
+
+jobs:
+  deploy-qa:
+    if: github.ref == 'refs/heads/test2'
+    runs-on: ubuntu-latest
+    name: Deploy updateImageService - QA (test2)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to QA via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN2_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/product_domain/imageService/updateImage
+            git pull origin test2
+            sudo docker-compose down
+            sudo docker-compose up --build -d update-image-service
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    name: Deploy updateImageService - Production (main)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN_PROD2_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/product_domain/imageService/updateImage
+            git pull origin main
+            sudo docker-compose down
+            sudo docker-compose up --build -d update-image-service
