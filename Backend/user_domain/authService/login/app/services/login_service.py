@@ -52,7 +52,6 @@ def login_user(email: str, password: str):
 
         return {"success": True, "token": token, "user_id": user_data["id"]}
 
-    # 🔄 Si no lo encuentra externamente, va a la base local
     db = SessionLocal()
     user = db.query(User).filter(User.email == email).first()
 

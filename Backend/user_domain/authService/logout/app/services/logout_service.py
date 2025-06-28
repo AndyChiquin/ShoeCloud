@@ -1,7 +1,7 @@
 import requests
 from app.services.redis_client import redis_client
 from app.utils.jwt_utils import verify_token
-from app.utils.audit_logger import log_user_action_soap  # IMPORTANTE
+from app.utils.audit_logger import log_user_action_soap  
 
 def logout_user(token: str):
     result = verify_token(token)
@@ -11,7 +11,6 @@ def logout_user(token: str):
     user_id = result["data"]["sub"]
     redis_client.delete(f"token:{user_id}")
 
-    # Cerrar sesión activa
     try:
         response = requests.patch(f"http://3.209.221.173:8012/session/user/{user_id}/close-latest")
         if response.status_code != 200:
@@ -19,7 +18,6 @@ def logout_user(token: str):
     except Exception as e:
         print("SessionService exception:", str(e))
 
-    # Registrar en auditoría usando SOAP
     try:
         log_user_action_soap(
             user_id=user_id,
