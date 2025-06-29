@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 # Cargar configuración según entorno
 if os.environ.get("FLASK_ENV") == "testing":
-    from app.config.test_settings import settings
+    from test.test_read_user import settings
     load_dotenv(".env.test")
 else:
     from app.config.settings import settings
