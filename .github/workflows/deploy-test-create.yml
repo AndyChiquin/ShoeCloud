@@ -35,4 +35,4 @@ jobs:
         run: |
            export FLASK_ENV=testing
             cd Backend/user_domain/userProfileService/createUser
-            python -m unittest discover tests
+            python -m unittest discover test
