@@ -23,8 +23,7 @@ app.register_blueprint(user_create_bp)
 
 @app.route("/")
 def health_check():
-    return {"status": "Create User Service OK"}
+    return {"status": "User Profile Service OK"}
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000)
-
