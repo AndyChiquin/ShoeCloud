@@ -33,6 +33,6 @@ jobs:
 
       - name: Run tests
         run: |
-          export FLASK_ENV=testing
-          cd Backend/user_domain/userProfileService/readUser
-          python -m unittest discover test
+           export FLASK_ENV=testing
+            cd Backend/user_domain/userProfileService/readUser
+            python -m unittest discover test
