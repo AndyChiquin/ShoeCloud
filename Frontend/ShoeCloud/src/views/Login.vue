@@ -1,90 +1,118 @@
 <template>
-  <div class="flex justify-center items-center min-h-screen bg-gray-100">
-    <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
-      <h2 class="text-3xl font-semibold mb-6 text-center text-gray-800">Iniciar Sesión</h2>
-
-      <form @submit.prevent="login" class="space-y-4">
-        <div>
-          <label class="block text-gray-700 mb-1">Correo Electrónico</label>
+  <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
+      <h3 class="text-center mb-4">Iniciar Sesión</h3>
+      <form @submit.prevent="handleLogin">
+        <div class="mb-3">
+          <label for="correo" class="form-label">Correo Electrónico</label>
           <input
-            v-model="email"
+            v-model="correo"
             type="email"
+            class="form-control"
+            id="correo"
             placeholder="ejemplo@correo.com"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
           />
         </div>
-
-        <div>
-          <label class="block text-gray-700 mb-1">Contraseña</label>
-          <input
-            v-model="password"
-            type="password"
-            placeholder="••••••••"
-            class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            required
-          />
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <div class="input-group">
+            <input
+              :type="showPassword ? 'text' : 'password'"
+              v-model="password"
+              class="form-control"
+              id="password"
+              placeholder="••••••"
+              required
+            />
+            <button type="button" class="btn btn-outline-secondary" @click="togglePasswordVisibility">
+              <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+            </button>
+          </div>
         </div>
-
-        <p v-if="errorMessage" class="text-red-500 text-center">{{ errorMessage }}</p>
-
-        <button
-          type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
-        >
-          Ingresar
-        </button>
-
-        <div class="text-center mt-4">
-          <router-link
-            to="/reset-password"
-            class="text-sm text-blue-600 hover:underline block"
-          >
-            ¿Olvidaste tu contraseña?
-          </router-link>
-          <router-link
-            to="/register"
-            class="text-sm text-green-600 hover:underline block mt-1"
-          >
-            ¿No tienes cuenta? Regístrate
-          </router-link>
-        </div>
+        <button type="submit" class="btn btn-danger w-100">Iniciar Sesión</button>
       </form>
+
+      <div class="text-center mt-3">
+        <router-link to="/register" class="text-decoration-none">Registrarse</router-link>
+      </div>
+      <div class="text-center mt-1">
+        <router-link to="/forgot-password" class="text-decoration-none">¿Olvidó su contraseña?</router-link>
+      </div>
     </div>
   </div>
 </template>
 
+
 <script>
-import axios from 'axios';
+import AdminService from '@/services/AdminService';
+import { mapActions } from 'vuex';
 
 export default {
+  name: 'LoginView',
   data() {
     return {
-      email: '',
+      correo: '',
       password: '',
-      errorMessage: ''
+      rol: '',
+      showPassword: false,
     };
   },
   methods: {
-    async login() {
+    ...mapActions(['login']),
+    async handleLogin() {
       try {
-        const response = await axios.post('http://localhost:3001/login', {
-          email: this.email,
-          password: this.password
+        const response = await AdminService.loginAdmin({
+          correoAdmin: this.correo,
+          contraAdmin: this.password,
+          //rolAdmins: this.rol,
         });
+        console.log('Inicio de sesión exitoso:', response);
+        
+        // Guardar el token y redirigir a la página principal
+        if (response.accessToken) {
+          console.log('accessToken:', response.accessToken);
 
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('accessToken', response.accessToken);
+          localStorage.setItem('userRole', JSON.stringify(response.rolAdmins));
+          //await this.login( { token: response.accessToken , roles: response.rolAdmins} );
+          this.login({ accessToken: response.accessToken, userRole: response.rolAdmins , expiresIn: response.expiresIn});
           this.$router.push('/');
         } else {
-          this.errorMessage = 'No se recibió un token del servidor.';
+          throw new Error('No se recibió un token de acceso');
         }
       } catch (error) {
-        console.error('Login error:', error);
-        this.errorMessage =
-          error.response?.data?.message || 'Error al iniciar sesión.';
+        console.error('Error al iniciar sesión:', error);
+        alert('Correo o contraseña incorrectos');
       }
-    }
-  }
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
+  },
 };
 </script>
+
+<style scoped>
+.card {
+  padding: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.position-relative {
+  position: relative;
+}
+.toggle-password {
+  position: absolute;
+  top: 70%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.btn-iniciar-sesion{
+  background-color: #e62e2e;
+  color: white;
+  border: none;
+}
+</style>
