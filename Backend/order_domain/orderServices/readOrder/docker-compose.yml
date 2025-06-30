@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-order-db
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    networks:
+      - order-network
+
+  read-order-service:
+    build: .
+    container_name: read-order-service
+    ports:
+      - "8010:8009"
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - order-network
+
+volumes:
+  mysql_data:
+
+networks:
+  order-network:
+    driver: bridge
