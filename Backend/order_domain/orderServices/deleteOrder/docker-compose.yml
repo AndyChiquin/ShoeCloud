@@ -14,11 +14,11 @@ services:
     networks:
       - order-network
 
-  read-order-service:
+  delete-order-service:
     build: .
-    container_name: read-order-service
+    container_name: delete-order-service
     ports:
-      - "8010:8009"
+      - "8012:8009"
     env_file:
       - .env
     restart: always

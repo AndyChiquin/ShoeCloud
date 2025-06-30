@@ -10,13 +10,13 @@ load_dotenv()
 app = Flask(__name__)
 init_db(app)
 
-# Registrar las rutas del microservicio de lectura de órdenes
+# Registrar las rutas del microservicio de eliminación de órdenes
 app.register_blueprint(order_bp)
 
 # Ruta base para verificar que está corriendo
 @app.route('/')
 def health_check():
-    return {'message': 'ReadOrder microservice is running'}
+    return {'message': 'DeleteOrder microservice is running'}
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8009, debug=True)
