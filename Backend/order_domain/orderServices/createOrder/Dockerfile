@@ -10,4 +10,4 @@ COPY . .
 EXPOSE 8009
 
 # Cambiar al subdirectorio donde está el main.py
-CMD ["python", "app/main.py"]
+CMD ["python", "main.py"]
