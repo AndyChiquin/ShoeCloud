@@ -45,9 +45,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
+            cd ShoeCloud/Backend/user_domain/userProfileService/createUser
             docker pull itsandy/user-profile-service:create-user-latest
-            docker stop create-user || true && docker rm create-user || true
-            docker run -d --name create-user -p 8000:8000 --env-file .env itsandy/user-profile-service:create-user-latest
+            docker stop create-user-service || true
+            docker rm create-user-service || true
+            docker run -d --name create-user-service -p 8000:8000 --env-file .env itsandy/user-profile-service:create-user-latest
 
   deploy-prod:
     name: Deploy to Production (main)
@@ -63,6 +65,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PROD_PEM_KEY }}
           script: |
+            cd ShoeCloud/Backend/user_domain/userProfileService/createUser
             docker pull itsandy/user-profile-service:create-user-latest
-            docker stop create-user || true && docker rm create-user || true
-            docker run -d --name create-user -p 8000:8000 --env-file .env itsandy/user-profile-service:create-user-latest
+            docker stop create-user-service || true
+            docker rm create-user-service || true
+            docker run -d --name create-user-service -p 8000:8000 --env-file .env itsandy/user-profile-service:create-user-latest
