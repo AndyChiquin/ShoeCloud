@@ -1,19 +1,22 @@
 from flask import Flask
 from dotenv import load_dotenv
-from app.config.config import Config
+import os
+
+if os.environ.get("FLASK_ENV") == "testing":
+    from app.config.test_settings import TestSettings as Settings
+    load_dotenv(".env.test")  
+else:
+    from app.config.config import Config as Settings
+    load_dotenv()
+
 from app.db.extensions import db
 from app.routes.create_route import create_bp
 
-
-load_dotenv()
-
 app = Flask(__name__)
-
-app.config.from_object(Config)
-app.config['JSON_SORT_KEYS'] = False  
+app.config.from_object(Settings)
+app.config['JSON_SORT_KEYS'] = False
 
 db.init_app(app)
-
 app.register_blueprint(create_bp)
 
 @app.route("/")
@@ -25,5 +28,3 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8002)
-
-#test
