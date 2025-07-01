@@ -1,118 +1,66 @@
 <template>
-  <div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card p-4 shadow" style="max-width: 400px; width: 100%;">
+  <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card p-4 shadow" style="width: 100%; max-width: 400px;">
       <h3 class="text-center mb-4">Iniciar Sesión</h3>
+
       <form @submit.prevent="handleLogin">
         <div class="mb-3">
-          <label for="correo" class="form-label">Correo Electrónico</label>
-          <input
-            v-model="correo"
-            type="email"
-            class="form-control"
-            id="correo"
-            placeholder="ejemplo@correo.com"
-            required
-          />
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input v-model="email" type="email" id="email" class="form-control" required placeholder="ejemplo@correo.com" />
         </div>
+
         <div class="mb-3">
           <label for="password" class="form-label">Contraseña</label>
-          <div class="input-group">
-            <input
-              :type="showPassword ? 'text' : 'password'"
-              v-model="password"
-              class="form-control"
-              id="password"
-              placeholder="••••••"
-              required
-            />
-            <button type="button" class="btn btn-outline-secondary" @click="togglePasswordVisibility">
-              <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
-            </button>
-          </div>
+          <input v-model="password" type="password" id="password" class="form-control" required placeholder="••••••••" />
         </div>
-        <button type="submit" class="btn btn-danger w-100">Iniciar Sesión</button>
+
+        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
       </form>
 
+      <p v-if="errorMessage" class="text-danger text-center mt-3">{{ errorMessage }}</p>
+
       <div class="text-center mt-3">
-        <router-link to="/register" class="text-decoration-none">Registrarse</router-link>
-      </div>
-      <div class="text-center mt-1">
-        <router-link to="/forgot-password" class="text-decoration-none">¿Olvidó su contraseña?</router-link>
+        <router-link to="/register" class="text-decoration-none">¿No tienes cuenta? Regístrate</router-link>
       </div>
     </div>
   </div>
 </template>
 
-
 <script>
-import AdminService from '@/services/AdminService';
-import { mapActions } from 'vuex';
+import axios from 'axios'
+import AuthService from '@/services/AuthService'
+
 
 export default {
-  name: 'LoginView',
   data() {
     return {
-      correo: '',
+      email: '',
       password: '',
-      rol: '',
-      showPassword: false,
-    };
+      errorMessage: ''
+    }
   },
   methods: {
-    ...mapActions(['login']),
     async handleLogin() {
       try {
-        const response = await AdminService.loginAdmin({
-          correoAdmin: this.correo,
-          contraAdmin: this.password,
-          //rolAdmins: this.rol,
-        });
-        console.log('Inicio de sesión exitoso:', response);
-        
-        // Guardar el token y redirigir a la página principal
-        if (response.accessToken) {
-          console.log('accessToken:', response.accessToken);
+        const response = await AuthService.login({
+          email: this.email,
+          password: this.password
+        })
 
-          localStorage.setItem('accessToken', response.accessToken);
-          localStorage.setItem('userRole', JSON.stringify(response.rolAdmins));
-          //await this.login( { token: response.accessToken , roles: response.rolAdmins} );
-          this.login({ accessToken: response.accessToken, userRole: response.rolAdmins , expiresIn: response.expiresIn});
-          this.$router.push('/');
+        if (response.access_token) {
+          localStorage.setItem('token', response.access_token)
+          localStorage.setItem('user_id', response.user_id)
+          this.$router.push('/dashboard') // o a donde quieras redirigir
         } else {
-          throw new Error('No se recibió un token de acceso');
+          this.errorMessage = 'No se recibió token del servidor.'
         }
+
       } catch (error) {
-        console.error('Error al iniciar sesión:', error);
-        alert('Correo o contraseña incorrectos');
+        console.error('Error de login:', error)
+        this.errorMessage =
+          error.response?.data?.error || 'Credenciales incorrectas.'
       }
-    },
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
-    },
-  },
-};
+    }
+  }
+}
 </script>
-
-<style scoped>
-.card {
-  padding: 2rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-.position-relative {
-  position: relative;
-}
-.toggle-password {
-  position: absolute;
-  top: 70%;
-  right: 10px;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.btn-iniciar-sesion{
-  background-color: #e62e2e;
-  color: white;
-  border: none;
-}
-</style>
