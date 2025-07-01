@@ -1,5 +1,16 @@
 from flask import Flask
 from app.config.settings import settings
+
+import os
+from dotenv import load_dotenv
+
+if os.environ.get("FLASK_ENV") == "testing":
+    from app.config.test_settings import settings
+    load_dotenv(".env.test")
+else:
+    from app.config.settings import settings
+    load_dotenv()
+
 from app.db.connection import db
 from app.routes.user_routes import user_update_bp
 
