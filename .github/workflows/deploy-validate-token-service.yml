@@ -79,7 +79,7 @@ jobs:
             docker pull itsandy/auth-service:validate-token-latest
             docker stop auth-validate-service || true
             docker rm auth-validate-service || true
-            docker run -d --name auth-validate-service -p 8005:8001 --env-file .env itsandy/auth-service:validate-token-latest
+            docker run -d --restart=always --name auth-validate-service -p 8005:8001 --env-file .env itsandy/auth-service:validate-token-latest
 
   deploy-prod:
     name: Deploy ValidateToken - Production (main)
@@ -99,4 +99,4 @@ jobs:
             docker pull itsandy/auth-service:validate-token-latest
             docker stop auth-validate-service || true
             docker rm auth-validate-service || true
-            docker run -d --name auth-validate-service -p 8005:8001 --env-file .env itsandy/auth-service:validate-token-latest
+            docker run -d --restart=always --name auth-validate-service -p 8005:8001 --env-file .env itsandy/auth-service:validate-token-latest

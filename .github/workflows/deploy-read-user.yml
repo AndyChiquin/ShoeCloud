@@ -79,7 +79,7 @@ jobs:
             docker pull itsandy/user-profile-service:read-user-latest
             docker stop read-user-service || true
             docker rm read-user-service || true
-            docker run -d --name read-user-service -p 8001:8000 --env-file .env itsandy/user-profile-service:read-user-latest
+            docker run -d --restart=always --name read-user-service -p 8001:8000 --env-file .env itsandy/user-profile-service:read-user-latest
 
   deploy-prod:
     name: Deploy to Production (main)
@@ -99,4 +99,4 @@ jobs:
             docker pull itsandy/user-profile-service:read-user-latest
             docker stop read-user-service || true
             docker rm read-user-service || true
-            docker run -d --name read-user-service -p 8001:8000 --env-file .env itsandy/user-profile-service:read-user-latest
+            docker run -d --restart=always --name read-user-service -p 8001:8000 --env-file .env itsandy/user-profile-service:read-user-latest

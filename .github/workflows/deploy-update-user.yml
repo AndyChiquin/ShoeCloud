@@ -79,7 +79,7 @@ jobs:
             docker pull itsandy/user-profile-service:update-user-latest
             docker stop update-user-service || true
             docker rm update-user-service || true
-            docker run -d --name update-user-service -p 8003:8000 --env-file .env itsandy/user-profile-service:update-user-latest
+            docker run -d --restart=always --name update-user-service -p 8003:8000 --env-file .env itsandy/user-profile-service:update-user-latest
 
   deploy-prod:
     name: Deploy to Production (main)
@@ -99,4 +99,4 @@ jobs:
             docker pull itsandy/user-profile-service:update-user-latest
             docker stop update-user-service || true
             docker rm update-user-service || true
-            docker run -d --name update-user-service -p 8003:8000 --env-file .env itsandy/user-profile-service:update-user-latest
+            docker run -d --restart=always --name update-user-service -p 8003:8000 --env-file .env itsandy/user-profile-service:update-user-latest

@@ -79,7 +79,7 @@ jobs:
             docker pull itsandy/auth-service:login-latest
             docker stop auth-login-service || true
             docker rm auth-login-service || true
-            docker run -d --name auth-login-service -p 8004:8001 --env-file .env itsandy/auth-service:login-latest
+            docker run -d --restart=always --name auth-login-service -p 8004:8001 --env-file .env itsandy/auth-service:login-latest
 
   deploy-prod:
     name: Deploy Login - Production (main)
@@ -99,4 +99,4 @@ jobs:
             docker pull itsandy/auth-service:login-latest
             docker stop auth-login-service || true
             docker rm auth-login-service || true
-            docker run -d --name auth-login-service -p 8004:8001 --env-file .env itsandy/auth-service:login-latest
+            docker run -d --restart=always --name auth-login-service -p 8004:8001 --env-file .env itsandy/auth-service:login-latest

@@ -79,7 +79,7 @@ jobs:
             docker pull itsandy/role-service:create-role-latest
             docker stop create-role-service || true
             docker rm create-role-service || true
-            docker run -d --name create-role-service -p 8007:8002 --env-file .env itsandy/role-service:create-role-latest
+            docker run -d --restart=always --name create-role-service -p 8007:8002 --env-file .env itsandy/role-service:create-role-latest
 
   deploy-prod:
     name: Deploy createRoleService - Production (main)
@@ -99,4 +99,4 @@ jobs:
             docker pull itsandy/role-service:create-role-latest
             docker stop create-role-service || true
             docker rm create-role-service || true
-            docker run -d --name create-role-service -p 8007:8000 --env-file .env itsandy/role-service:create-role-latest
+            docker run -d --restart=always --name create-role-service -p 8007:8000 --env-file .env itsandy/role-service:create-role-latest
