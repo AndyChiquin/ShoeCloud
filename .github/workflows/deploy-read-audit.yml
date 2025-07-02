@@ -15,7 +15,7 @@ on:
 jobs:
   test-health:
     name: Run Unit Test - Health Check
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout code
