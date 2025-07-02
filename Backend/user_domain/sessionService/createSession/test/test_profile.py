@@ -15,7 +15,7 @@ class UserProfileServiceTestCase(unittest.TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         self.assertIn("status", response.get_json())
-        self.assertEqual(response.get_json()["status"], "User Profile Service OK")
+        self.assertEqual(response.get_json()["status"], "Session Service OK")
 
 if __name__ == "__main__":
     unittest.main()
