@@ -5,19 +5,19 @@ on:
     branches:
       - test2
     paths:
-      - 'Backend/user_domain/auditService/createAudit/**'
+      - 'Backend/user_domain/userAuditService/createAudit/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'Backend/user_domain/auditService/createAudit/**'
+      - 'Backend/user_domain/userAuditService/createAudit/**'
 
 jobs:
-  
+
+
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t itsandy/audit-service:create-audit-latest ./Backend/user_domain/auditService/createAudit
+          docker build -t itsandy/audit-service:create-audit-latest ./Backend/user_domain/userAuditService/createAudit
 
       - name: Push Docker image
         run: |
@@ -50,7 +50,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
-            cd ShoeCloud/Backend/user_domain/auditService/createAudit
+            cd ShoeCloud/Backend/user_domain/userAuditService/createAudit
             docker pull itsandy/audit-service:create-audit-latest
             docker stop create-audit-service || true
             docker rm create-audit-service || true
@@ -70,7 +70,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
-            cd ShoeCloud/Backend/user_domain/auditService/createAudit
+            cd ShoeCloud/Backend/user_domain/userAuditService/createAudit
             docker pull itsandy/audit-service:create-audit-latest
             docker stop create-audit-service || true
             docker rm create-audit-service || true

@@ -5,12 +5,12 @@ on:
     branches:
       - test2
     paths:
-      - 'Backend/user_domain/auditService/readAudit/**'
+      - 'Backend/user_domain/userAuditService/readAudit/**'
   pull_request:
     branches:
       - main
     paths:
-      - 'Backend/user_domain/auditService/readAudit/**'
+      - 'Backend/user_domain/userAuditService/readAudit/**'
 
 jobs:
   test:
@@ -28,14 +28,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd Backend/user_domain/auditService/readAudit
+          cd Backend/user_domain/userAuditService/readAudit
           pip install -r requirements.txt
           pip install pytest
 
       - name: Run tests
         run: |
           export FLASK_ENV=testing
-          cd Backend/user_domain/auditService/readAudit
+          cd Backend/user_domain/userAuditService/readAudit
           python -m unittest discover test
 
   build-and-push:
@@ -55,7 +55,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t itsandy/audit-service:read-audit-latest ./Backend/user_domain/auditService/readAudit
+          docker build -t itsandy/audit-service:read-audit-latest ./Backend/user_domain/userAuditService/readAudit
 
       - name: Push Docker image
         run: |
@@ -75,7 +75,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
-            cd ShoeCloud/Backend/user_domain/auditService/readAudit
+            cd ShoeCloud/Backend/user_domain/userAuditService/readAudit
             docker pull itsandy/audit-service:read-audit-latest
             docker stop read-audit-service || true
             docker rm read-audit-service || true
@@ -95,7 +95,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
-            cd ShoeCloud/Backend/user_domain/auditService/readAudit
+            cd ShoeCloud/Backend/user_domain/userAuditService/readAudit
             docker pull itsandy/audit-service:read-audit-latest
             docker stop read-audit-service || true
             docker rm read-audit-service || true
