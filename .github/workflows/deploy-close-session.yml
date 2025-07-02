@@ -100,3 +100,6 @@ jobs:
             docker stop close-session-service || true
             docker rm close-session-service || true
             docker run -d --restart=always --name close-session-service -p 8013:8003 --env-file .env itsandy/session-service:close-session-latest
+
+
+            
