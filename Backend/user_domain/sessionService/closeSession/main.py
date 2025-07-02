@@ -6,7 +6,7 @@ if os.environ.get("FLASK_ENV") == "testing":
     from app.config.test_settings import TestSettings as Settings
     load_dotenv(".env.test")
 else:
-    from app.config.config import Config as Settings
+    from app.config.config import Settings
     load_dotenv()
 
 from app.routes.close_route import close_session_bp
@@ -24,4 +24,3 @@ def health():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8003)
     
-#test
