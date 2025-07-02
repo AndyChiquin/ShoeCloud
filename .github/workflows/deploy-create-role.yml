@@ -91,7 +91,7 @@ jobs:
       - name: Deploy to Production via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_USER_DOMAIN_PROD2_IP }}
+          host: ${{ secrets.EC2_USER_DOMAIN_PROD_IP }}
           username: ubuntu
           key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
           script: |
@@ -99,4 +99,4 @@ jobs:
             docker pull itsandy/role-service:create-role-latest
             docker stop create-role-service || true
             docker rm create-role-service || true
-            docker run -d --restart=always --name create-role-service -p 8007:8000 --env-file .env itsandy/role-service:create-role-latest
+            docker run -d --restart=always --name create-role-service -p 8007:8002 --env-file .env itsandy/role-service:create-role-latest
