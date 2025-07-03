@@ -2,6 +2,8 @@ from flask import Flask
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+from flask import Flask, request
+
 
 
 if os.environ.get("FLASK_ENV") == "testing":
@@ -23,6 +25,16 @@ with app.app_context():
     db.create_all()
 
 app.register_blueprint(user_create_bp)
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", "*")
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "POST,OPTIONS"
+    return response
+
+
 
 @app.route("/")
 def health_check():
