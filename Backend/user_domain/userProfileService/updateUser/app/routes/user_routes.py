@@ -4,10 +4,12 @@ import requests
 
 user_update_bp = Blueprint("user_update", __name__, url_prefix="/users")
 
-@user_update_bp.route("/<int:user_id>", methods=["PUT"])
+@user_update_bp.route("/<int:user_id>", methods=["PUT", "OPTIONS"])
 def update_user_route(user_id):
-    data = request.json
+    if request.method == "OPTIONS":
+        return jsonify({}), 200  
 
+    data = request.json
     if 'role' in data:
         return jsonify({"error": "Role update not allowed here. Use /users/<id>/role"}), 400
 
@@ -16,11 +18,6 @@ def update_user_route(user_id):
         return jsonify({"error": "User not found"}), 404
 
     return jsonify({"msg": "User updated"}), 200
-
-@user_update_bp.route("/<int:user_id>", methods=["OPTIONS"])
-def options_user(user_id):
-    return '', 204
-
 
 
 @user_update_bp.route("/<int:user_id>/role", methods=["PUT"])

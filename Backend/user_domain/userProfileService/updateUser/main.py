@@ -1,6 +1,8 @@
 from flask import Flask
 from app.config.settings import settings
 from flask_cors import CORS
+from flask import Flask, request
+
 
 
 import os
@@ -27,6 +29,14 @@ with app.app_context():
 
 
 app.register_blueprint(user_update_bp)
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin", "*")
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+    response.headers["Access-Control-Allow-Methods"] = "PUT,OPTIONS"
+    return response
+
 
 @app.route("/")
 def health_check():
