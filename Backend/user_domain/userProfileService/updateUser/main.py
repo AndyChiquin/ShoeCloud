@@ -1,5 +1,7 @@
 from flask import Flask
 from app.config.settings import settings
+from flask_cors import CORS
+
 
 import os
 from dotenv import load_dotenv
@@ -17,6 +19,8 @@ from app.routes.user_routes import user_update_bp
 app = Flask(__name__)
 app.config.from_object(settings)  
 db.init_app(app)
+CORS(app)
+
 
 with app.app_context():
     db.create_all()  
