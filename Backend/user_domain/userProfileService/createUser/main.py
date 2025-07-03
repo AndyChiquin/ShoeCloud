@@ -1,6 +1,8 @@
 from flask import Flask
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
+
 
 if os.environ.get("FLASK_ENV") == "testing":
     from app.config.test_settings import settings
@@ -15,6 +17,7 @@ from app.routes.user_routes import user_create_bp
 app = Flask(__name__)
 app.config.from_object(settings)
 db.init_app(app)
+CORS(app)
 
 with app.app_context():
     db.create_all()
