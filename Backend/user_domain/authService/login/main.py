@@ -1,6 +1,8 @@
 from flask import Flask
 import os
 from dotenv import load_dotenv
+from flask_cors import CORS
+
 
 if os.environ.get("FLASK_ENV") == "testing":
     from app.config.test_settings import settings
@@ -12,6 +14,8 @@ else:
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config.from_object(settings)
+
+CORS(app)
 
 from app.routes.login_routes import login_bp
 app.register_blueprint(login_bp)
