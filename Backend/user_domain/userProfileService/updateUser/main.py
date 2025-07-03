@@ -19,7 +19,7 @@ from app.routes.user_routes import user_update_bp
 app = Flask(__name__)
 app.config.from_object(settings)  
 db.init_app(app)
-CORS(app)
+CORS(app, origins=["http://localhost:9000", "http://52.200.35.19"], supports_credentials=True)
 
 
 with app.app_context():
