@@ -17,6 +17,11 @@ def update_user_route(user_id):
 
     return jsonify({"msg": "User updated"}), 200
 
+@user_update_bp.route("/<int:user_id>", methods=["OPTIONS"])
+def options_user(user_id):
+    return '', 204
+
+
 
 @user_update_bp.route("/<int:user_id>/role", methods=["PUT"])
 def update_role_route(user_id):
