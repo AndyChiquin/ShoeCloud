@@ -4,11 +4,11 @@ on:
   push:
     branches: [ test2 ]
     paths:
-      - 'ShoeCloud/backend/product_domain/catalogService/createProduct/**'
+      - 'Backend/product_domain/catalogService/createProduct/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'ShoeCloud/backend/product_domain/catalogService/createProduct/**'
+      - 'Backend/product_domain/catalogService/createProduct/**'
 
 jobs:
   run-tests:
@@ -25,8 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ShoeCloud/backend/product_domain/catalogService/createProduct
+        working-directory: Backend/product_domain/catalogService/createProduct
 
       - name: Run tests
         run: npm test
-        working-directory: ShoeCloud/backend/product_domain/catalogService/createProduct
+        working-directory: Backend/product_domain/catalogService/createProduct
