@@ -1,14 +1,11 @@
-require './models/price'
+require_relative '../models/price'
 
 class PriceController
-  def self.delete_price(id)
+  def self.delete(id)
     price = Price.find_by(id: id)
+    return nil unless price
 
-    if price
-      price.destroy
-      { success: true, message: "Price deleted" }
-    else
-      { success: false, error: "Price not found" }
-    end
+    price.destroy
+    price
   end
 end

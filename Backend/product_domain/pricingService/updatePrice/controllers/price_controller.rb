@@ -1,14 +1,18 @@
-require './models/price'
+require_relative '../models/price'
 
 class PriceController
-  def self.update_price(id, data)
+  def self.update(id, data)
     price = Price.find_by(id: id)
+    return nil unless price
 
-    if price
-      price.update(data)
-      { success: true, updated: price }
-    else
-      { success: false, error: "Price not found" }
-    end
+    price.update(
+      product_id:    data['product_id'] || price.product_id,
+      price:         data['price'] || price.price,
+      discount_type: data['discount_type'] || price.discount_type,
+      percentage:    data['percentage'] || price.percentage,
+      valid_until:   data['valid_until'] || price.valid_until
+    )
+
+    price
   end
 end
