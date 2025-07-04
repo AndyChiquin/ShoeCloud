@@ -15,21 +15,34 @@ get '/ws/price' do
     ws.on :message do |event|
       begin
         data = JSON.parse(event.data)
+        action = data['action']
+        id = data['data']['id']
 
-        if data['action'] == 'delete'
-          puts "[WS] Acción: delete para ID #{data['id']}"
+        case action
+        when 'update'
+          puts "[WS] Acción: update para ID #{id}"
+          updated = PriceController.update(id, data['data'])
 
-          deleted = PriceController.delete(data['id'])
+          if updated
+            ws.send({ success: true, updated: updated }.to_json)
+          else
+            ws.send({ error: "No se encontró el precio con id #{id}" }.to_json)
+          end
+
+        when 'delete'
+          puts "[WS] Acción: delete para ID #{id}"
+          deleted = PriceController.delete(id)
 
           if deleted
             ws.send({ success: true, deleted: deleted }.to_json)
           else
-            ws.send({ error: "No se encontró el precio con id #{data['id']}" }.to_json)
+            ws.send({ error: "No se encontró el precio con id #{id}" }.to_json)
           end
 
         else
           ws.send({ error: 'Acción no soportada' }.to_json)
         end
+
       rescue => e
         ws.send({ error: "Error: #{e.message}" }.to_json)
       end
