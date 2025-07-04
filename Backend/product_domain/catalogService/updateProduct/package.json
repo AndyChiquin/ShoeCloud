@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
   },
@@ -17,5 +17,9 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "jest": "^30.0.4",
+    "supertest": "^7.1.1"
   }
 }
