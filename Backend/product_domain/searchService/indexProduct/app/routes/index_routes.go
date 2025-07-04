@@ -11,4 +11,11 @@ func RegisterIndexRoutes(router *gin.Engine) {
 	{
 		indexGroup.POST("/", controllers.IndexProduct)
 	}
+
+	// Ruta de salud para pruebas
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "indexProduct microservice is running",
+		})
+	})
 }
