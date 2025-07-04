@@ -11,4 +11,10 @@ func RegisterSearchRoutes(router *gin.Engine) {
 	{
 		searchGroup.GET("/", controllers.SearchProduct)
 	}
+
+	router.GET("/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "searchProduct microservice is running",
+		})
+	})
 }
