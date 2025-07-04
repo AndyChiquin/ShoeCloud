@@ -1,4 +1,6 @@
 const { dynamoClient, TABLE_NAME } = require('../config/db');
+const notifyPricingService = require('../services/priceNotifier');
+
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
@@ -17,6 +19,7 @@ const updateProduct = async (req, res) => {
 
     try {
       const result = await dynamoClient.update(soloPrecio).promise();
+      notifyPricingService(id, price);
       return res.json({ message: 'Precio actualizado', product: result.Attributes });
     } catch (error) {
       return res.status(500).json({ error: 'Error al actualizar solo el precio', details: error.message });
@@ -66,6 +69,7 @@ const updateProductByProductId = async (req, res) => {
 
   try {
     const result = await dynamoClient.update(params).promise();
+    notifyPricingService(product_id, price);
     res.json({ message: 'Precio actualizado por product_id', product: result.Attributes });
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar precio con product_id', details: error.message });
