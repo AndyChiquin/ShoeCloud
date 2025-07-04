@@ -19,3 +19,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🟢 createProduct microservice running on port ${PORT}`);
 });
+

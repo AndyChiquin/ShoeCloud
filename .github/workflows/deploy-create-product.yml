@@ -73,9 +73,11 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
           script: |
+            cd ShoeCloud/Backend/product_domain/catalogService/createProduct
             docker pull itsandy/create-product-service:latest
             docker stop create-product-service || true
             docker rm create-product-service || true
+            name create-product-service 
             docker run -d --restart=always --name create-product-service -p 3000:3000 --env-file .env itsandy/create-product-service:latest
 
   deploy-prod:
@@ -92,6 +94,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
           script: |
+            cd ShoeCloud/Backend/product_domain/catalogService/createProduct
             docker pull itsandy/create-product-service:latest
             docker stop create-product-service || true
             docker rm create-product-service || true
