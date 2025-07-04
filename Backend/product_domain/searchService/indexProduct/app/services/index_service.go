@@ -21,7 +21,6 @@ type ProductInput struct {
 	Price       float64 `json:"price"`
 }
 
-// Estructura para mapear la respuesta del catalogService
 type CatalogResponse struct {
 	ID          string  `json:"id"`
 	Name        string  `json:"name"`
@@ -31,30 +30,28 @@ type CatalogResponse struct {
 }
 
 func SaveProduct(p ProductInput) error {
-	// 1. Hacer GET al catalogService con el product_id
 	url := fmt.Sprintf("http://13.216.150.108:3001/api/products/%s", p.ProductID)
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return errors.New("error al conectar con catalogService: " + err.Error())
+		return errors.New("error when connecting to catalogService: " + err.Error())
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		return errors.New("el producto no existe en catalogService")
+		return errors.New("product does not exist in catalogService")
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return errors.New("error leyendo respuesta de catalogService: " + err.Error())
+		return errors.New("error reading catalogService response: " + err.Error())
 	}
 
 	var catalogData CatalogResponse
 	if err := json.Unmarshal(body, &catalogData); err != nil {
-		return errors.New("error parseando respuesta JSON del catálogo: " + err.Error())
+		return errors.New("error parsing JSON response from the catalog: " + err.Error())
 	}
 
-	// 2. Insertar en MongoDB
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

@@ -12,16 +12,13 @@ import (
 )
 
 func main() {
-	// Cargar variables de entorno
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("⚠️ No se pudo cargar el archivo .env, usando variables del sistema")
+		log.Println("⚠️ Could not load .env file, using system variables")
 	}
 
-	// Conectar a MongoDB
 	config.ConnectDB()
 
-	// Iniciar servidor Gin
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8006"
@@ -29,11 +26,8 @@ func main() {
 
 	router := gin.Default()
 
-	// Cargar rutas
 	routes.RegisterSearchRoutes(router)
 
-	log.Printf("🚀 Servidor escuchando en el puerto %s", port)
+	log.Printf("🚀 Server listening on port %s", port)
 	router.Run(":" + port)
 }
-
-//test

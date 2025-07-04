@@ -13,8 +13,8 @@ func SearchProduct(c *gin.Context) {
 
 	if query == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Falta el parámetro 'query'",
-			"details": "$regex necesita una cadena de texto",
+			"error":   "The query parameter is missing'",
+			"details": "$regex you need a text string",
 		})
 		return
 	}
@@ -22,7 +22,7 @@ func SearchProduct(c *gin.Context) {
 	results, err := services.PerformSearch(query)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error":   "Fallo la búsqueda",
+			"error":   "Search failed",
 			"details": err.Error(),
 		})
 		return

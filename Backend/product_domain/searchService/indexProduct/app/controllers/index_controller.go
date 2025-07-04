@@ -10,25 +10,23 @@ import (
 func IndexProduct(c *gin.Context) {
 	var input services.ProductInput
 
-	// Validar JSON con product_id
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Se requiere product_id válido",
+			"error":   "Valid product_id is required",
 			"details": err.Error(),
 		})
 		return
 	}
 
-	// Guardar el producto extraído desde el catalog
 	if err := services.SaveProduct(input); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error":   "No se pudo indexar el producto",
+			"error":   "Product could not be indexed",
 			"details": err.Error(),
 		})
 		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
-		"message": "Producto indexado desde catálogo",
+		"message": "Product indexed from catalog",
 	})
 }

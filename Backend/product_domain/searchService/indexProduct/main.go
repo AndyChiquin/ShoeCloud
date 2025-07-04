@@ -14,7 +14,7 @@ import (
 func main() {
 	err := godotenv.Load()
 	if err != nil {
-		log.Println("⚠️ No se pudo cargar el archivo .env, usando variables del sistema")
+		log.Println("⚠️ Could not load .env file, using system variables")
 	}
 
 	config.ConnectDB()
@@ -28,6 +28,6 @@ func main() {
 
 	routes.RegisterIndexRoutes(router)
 
-	log.Printf("🚀 indexProduct corriendo en el puerto %s", port)
+	log.Printf("🚀 indexProduct running on port %s", port)
 	router.Run(":" + port)
 }
