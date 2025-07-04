@@ -4,19 +4,68 @@ on:
   push:
     branches:
       - test2
+    paths:
+      - 'Backend/product_domain/categoryService/deleteCategory/**'
+  pull_request:
+    branches:
       - main
     paths:
       - 'Backend/product_domain/categoryService/deleteCategory/**'
 
 jobs:
-  deploy-qa:
-    if: github.ref == 'refs/heads/test2'
+  test:
+    name: Run Unit Tests
     runs-on: ubuntu-latest
-    name: Deploy deleteCategoryService - QA (test2)
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          cd Backend/product_domain/categoryService/deleteCategory
+          npm install
+
+      - name: Run Jest tests
+        run: |
+          cd Backend/product_domain/categoryService/deleteCategory
+          npm test
+
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t itsandy/category-service:delete-category-latest ./Backend/product_domain/categoryService/deleteCategory
+
+      - name: Push Docker image
+        run: |
+          docker push itsandy/category-service:delete-category-latest
+
+  deploy-qa:
+    name: Deploy to QA (test2)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/test2'
+
+    steps:
       - name: Deploy to QA via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -25,26 +74,27 @@ jobs:
           key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
           script: |
             cd ShoeCloud/Backend/product_domain/categoryService/deleteCategory
-            git pull origin test2
-            sudo docker-compose down
-            sudo docker-compose up --build -d delete-category-service
+            docker pull itsandy/category-service:delete-category-latest
+            docker stop delete-category-service || true
+            docker rm delete-category-service || true
+            docker run -d --restart=always --name delete-category-service -p 3011:3002 --env-file .env itsandy/category-service:delete-category-latest
 
   deploy-prod:
-    if: github.ref == 'refs/heads/main'
+    name: Deploy to Production (main)
     runs-on: ubuntu-latest
-    name: Deploy deleteCategoryService - Production (main)
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
 
+    steps:
       - name: Deploy to Production via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_PRODUCT_DOMAIN_PROD2_IP }}
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN2PROD_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
+          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_PROD_KEY }}
           script: |
             cd ShoeCloud/Backend/product_domain/categoryService/deleteCategory
-            git pull origin main
-            sudo docker-compose down
-            sudo docker-compose up --build -d delete-category-service
+            docker pull itsandy/category-service:delete-category-latest
+            docker stop delete-category-service || true
+            docker rm delete-category-service || true
+            docker run -d --restart=always --name delete-category-service -p 3011:3002 --env-file .env itsandy/category-service:delete-category-latest
