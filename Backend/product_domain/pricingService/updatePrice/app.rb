@@ -17,14 +17,15 @@ get '/ws/price' do
         data = JSON.parse(event.data)
 
         if data['action'] == 'update'
-          puts "[WS] Acción: update para ID #{data['id']}"
+          id = data['data']['id']
+          puts "[WS] Acción: update para ID #{id}"
 
-          updated = PriceController.update(data['id'], data['data'])
+          updated = PriceController.update(id, data['data'])
 
           if updated
             ws.send({ success: true, updated: updated }.to_json)
           else
-            ws.send({ error: "No se encontró el precio con id #{data['id']}" }.to_json)
+            ws.send({ error: "No se encontró el precio con id #{id}" }.to_json)
           end
         else
           ws.send({ error: 'Acción no soportada' }.to_json)
