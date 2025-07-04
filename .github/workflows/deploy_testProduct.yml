@@ -1,0 +1,32 @@
+name: Test createProduct Microservice
+
+on:
+  push:
+    branches: [ test2 ]
+    paths:
+      - 'ShoeCloud/backend/product_domain/catalogService/createProduct/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'ShoeCloud/backend/product_domain/catalogService/createProduct/**'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ShoeCloud/backend/product_domain/catalogService/createProduct
+
+      - name: Run tests
+        run: npm test
+        working-directory: ShoeCloud/backend/product_domain/catalogService/createProduct
