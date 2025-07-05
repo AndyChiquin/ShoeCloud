@@ -9,7 +9,7 @@ const getAllProducts = async (req, res) => {
     const data = await dynamoClient.scan(params).promise();
     res.json(data.Items);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener productos', details: error });
+    res.status(500).json({ error: 'Error in obtaining products', details: error });
   }
 };
 
@@ -24,11 +24,11 @@ const getProductById = async (req, res) => {
   try {
     const data = await dynamoClient.get(params).promise();
     if (!data.Item) {
-      return res.status(404).json({ message: 'Producto no encontrado' });
+      return res.status(404).json({ message: 'Product not found' });
     }
     res.json(data.Item);
   } catch (error) {
-    res.status(500).json({ error: 'Error al buscar producto', details: error });
+    res.status(500).json({ error: 'Error when searching for product', details: error });
   }
 };
 
@@ -47,7 +47,7 @@ const getProductsByCategory = async (req, res) => {
     const data = await dynamoClient.scan(params).promise();
     res.json(data.Items);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener productos por categoría', details: error });
+    res.status(500).json({ error: 'Error retrieving products by category', details: error });
   }
 };
 

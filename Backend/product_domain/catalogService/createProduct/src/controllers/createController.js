@@ -10,10 +10,10 @@ const createProduct = async (req, res) => {
   const { name, description, category_id, price, brand, quantity } = req.body;
   const id = uuidv4();
 
-  // Validar existencia de la categoría
+  // Validate existence of the category
   const categoryExists = await checkCategoryExists(category_id);
   if (!categoryExists) {
-    return res.status(400).json({ error: 'La categoría no existe en category-service' });
+    return res.status(400).json({ error: 'Category does not exist in category-service' });
   }
 
   const item = {
@@ -31,16 +31,16 @@ const createProduct = async (req, res) => {
   };
 
   try {
-    // Crear producto en DynamoDB
+    // Create product in DynamoDB
     await dynamoClient.put(params).promise();
 
-    // Llamar a pricingService vía WebSocket si se proporciona un precio
+    // Calling pricingService via WebSocket if a price is provided
     if (price) {
   notifyPricingService(id, price);
 }
 
 
-    // Llamar a inventoryService
+    // Call inventoryService
     if (quantity && quantity > 0) {
       try {
         await axios.post('http://13.216.150.108:3004/api/inventory', {
@@ -48,23 +48,23 @@ const createProduct = async (req, res) => {
           quantity
         });
       } catch (invError) {
-        console.error('❌ Error al conectar con inventoryService:', invError.message);
+        console.error('❌ Error connecting to inventoryService:', invError.message);
       }
     }
 
-      // Notificar a searchService vía WebHook (solo se envía product_id)
+      // Notify searchService via WebHook (only product_id is sent)
       try {
         await axios.post('http://52.2.232.26:3017/index', {
           product_id: id
         });
       } catch (searchError) {
-        console.error('❌ Error al conectar con searchService (WebHook):', searchError.message);
+        console.error('❌ Error when connecting to searchService (WebHook):', searchError.message);
       }
 
-    res.status(201).json({ message: 'Producto creado', product: item });
+    res.status(201).json({ message: 'Product created', product: item });
   } catch (error) {
-    console.error('❌ Error creando producto:', error.message);
-    res.status(500).json({ error: 'Error al crear producto', details: error.message });
+    console.error('❌ Error creating product:', error.message);
+    res.status(500).json({ error: 'Error creating product', details: error.message });
   }
 };
 

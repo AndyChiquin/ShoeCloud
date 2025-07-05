@@ -29,12 +29,12 @@ dynamodb.describeTable({ TableName: params.TableName }, function (err, data) {
   if (err && err.code === 'ResourceNotFoundException') {
     dynamodb.createTable(params, (err, data) => {
       if (err) {
-        console.error('❌ Error al crear tabla:', err);
+        console.error('❌ Error creating table:', err);
       } else {
-        console.log('✅ Tabla creada:', data.TableDescription.TableName);
+        console.log('✅ Table created:', data.TableDescription.TableName);
       }
     });
   } else {
-    console.log('ℹ️ La tabla ya existe o hubo otro error:', err ? err.message : 'OK');
+    console.log('ℹ️ The table already exists or there was another error:', err ? err.message : 'OK');
   }
 });
