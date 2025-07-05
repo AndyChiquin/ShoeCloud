@@ -20,5 +20,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🟢 createInventory microservice running on port ${PORT}`);
 });
-
-
