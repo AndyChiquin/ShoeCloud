@@ -20,9 +20,9 @@ const updateProduct = async (req, res) => {
     try {
       const result = await dynamoClient.update(soloPrecio).promise();
       notifyPricingService(id, price);
-      return res.json({ message: 'Precio actualizado', product: result.Attributes });
+      return res.json({ message: 'Updated price', product: result.Attributes });
     } catch (error) {
-      return res.status(500).json({ error: 'Error al actualizar solo el precio', details: error.message });
+      return res.status(500).json({ error: 'Error updating price only', details: error.message });
     }
   }
 
@@ -43,9 +43,9 @@ const updateProduct = async (req, res) => {
 
   try {
     const data = await dynamoClient.update(params).promise();
-    res.json({ message: 'Producto actualizado', product: data.Attributes });
+    res.json({ message: 'Updated product', product: data.Attributes });
   } catch (error) {
-    res.status(500).json({ error: 'Error al actualizar producto', details: error });
+    res.status(500).json({ error: 'Error when upgrading product', details: error });
   }
 };
 
@@ -54,7 +54,7 @@ const updateProductByProductId = async (req, res) => {
   const { price } = req.body;
 
   if (typeof price === 'undefined') {
-    return res.status(400).json({ error: 'Falta el precio para actualizar' });
+    return res.status(400).json({ error: 'Missing price to update' });
   }
 
   const params = {
@@ -69,9 +69,9 @@ const updateProductByProductId = async (req, res) => {
 
   try {
     const result = await dynamoClient.update(params).promise();
-    res.json({ message: 'Precio actualizado por product_id', product: result.Attributes });
+    res.json({ message: 'Price updated by product_id', product: result.Attributes });
   } catch (error) {
-    res.status(500).json({ error: 'Error al actualizar precio con product_id', details: error.message });
+    res.status(500).json({ error: 'Error updating price with product_id', details: error.message });
   }
 };
 
