@@ -13,17 +13,17 @@ const deleteInventory = async (req, res) => {
     connection.release();
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Inventario no encontrado' });
+      return res.status(404).json({ message: 'Inventory not found' });
     }
 
     res.status(200).json({
-      message: 'Inventario eliminado correctamente',
+      message: 'Inventory deleted successfully',
       deleted_product_id: id
     });
 
   } catch (error) {
     res.status(500).json({
-      error: 'Error al eliminar inventario',
+      error: 'Error deleting inventory',
       details: error.message
     });
   }

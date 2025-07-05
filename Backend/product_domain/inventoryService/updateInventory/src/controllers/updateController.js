@@ -11,16 +11,16 @@ const updateInventory = async (req, res) => {
     connection.release();
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: 'Inventario no encontrado para actualizar' });
+      return res.status(404).json({ message: 'Inventory not found to update' });
     }
 
     res.status(200).json({
-      message: 'Inventario actualizado correctamente',
+      message: 'Correctly updated inventory',
       data: { id, quantity }
     });
   } catch (error) {
     res.status(500).json({
-      error: 'Error al actualizar inventario',
+      error: 'Error updating inventory',
       details: error.message
     });
   }
