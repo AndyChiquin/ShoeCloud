@@ -5,7 +5,7 @@ function notifyPricingService(productId, price) {
 
   ws.on('open', () => {
     const payload = {
-      action: "update",  
+      action: "update",
       data: {
         product_id: productId,
         price,
@@ -14,17 +14,16 @@ function notifyPricingService(productId, price) {
         valid_until: "2025-12-31"
       }
     };
-
     ws.send(JSON.stringify(payload));
-    ws.close(); 
   });
 
   ws.on('message', (data) => {
-    console.log('[pricingService]:', data.toString());
+    console.log('[pricingService][update]:', data.toString());
+    ws.close(); 
   });
 
   ws.on('error', (err) => {
-    console.error('[WebSocket Error pricingService]:', err.message);
+    console.error('[WebSocket Error pricingService][update]:', err.message);
   });
 }
 
