@@ -6,7 +6,7 @@ const checkProductExists = async (product_id) => {
     const response = await axios.get(`http://13.216.150.108:3001/api/products/${product_id}`);
     return response.status === 200;
   } catch (error) {
-    console.error('⚠️ Producto no encontrado o error en catalogService:', error.message);
+    console.error('⚠️ Product not found or error in catalogService:', error.message);
     return false;
   }
 };
