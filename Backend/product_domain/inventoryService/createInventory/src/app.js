@@ -7,11 +7,9 @@ const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
 
-// Crear tabla si no existe
 const createInventoryTable = require('./models/Inventory');
 createInventoryTable();
 
-// Usar solo rutas de creación
 const createRoutes = require('./routes/createRoutes');
 app.use('/api/inventory', createRoutes);
 
@@ -23,5 +21,3 @@ app.listen(PORT, () => {
   console.log(`🟢 createInventory microservice running on port ${PORT}`);
 });
 
-
-//test

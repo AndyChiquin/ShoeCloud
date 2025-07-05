@@ -1,7 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const pool = require('../config/db');
 
-// Crear inventario
 const createInventory = async (req, res) => {
   const { product_id, quantity } = req.body;
   const id = uuidv4();
@@ -13,12 +12,12 @@ const createInventory = async (req, res) => {
     await connection.query(sql, [id, product_id, quantity]);
 
     res.status(201).json({
-      message: 'Inventario creado',
+      message: 'Inventory created',
       data: { id, product_id, quantity }
     });
   } catch (error) {
     res.status(500).json({
-      error: 'Error al crear inventario',
+      error: 'Error creating inventory',
       details: error.message
     });
   } finally {

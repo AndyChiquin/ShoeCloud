@@ -9,7 +9,7 @@ const getAllInventory = async (req, res) => {
     res.json(rows);
   } catch (error) {
     res.status(500).json({
-      error: 'Error al obtener inventario',
+      error: 'Error when obtaining inventory',
       details: error.message
     });
   }
@@ -24,13 +24,13 @@ const getInventoryById = async (req, res) => {
     connection.release();
 
     if (rows.length === 0) {
-      return res.status(404).json({ message: 'Inventario no encontrado' });
+      return res.status(404).json({ message: 'Inventory not found' });
     }
 
     res.json(rows[0]);
   } catch (error) {
     res.status(500).json({
-      error: 'Error al buscar inventario',
+      error: 'Error when searching for inventory',
       details: error.message
     });
   }

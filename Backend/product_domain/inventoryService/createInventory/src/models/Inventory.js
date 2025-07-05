@@ -16,9 +16,9 @@ const createInventoryTable = async () => {
     await connection.query(createTableSQL);
     connection.release();
 
-    console.log('✔️ Tabla inventory verificada o creada.');
+    console.log('✔️ Inventory list verified or created.');
   } catch (error) {
-    console.error('❌ Error creando/verificando tabla inventory:', error);
+    console.error('❌ Error creating/verifying inventory table:', error);
   }
 };
 
