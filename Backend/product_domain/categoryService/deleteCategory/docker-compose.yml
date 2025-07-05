@@ -27,4 +27,4 @@ volumes:
   dynamodb_data:
 
 networks:
-  shared-network:   # 🔁 Red interna que se crea sola
+  shared-network:   
