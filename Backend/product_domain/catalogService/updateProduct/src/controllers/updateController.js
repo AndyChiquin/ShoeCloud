@@ -69,7 +69,6 @@ const updateProductByProductId = async (req, res) => {
 
   try {
     const result = await dynamoClient.update(params).promise();
-    notifyPricingService(product_id, price);
     res.json({ message: 'Precio actualizado por product_id', product: result.Attributes });
   } catch (error) {
     res.status(500).json({ error: 'Error al actualizar precio con product_id', details: error.message });

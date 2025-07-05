@@ -14,16 +14,17 @@ function notifyPricingService(productId, price) {
         valid_until: "2025-12-31"
       }
     };
-    ws.send(JSON.stringify(payload));
-  });
 
-  ws.on('message', (data) => {
-    console.log('[pricingService][update]:', data.toString());
+    ws.send(JSON.stringify(payload));
     ws.close(); 
   });
 
+  ws.on('message', (data) => {
+    console.log('[pricingService - update]:', data.toString());
+  });
+
   ws.on('error', (err) => {
-    console.error('[WebSocket Error pricingService][update]:', err.message);
+    console.error('[WebSocket Error pricingService - update]:', err.message);
   });
 }
 
