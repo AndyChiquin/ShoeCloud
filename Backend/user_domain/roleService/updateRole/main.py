@@ -1,6 +1,8 @@
 from flask import Flask
 from dotenv import load_dotenv
 import os
+from flasgger import Swagger
+
 
 if os.environ.get("FLASK_ENV") == "testing":
     from app.config.test_settings import TestSettings as Settings
@@ -20,6 +22,9 @@ app.config['JSON_SORT_KEYS'] = False
 
 db.init_app(app)
 app.register_blueprint(update_bp)
+
+swagger = Swagger(app)
+
 
 @app.route("/")
 def health_check():
