@@ -7,7 +7,7 @@ function notifyPricingService(productId, price) {
     const payload = {
       action: "update",
       data: {
-        product_id: productId,
+        id: productId,
         price,
         discount_type: "none",
         percentage: 0,
