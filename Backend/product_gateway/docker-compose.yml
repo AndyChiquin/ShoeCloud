@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  product-domain-gateway:
+    build: .
+    container_name: product-domain-gateway
+    ports:
+      - "80:80"
+    restart: always
