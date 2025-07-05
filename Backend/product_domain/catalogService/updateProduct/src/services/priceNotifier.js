@@ -5,13 +5,13 @@ function notifyPricingService(productId, price) {
   console.log('productId:', productId);
   console.log('price:', price);
 
-  const ws = new WebSocket('ws://34.198.245.223:3020/ws/price'); // UPDATE
+  const ws = new WebSocket('ws://34.198.245.223:3020/ws/price'); 
 
   ws.on('open', () => {
     const payload = {
       action: "update",
       data: {
-        id: productId,  // debe llamarse "id" si el microservicio Ruby lo espera así
+        product_id: productId,  
         price,
         discount_type: "none",
         percentage: 0,
@@ -19,7 +19,7 @@ function notifyPricingService(productId, price) {
       }
     };
 
-    console.log('Payload enviado:', payload);  // 👈 nuevo log
+    console.log('Payload enviado:', payload);  
 
     ws.send(JSON.stringify(payload));
     ws.close();
