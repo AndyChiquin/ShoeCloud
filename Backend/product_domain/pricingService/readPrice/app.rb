@@ -17,11 +17,11 @@ get '/ws/price' do
         data = JSON.parse(event.data)
 
         if data['action'] == 'read'
-          puts "[WS] Acción: read"
+          puts "[WS] Action: read"
           prices = PriceController.read_all
           ws.send({ success: true, prices: prices }.to_json)
         else
-          ws.send({ error: 'Acción no soportada' }.to_json)
+          ws.send({ error: 'Action not supported' }.to_json)
         end
       rescue => e
         ws.send({ error: "Error: #{e.message}" }.to_json)
@@ -29,13 +29,13 @@ get '/ws/price' do
     end
 
     ws.on :close do |_event|
-      puts "[WS] Conexión cerrada"
+      puts "[WS] Closed connection"
       ws = nil
     end
 
     ws.rack_response
   else
     status 400
-    body "No es una conexión WebSocket"
+    body "Not a WebSocket connection"
   end
 end
