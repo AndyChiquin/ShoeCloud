@@ -22,7 +22,7 @@ def logout_user(token: str):
         log_user_action_soap(
             user_id=user_id,
             action="logout_success",
-            metadata={"info": "Sesión cerrada correctamente"}
+            metadata={"info": "Session closed correctly"}
         )
     except Exception as e:
         print("SOAP AuditService exception:", str(e))
