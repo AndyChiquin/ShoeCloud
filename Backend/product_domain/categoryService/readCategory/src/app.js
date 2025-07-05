@@ -11,7 +11,6 @@ app.use('/api/category', categoryRoutes);
 
 const PORT = process.env.PORT || 3002;
 
-// Solo verifica si DynamoDB está disponible
 const waitForDynamo = async (retries = 5) => {
   for (let i = 0; i < retries; i++) {
     try {

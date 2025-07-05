@@ -11,7 +11,6 @@ app.use('/api/category', categoryRoutes);
 
 const PORT = process.env.PORT || 3002;
 
-// Espera a que DynamoDB esté listo
 const waitForDynamo = async (retries = 5) => {
   for (let i = 0; i < retries; i++) {
     try {
@@ -26,7 +25,6 @@ const waitForDynamo = async (retries = 5) => {
   throw new Error("❌ DynamoDB did not respond after multiple attempts");
 };
 
-// Crea la tabla 'Categories' si no existe
 const createTableIfNotExists = async () => {
   try {
     await waitForDynamo();

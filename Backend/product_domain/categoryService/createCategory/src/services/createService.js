@@ -3,7 +3,6 @@ const { PutCommand } = require('@aws-sdk/lib-dynamodb');
 
 const tableName = 'Categories';
 
-// ✅ Crea una nueva categoría en DynamoDB
 const createCategory = async (category) => {
   const command = new PutCommand({
     TableName: tableName,
