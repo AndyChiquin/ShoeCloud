@@ -45,9 +45,9 @@ jobs:
       - name: Deploy to QA EC2 via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_PRODUCT_DOMAIN_IP }}
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN4_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
+          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY2 }}
           script: |
             cd ShoeCloud/Backend/product_gateway
             docker pull itsandy/gateway:product-domain-gateway-latest
@@ -65,9 +65,9 @@ jobs:
       - name: Deploy to PROD EC2 via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_PRODUCT_DOMAIN_PROD_IP }}
+          host: ${{ secrets.EC2_PRODUCT_DOMAIN4_PROD_IP }}
           username: ubuntu
-          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY }}
+          key: ${{ secrets.EC2_PRODUCT_DOMAIN_PEM_KEY2 }}
           script: |
             cd ShoeCloud/Backend/product_gateway
             docker pull itsandy/gateway:product-domain-gateway-latest
