@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 
 function notifyPricingService(productId, price) {
-  const ws = new WebSocket('ws://52.2.232.26:3020/ws/price'); 
+  const ws = new WebSocket('ws://34.198.245.223:3020/ws/price'); 
 
   ws.on('open', () => {
     const payload = {
