@@ -26,7 +26,7 @@ get '/ws/price' do
           if updated
             ws.send({ success: true, updated: updated }.to_json)
           else
-            ws.send({ error: "No se encontró el precio con id #{id}" }.to_json)
+            ws.send({ error: "Price not found with id #{id}" }.to_json)
           end
 
         when 'delete'
