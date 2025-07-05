@@ -6,6 +6,48 @@ login_bp = Blueprint("login", __name__, url_prefix="/auth")
 
 @login_bp.route("/login", methods=["POST"])
 def login():
+    """
+    User login
+    ---
+    tags:
+      - Auth
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - password
+          properties:
+            email:
+              type: string
+              example: kevin@mail.com
+            password:
+              type: string
+              example: mysecurepassword
+    responses:
+      200:
+        description: Login successful
+        schema:
+          type: object
+          properties:
+            access_token:
+              type: string
+              example: eyJhbGciOiJIUzI1NiIsInR5cCI6...
+            token_type:
+              type: string
+              example: bearer
+            user_id:
+              type: integer
+              example: 1
+      400:
+        description: Missing email or password
+      401:
+        description: Invalid credentials
+    """
+
     data = request.json
     email = data.get("email")
     password = data.get("password")

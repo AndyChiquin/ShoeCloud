@@ -6,3 +6,4 @@ python-jose[cryptography]
 werkzeug
 zeep
 flask-cors
+flasgger
