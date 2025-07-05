@@ -20,7 +20,7 @@ get '/ws/price' do
 
         case action
         when 'update'
-          puts "[WS] Acción: update para ID #{id}"
+          puts "[WS] Action: update for ID #{id}"
           updated = PriceController.update(id, data['data'])
 
           if updated
@@ -36,11 +36,11 @@ get '/ws/price' do
           if deleted
             ws.send({ success: true, deleted: deleted }.to_json)
           else
-            ws.send({ error: "No se encontró el precio con id #{id}" }.to_json)
+            ws.send({ error: "Price not found with id #{id}" }.to_json)
           end
 
         else
-          ws.send({ error: 'Acción no soportada' }.to_json)
+          ws.send({ error: 'Action not supported' }.to_json)
         end
 
       rescue => e
@@ -49,13 +49,13 @@ get '/ws/price' do
     end
 
     ws.on :close do |_event|
-      puts "[WS] Conexión cerrada"
+      puts "[WS] Closed connection"
       ws = nil
     end
 
     ws.rack_response
   else
     status 400
-    body "No es una conexión WebSocket"
+    body "Not a WebSocket connection"
   end
 end
