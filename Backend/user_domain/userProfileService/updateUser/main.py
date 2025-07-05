@@ -2,6 +2,8 @@ from flask import Flask
 from app.config.settings import settings
 from flask_cors import CORS
 from flask import Flask, request
+from flasgger import Swagger
+
 
 
 
@@ -27,6 +29,7 @@ CORS(app, origins=["http://localhost:9000", "http://52.200.35.19"], supports_cre
 with app.app_context():
     db.create_all()  
 
+swagger = Swagger(app)
 
 app.register_blueprint(user_update_bp)
 @app.after_request
