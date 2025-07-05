@@ -2,6 +2,8 @@ from flask import Flask
 import os
 from dotenv import load_dotenv
 from flask_cors import CORS
+from flasgger import Swagger
+
 
 
 if os.environ.get("FLASK_ENV") == "testing":
@@ -22,6 +24,8 @@ CORS(app, origins=["http://localhost:9000", "http://52.200.35.19"], supports_cre
 
 with app.app_context():
     db.create_all()
+
+swagger = Swagger(app)
 
 app.register_blueprint(user_read_bp)
 

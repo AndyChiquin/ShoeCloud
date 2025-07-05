@@ -7,10 +7,10 @@ user_create_bp = Blueprint("user_create", __name__, url_prefix="/users")
 @user_create_bp.route("/", methods=["POST", "OPTIONS"])
 def register_user():
     """
-    Crear un nuevo usuario
+    Create a new user
     ---
     tags:
-      - Usuarios
+      - Users
     parameters:
       - name: body
         in: body
@@ -29,7 +29,7 @@ def register_user():
               example: kevin@mail.com
     responses:
       201:
-        description: Usuario creado exitosamente
+        description: User successfully created
         schema:
           type: object
           properties:
@@ -40,8 +40,9 @@ def register_user():
               type: string
               example: Kevin
       400:
-        description: Error en la creación del usuario
+        description: Error while creating user
     """
+
     if request.method == "OPTIONS":
         return make_response('', 200)
 
