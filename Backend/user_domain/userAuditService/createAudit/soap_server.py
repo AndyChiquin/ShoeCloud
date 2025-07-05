@@ -2,7 +2,7 @@ from spyne import Application, rpc, ServiceBase, Unicode, Integer
 from spyne.protocol.soap import Soap11
 from spyne.server.wsgi import WsgiApplication
 from datetime import datetime
-from app.db.mongo import db  # Tu conexión a MongoDB
+from app.db.mongo import db  
 import logging
 
 class AuditService(ServiceBase):
@@ -32,5 +32,5 @@ if __name__ == '__main__':
     from wsgiref.simple_server import make_server
     logging.basicConfig(level=logging.INFO)
     server = make_server('0.0.0.0', 8004, wsgi_app)
-    print("SOAP server running on http://0.0.0.0:8014")
+    print("SOAP server running on http://0.0.0.0:8004")
     server.serve_forever()
