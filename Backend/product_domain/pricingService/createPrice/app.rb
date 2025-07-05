@@ -17,7 +17,7 @@ get '/ws/price' do
         data = JSON.parse(event.data)
 
         if data['action'] == 'create'
-          puts "[WS] Precio recibido: #{data['data']}"
+          puts "[WS] Price received: #{data['data']}"
 
           created = PriceController.create(data['data'])
 
@@ -31,13 +31,13 @@ get '/ws/price' do
     end
 
     ws.on :close do |_event|
-      puts "[WS] Conexión cerrada"
+      puts "[WS] Closed connection"
       ws = nil
     end
 
     ws.rack_response
   else
     status 400
-    body "No es una conexión WebSocket"
+    body "Not a WebSocket connection"
   end
 end
