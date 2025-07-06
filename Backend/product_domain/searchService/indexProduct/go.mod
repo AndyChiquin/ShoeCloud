@@ -9,6 +9,8 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.10.0
 	go.mongodb.org/mongo-driver v1.12.0
+	github.com/swaggo/gin-swagger v1.6.1
+    github.com/swaggo/files v0.5.3
 )
 
 require (
