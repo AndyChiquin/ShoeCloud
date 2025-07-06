@@ -9,6 +9,9 @@ app.use(express.json());
 
 require('./config/createTable');
 
+const { swaggerUi, swaggerSpec } = require('./config/swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 const createRoutes = require('./routes/createRoutes');
 app.use('/api/products', createRoutes);
 
