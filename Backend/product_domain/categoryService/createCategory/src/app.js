@@ -9,6 +9,9 @@ const client = require('./config/dynamoClient');
 app.use(express.json());
 app.use('/api/category', categoryRoutes);
 
+const { swaggerUi, swaggerSpec } = require('./config/swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 const PORT = process.env.PORT || 3002;
 
 const waitForDynamo = async (retries = 5) => {
