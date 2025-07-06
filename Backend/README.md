@@ -98,12 +98,6 @@ Reverse proxy via NGINX
 ## 🚀 How to Run Locally
 cd Backend/user_domain/registerUser
 docker-compose up --build
-
----
-Or manually:
-cd Backend/user_domain/login_auth
-docker build -t login-service .
-docker run -d --env-file .env -p 5000:5000 login-service
 ---
 
 ## 🧪 Unit Testing
