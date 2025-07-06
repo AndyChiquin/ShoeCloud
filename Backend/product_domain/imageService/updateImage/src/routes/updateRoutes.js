@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { updateImageByProductId } = require('../controllers/updateController');
-
 /**
  * @swagger
  * /api/images/{id}:
@@ -32,10 +31,6 @@ const { updateImageByProductId } = require('../controllers/updateController');
  *       404:
  *         description: Image not found
  */
-router.put('/:id', updateImage);
-
-module.exports = router;
-
 router.put('/:product_id', updateImageByProductId);
 
 module.exports = router;
