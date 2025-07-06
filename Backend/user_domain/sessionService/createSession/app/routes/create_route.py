@@ -8,6 +8,43 @@ USER_SERVICE_URL = "http://52.200.35.19:8001/users"
 
 @create_session_bp.route("/", methods=["POST"])
 def create_session():
+    """
+    Create a new session for a user
+    ---
+    tags:
+      - Sessions
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - user_id
+          properties:
+            user_id:
+              type: integer
+              example: 1
+    responses:
+      201:
+        description: Session successfully created
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              example: Session created
+            session_id:
+              type: string
+              example: abc123-session
+      400:
+        description: Missing user_id
+      404:
+        description: User not found
+      503:
+        description: User service unavailable
+    """
+
     data = request.json
     user_id = data.get("user_id")
 

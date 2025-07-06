@@ -1,6 +1,8 @@
 from flask import Flask
 from dotenv import load_dotenv
 import os
+from flasgger import Swagger
+
 
 if os.environ.get("FLASK_ENV") == "testing":
     from app.config.test_settings import TestSettings as Settings
@@ -15,6 +17,7 @@ app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False  
 app.config.from_object(Settings)
 
+swagger = Swagger(app)
 
 app.register_blueprint(create_session_bp)  
 
