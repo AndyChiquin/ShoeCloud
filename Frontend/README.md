@@ -82,20 +82,44 @@ State is managed with Pinia (or Vuex, if configured)
 
 Axios interceptors automatically attach tokens
 
-## 🧩 Technologies Used
-🧱 Vue 3
+## 🧩 Technologies & Platforms
 
-🎨 Quasar CLI
+- 🧱 Vue 3 + Quasar Framework
+- 🎨 Quasar CLI for UI components and layout
+- 🚀 Vue Router for navigation
+- 💾 Pinia (or Vuex) for state management
+- 🧪 Axios for API requests
+- 🧭 JWT Authentication
+- 🌍 Supports Web, Mobile (Android/iOS), and Desktop (Electron)
 
-🚀 Vue Router
 
-💾 Pinia / Vuex
+## 🔄 Multi-Platform Support
+Thanks to Quasar, this frontend project can be deployed as:
 
-🧪 Axios
+| Platform   | Target                       | Tools Used          |
+| ---------- | ---------------------------- | ------------------- |
+| 🌐 Web     | SPA / PWA                    | Vue + Quasar CLI    |
+| 📱 Mobile  | Android / iOS (native shell) | Capacitor / Cordova |
+| 💻 Desktop | Windows, Linux, macOS        | Electron            |
 
-🧭 JWT Auth
+--- 
 
-🐳 Connected to Load Balancer (backend)
+To build for each platform
+# SPA for web
+quasar build
+
+# PWA
+quasar build -m pwa
+
+# Android/iOS
+quasar build -m capacitor -T android
+quasar build -m capacitor -T ios
+
+# Desktop
+quasar build -m electron
+
+
+
 
 ## 👨‍💻 Maintainers
  Andy Chiquin - Developer 
