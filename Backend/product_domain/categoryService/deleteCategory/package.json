@@ -15,7 +15,9 @@
     "@aws-sdk/client-dynamodb": "^3.830.0",
     "@aws-sdk/lib-dynamodb": "^3.830.0",
     "dotenv": "^16.5.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "jest": "^30.0.4",
