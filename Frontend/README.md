@@ -105,21 +105,19 @@ Thanks to Quasar, this frontend project can be deployed as:
 --- 
 
 To build for each platform
-# SPA for web
+## SPA for web
 quasar build
 
-# PWA
+## PWA
 quasar build -m pwa
 
-# Android/iOS
+## Android/iOS
 quasar build -m capacitor -T android
 quasar build -m capacitor -T ios
 
-# Desktop
+## Desktop
 quasar build -m electron
 
 
-
-
-## 👨‍💻 Maintainers
+# 👨‍💻 Maintainers
  Andy Chiquin - Developer 
