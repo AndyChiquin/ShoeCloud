@@ -1,29 +1,27 @@
-# 🧾 userAuditService - User Audit Logging Microservice
+# 🛡️ roleService - User Role Management Microservice
 
-This microservice is responsible for **logging and retrieving audit records** related to user actions. It helps track user activity for security, compliance, and monitoring purposes. It is implemented using Python (Flask) and uses SOAP for communication.
+This microservice handles **reading of user roles**. It forms part of the `user_domain` and allows fine-grained control over user access levels within the platform.
 
 ---
 
-## 📁 Project Structure
+## 🧩 Directory Structure
 
 ```bash
-userAuditService/
-├── createAudit/
+roleService/
+├── readRole/
 │   ├── app/
-│   │   ├── config/       
-│   │   ├── db/           
-│   │   ├── models/       
-│   │   ├── routes/       
-│   │   └── services/     
-│   ├── test/            
-│   ├── .env.test        
+│   │   ├── config/        # App configuration files (e.g., env, constants)
+│   │   ├── db/            # DB connection (SQLAlchemy, etc.)
+│   │   ├── models/        # Role models/schema
+│   │   ├── routes/        # API route definitions
+│   │   └── services/      # Business logic for role creation
+│   ├── test/              # Unit tests
+│   ├── .env.test          # Environment for testing
 │   ├── .gitignore
 │   ├── docker-compose.yml
 │   ├── Dockerfile
-│   ├── requirements.txt  
-│   ├── soap_server.py   
-│
-├── readAudit/         
+│   ├── main.py            # App entry point
+│   └── requirements.txt   # Python dependencies
 
 
 ```
@@ -39,10 +37,13 @@ userAuditService/
 | Gateway       | NGINX              |
 | Config        | `.env` for secrets |
 
-## 🧼 SOAP Endpoint (WSDL)
-The microservice exposes a SOAP server with operations like:
-createAuditLog(user_id, action, timestamp, metadata)
-WSDL available at /soap?wsdl
+## 📡 Endpoints
+| Method | Route         | Description             |
+| ------ | ------------- | ----------------------- |
+| DELETE | `/roles/<id>` | Delete a role           |
+
+
+
 
 
 # Each folder contains:
@@ -57,7 +58,7 @@ WSDL available at /soap?wsdl
 
 ## 🚀 Run Locally
 # Clone and enter
-cd userAuditService/
+cd roleService/deleteRole
 
 # Create virtual environment
 python -m venv venv
@@ -81,8 +82,10 @@ Deployment only occurs if tests pass.
 pytest test/
 
 ## 🔐 Security Notes
-Only authenticated services can send SOAP requests (via IP whitelist or SOAP headers)
-All audit logs are immutable once written
+Passwords are hashed using werkzeug.security.
+Sensitive data never exposed via API.
+All routes protected via JWT token.
+.env files excluded via .gitignore.
 
 ## 🧠 Maintainers
 Andy Chiquin - Developer 

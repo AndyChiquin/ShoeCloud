@@ -8,7 +8,7 @@ This microservice is responsible for **logging and retrieving audit records** re
 
 ```bash
 userAuditService/
-├── createAudit/
+├── readAudit/
 │   ├── app/
 │   │   ├── config/       
 │   │   ├── db/           
@@ -23,7 +23,6 @@ userAuditService/
 │   ├── requirements.txt  
 │   ├── soap_server.py   
 │
-├── readAudit/         
 
 
 ```
@@ -57,7 +56,7 @@ WSDL available at /soap?wsdl
 
 ## 🚀 Run Locally
 # Clone and enter
-cd userAuditService/
+cd userAuditService/readAudit
 
 # Create virtual environment
 python -m venv venv

@@ -1,6 +1,6 @@
 # 🔐 authService - User Authentication Microservice
 
-This microservice handles **user authentication** for the platform, including login, logout, and JWT validation. It belongs to the `user_domain` and ensures secure access using token-based authentication.
+This microservice handles **user authentication** for the platform, including login validation. It belongs to the `user_domain` and ensures secure access using token-based authentication.
 
 ---
 
@@ -22,8 +22,7 @@ authService/
 │   ├── Dockerfile
 │   ├── main.py           # Entry point
 │   └── requirements.txt  # Python dependencies
-├── logout/               # Logic for logout handling
-└── validateToken/        # Logic for JWT validation
+
 
 ```
 ## ⚙️ Tech Stack
@@ -42,8 +41,6 @@ authService/
 | Method | Route             | Description                      |
 | ------ | ----------------- | -------------------------------- |
 | POST   | `/login`          | User authentication, returns JWT |
-| POST   | `/logout`         | Handles client logout            |
-| GET    | `/validate-token` | Verifies token validity          |
 
 # Each folder contains:
 

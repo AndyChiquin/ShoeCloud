@@ -57,7 +57,7 @@ WSDL available at /soap?wsdl
 
 ## 🚀 Run Locally
 # Clone and enter
-cd userAuditService/
+cd userAuditService/createAudit
 
 # Create virtual environment
 python -m venv venv

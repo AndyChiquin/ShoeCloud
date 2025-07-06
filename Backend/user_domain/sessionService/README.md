@@ -1,32 +1,30 @@
-# 🧭 sessionService - User Session Management Microservice
+# 🕒 sessionService - Session Management Microservice
 
-This microservice manages **user session lifecycle**, including **creation**, **retrieval**, and **closing of sessions**. It helps monitor and manage user activity across the system, ensuring traceability and control over logins.
+This microservice manages the **user active sessions**, allowing their creation, query and closing. It is part of the `user_domain` domain and uses Redis or lightweight bases for temporary storage.
 
 ---
 
-## 🧩 Structure
+## 🧩 Project Structure
 
 ```bash
 sessionService/
-├── createSession/   # Starts a new session upon successful login
-├── readSession/     # Fetches current or historical sessions
-└── closeSession/    # Ends an active session
-```
+├── closeSession/
+│   ├── app/
+│   │   ├── config/      
+│   │   ├── db/           
+│   │   ├── models/       
+│   │   ├── routes/      
+│   │   └── services/    
+│   ├── test/             
+│   ├── .env.test        
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── main.py
+│   └── requirements.txt
 
-```bash
-app/
-├── config/         # Configuration and environment variables
-├── db/             # Redis or SQL connectors for session tracking
-├── models/         # Session schema definition
-├── routes/         # RESTful endpoints for session actions
-├── services/       # Logic for session start, validation, close
-├── __init__.py     # App initializer
-test/               # Unit testing suite
-.env.test           # Testing environment variables
-Dockerfile          # Docker container setup
-docker-compose.yml  # Local Docker setup
-main.py             # Entry point of the service
-requirements.txt    # Python dependencies
+├── createSession/
+├── readSession/│
+
 ```
 
 ## ⚙️ Tech Stack
@@ -60,7 +58,7 @@ requirements.txt    # Python dependencies
 
 ## 🚀 Run Locally
 # Clone and enter
-cd sessionService/createSession
+cd sessionService/
 
 # Create virtual environment
 python -m venv venv

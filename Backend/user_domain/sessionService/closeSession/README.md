@@ -1,32 +1,30 @@
-# 🧾 userAuditService - User Audit Logging Microservice
+# 🕒 sessionService - Session Management Microservice
 
-This microservice is responsible for **logging and retrieving audit records** related to user actions. It helps track user activity for security, compliance, and monitoring purposes. It is implemented using Python (Flask) and uses SOAP for communication.
+This microservice manages the **user active sessions**, allowing their creation, query and closing. It is part of the `user_domain` domain and uses Redis or lightweight bases for temporary storage.
 
 ---
 
-## 📁 Project Structure
+## 🧩 Project Structure
 
 ```bash
-userAuditService/
-├── createAudit/
+sessionService/
+├── closeSession/
 │   ├── app/
 │   │   ├── config/       
 │   │   ├── db/           
 │   │   ├── models/       
 │   │   ├── routes/       
 │   │   └── services/     
-│   ├── test/            
-│   ├── .env.test        
-│   ├── .gitignore
+│   ├── test/             
+│   ├── .env.test         
 │   ├── docker-compose.yml
 │   ├── Dockerfile
-│   ├── requirements.txt  
-│   ├── soap_server.py   
-│
-├── readAudit/         
+│   ├── main.py
+│   └── requirements.txt
 
 
 ```
+
 ## ⚙️ Tech Stack
 | Component     | Tech               |
 | ------------- | ------------------ |
@@ -39,11 +37,10 @@ userAuditService/
 | Gateway       | NGINX              |
 | Config        | `.env` for secrets |
 
-## 🧼 SOAP Endpoint (WSDL)
-The microservice exposes a SOAP server with operations like:
-createAuditLog(user_id, action, timestamp, metadata)
-WSDL available at /soap?wsdl
-
+## 📡 Endpoints
+| Method | Route           | Description                  |
+| ------ | --------------- | ---------------------------- |
+| PUT | `/session/<id>` | Closes the specified session    |
 
 # Each folder contains:
 
@@ -57,7 +54,7 @@ WSDL available at /soap?wsdl
 
 ## 🚀 Run Locally
 # Clone and enter
-cd userAuditService/
+cd sessionService/closeSession
 
 # Create virtual environment
 python -m venv venv
@@ -81,8 +78,10 @@ Deployment only occurs if tests pass.
 pytest test/
 
 ## 🔐 Security Notes
-Only authenticated services can send SOAP requests (via IP whitelist or SOAP headers)
-All audit logs are immutable once written
+Passwords are hashed using werkzeug.security.
+Sensitive data never exposed via API.
+All routes protected via JWT token.
+.env files excluded via .gitignore.
 
 ## 🧠 Maintainers
 Andy Chiquin - Developer 

@@ -1,33 +1,31 @@
 # 🛡️ roleService - User Role Management Microservice
 
-This microservice manages **user roles and permissions**, allowing the platform to define and control access levels dynamically. It supports **CRUD operations** for roles, ensuring that authorization rules can be updated in a scalable and secure manner.
+This microservice handles **creation, reading, updating, and deletion of user roles**. It forms part of the `user_domain` and allows fine-grained control over user access levels within the platform.
 
 ---
 
-## 🧩 Structure
+## 🧩 Directory Structure
 
 ```bash
 roleService/
-├── createRole/     # Adds a new role (e.g., admin, user, guest)
-├── readRole/       # Fetches role details or list of roles
-├── updateRole/     # Updates existing role information
-└── deleteRole/     # Removes a role from the system
-```
+├── createRole/
+│   ├── app/
+│   │   ├── config/        # App configuration files (e.g., env, constants)
+│   │   ├── db/            # DB connection (SQLAlchemy, etc.)
+│   │   ├── models/        # Role models/schema
+│   │   ├── routes/        # API route definitions
+│   │   └── services/      # Business logic for role creation
+│   ├── test/              # Unit tests
+│   ├── .env.test          # Environment for testing
+│   ├── .gitignore
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── main.py            # App entry point
+│   └── requirements.txt   # Python dependencies
+├── deleteRole/            # Microservice for deleting roles
+├── readRole/              # Microservice for listing/querying roles
+└── updateRole/            # Microservice for updating role details
 
-```bash
-app/
-├── config/         # Constants, env variables
-├── db/             # DB connection setup (MySQL/PostgreSQL)
-├── models/         # Role model/schema
-├── routes/         # Flask endpoints (e.g., /roles)
-├── services/       # Business logic: validation, role creation
-├── __init__.py     # App initialization
-test/               # Unit tests
-.env.test           # Environment test vars
-Dockerfile          # Docker config for container
-docker-compose.yml  # Local service orchestration
-main.py             # App entry point
-requirements.txt    # Python dependencies
 ```
 ## ⚙️ Tech Stack
 | Component     | Tech               |

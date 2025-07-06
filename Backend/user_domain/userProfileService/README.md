@@ -1,34 +1,32 @@
 # 👤 userProfileService - User Profile Management Microservice
 
-This microservice is responsible for managing **user profiles**, including user **creation**, **reading**, **updating**, and **deletion**. It is a key part of the `user_domain`, ensuring consistent and secure user data handling.
+This microservice is responsible for **managing user profile information**, including creation, update, retrieval, and deletion of profile data. It is part of the `user_domain` and is implemented using Python with Flask.
 
 ---
 
-## 🧩 Structure
+## 📁 Project Structure
 
 ```bash
 userProfileService/
-├── createUser/     # Handles new user registrations
-├── readUser/       # Retrieves user profile information
-├── updateUser/     # Updates user profile data
-└── deleteUser/     # Deletes user profiles
-```
----
+├── createUser/
+│   ├── app/
+│   │   ├── config/      
+│   │   ├── db/           
+│   │   ├── models/       
+│   │   ├── routes/       
+│   │   └── services/     
+│   ├── test/            
+│   ├── .env.test        
+│   ├── .gitignore
+│   ├── docker-compose.yml
+│   ├── Dockerfile
+│   ├── main.py           
+│   └── requirements.txt  
+│
+├── deleteUser/           
+├── readUser/             
+├── updateUser/           
 
-```bash
-app/
-├── config/         # Environment configuration and constants
-├── db/             # DB connection setup (e.g., SQLAlchemy or PyMySQL)
-├── models/         # User model definitions
-├── routes/         # Flask route definitions (e.g., /create, /read)
-├── services/       # Core business logic (CRUD ops, validations)
-├── __init__.py     # App initialization
-test/               # Unit and integration tests
-.env.test           # Environment test variables
-Dockerfile          # Docker container definition
-docker-compose.yml  # Local service orchestration
-main.py             # Application entry point
-requirements.txt    # Python dependencies
 ```
 ## ⚙️ Tech Stack
 | Component     | Tech               |
@@ -64,7 +62,7 @@ requirements.txt    # Python dependencies
 
 ## 🚀 Run Locally
 # Clone and enter
-cd userProfileService/createUser
+cd userProfileService/
 
 # Create virtual environment
 python -m venv venv
