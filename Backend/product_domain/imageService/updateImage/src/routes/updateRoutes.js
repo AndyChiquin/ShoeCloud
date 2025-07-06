@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { updateImageByProductId } = require('../controllers/updateController');
-const express = require('express');
-const router = express.Router();
-const { updateImage } = require('../controllers/updateController');
 
 /**
  * @swagger
