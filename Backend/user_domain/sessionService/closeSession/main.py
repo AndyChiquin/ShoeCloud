@@ -1,6 +1,8 @@
 from flask import Flask
 from dotenv import load_dotenv
 import os
+from flasgger import Swagger
+
 
 if os.environ.get("FLASK_ENV") == "testing":
     from app.config.test_settings import TestSettings as Settings
@@ -15,7 +17,9 @@ app = Flask(__name__)
 app.config.from_object(Settings)
 app.config["JSON_SORT_KEYS"] = False  
 
-app.register_blueprint(close_session_bp)    
+app.register_blueprint(close_session_bp)   
+swagger = Swagger(app)
+
 
 @app.route("/")
 def health():
