@@ -43,7 +43,7 @@ ShoeCloud/
 │   └── ...
 ├── nginx/                     # Reverse proxy config
 └── README.md                  # Project documentation
-
+```
 ---
 
 ## 📦 Microservice Features
@@ -96,12 +96,6 @@ The system uses a combination of relational, non-relational, and cache databases
 - [Git](https://git-scm.com/)
 - AWS Account with permissions for EC2, RDS, CloudWatch
 
-### 🧬 Clone the repository
-
-```bash
-git clone https://github.com/AndyChiquin/ShoeCloud.git
-cd ShoeCloud
-
 ### 🐳 Local Deployment with Docker
 
 Each microservice has its own Dockerfile and `docker-compose.yml`.
@@ -110,3 +104,13 @@ Example:
 ```bash
 cd Backend/user_domain/registerUser
 docker-compose up --build
+
+```
+
+### 🧬 Clone the repository
+
+```bash
+git clone https://github.com/AndyChiquin/ShoeCloud.git
+cd ShoeCloud
+
+```
