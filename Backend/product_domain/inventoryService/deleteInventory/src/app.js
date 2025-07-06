@@ -6,6 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 3001; 
 
 app.use(express.json());
+const { swaggerUi, swaggerSpec } = require('./config/swagger');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const inventoryRoutes = require('./routes/deleteRoutes');
 app.use('/api/inventory', inventoryRoutes);
