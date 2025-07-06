@@ -1,15 +1,11 @@
 module indexProduct
 
-go 1.23.0
-
-
-toolchain go1.23.3
+go 1.23
 
 require (
 	github.com/gin-gonic/gin v1.10.1
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.10.0
-	github.com/swaggo/swag v1.16.4
 	go.mongodb.org/mongo-driver v1.12.0
 )
 
@@ -24,7 +20,6 @@ require (
 	github.com/go-openapi/jsonpointer v0.21.1 // indirect
 	github.com/go-openapi/jsonreference v0.21.0 // indirect
 	github.com/go-openapi/spec v0.21.0 // indirect
-	github.com/go-openapi/swag v0.23.1 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.27.0 // indirect
