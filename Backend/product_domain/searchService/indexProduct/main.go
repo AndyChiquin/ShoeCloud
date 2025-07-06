@@ -9,17 +9,7 @@ import (
 
 	"indexProduct/app/config"
 	"indexProduct/app/routes"
-	_ "indexProduct/docs"
-
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
-
-// @title Index Product API
-// @version 1.0
-// @description API para indexar productos en MongoDB.
-// @host localhost:8006
-// @BasePath /
 
 func main() {
 	err := godotenv.Load()
@@ -35,7 +25,6 @@ func main() {
 	}
 
 	router := gin.Default()
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	routes.RegisterIndexRoutes(router)
 
