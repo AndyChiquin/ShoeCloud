@@ -1,7 +1,0 @@
-const express = require('express');
-const router = express.Router();
-const { update } = require('../controllers/updateController');
-
-router.put('/:id', update);
-
-module.exports = router;

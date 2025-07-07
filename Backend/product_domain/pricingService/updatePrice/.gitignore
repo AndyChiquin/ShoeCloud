@@ -1,6 +1,0 @@
-.env
-*.log
-*.sqlite3
-tmp/
-.bundle/
-vendor/
