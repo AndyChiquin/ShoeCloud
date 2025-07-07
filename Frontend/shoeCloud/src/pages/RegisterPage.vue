@@ -48,7 +48,7 @@ const { proxy } = getCurrentInstance()
 const name = ref('')
 const email = ref('')
 const password = ref('')
-const REGISTER_URL = 'http://52.200.35.19/users/'
+const REGISTER_URL = 'http://alb-user-domain-gateway-1765996128.us-east-1.elb.amazonaws.com/users/'
 
 const registerUser = async () => {
   if (!name.value || !email.value || !password.value) {

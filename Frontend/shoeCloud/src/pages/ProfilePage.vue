@@ -23,13 +23,13 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { useQuasar } from 'quasar'
 
-const $q = useQuasar() // 👈 Esto ya lo hace disponible
+const $q = useQuasar() 
 
 const user = ref(null)
-const API_URL = 'http://52.200.35.19/users'
+const API_URL = 'http://alb-user-domain-gateway-1765996128.us-east-1.elb.amazonaws.com/users'
 
 onMounted(async () => {
-  console.log('TEST -> $q.notify:', $q.notify) // 👈 imprime para validar
+  console.log('TEST -> $q.notify:', $q.notify) 
 
   const id = localStorage.getItem('userId')
   if (!id) {
@@ -55,7 +55,7 @@ const updateProfile = async () => {
 
     await axios.put(`${API_URL}/${user.value.id}`, body)
 
-    $q.notify({ type: 'positive', message: 'Profile updated successfully!' }) // 👈 Esto es correcto
+    $q.notify({ type: 'positive', message: 'Profile updated successfully!' }) 
   } catch (err) {
     console.error(err)
     $q.notify({ type: 'negative', message: 'Failed to update profile' })

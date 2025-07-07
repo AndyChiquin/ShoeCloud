@@ -59,7 +59,7 @@ const goToRegister = () => {
 }
 
 
-const LOGIN_URL = 'http://52.200.35.19/auth/login'
+const LOGIN_URL = 'http://alb-user-domain-gateway-1765996128.us-east-1.elb.amazonaws.com/auth/login'
 
 const handleLogin = async () => {
   errorMessage.value = ''
@@ -76,7 +76,6 @@ const handleLogin = async () => {
     localStorage.setItem('userId', response.data.user_id)
 
 
-    // ✅ Asegúrate de que notify existe
     proxy?.$q?.notify?.({
       type: 'positive',
       message: 'Inicio de sesión exitoso',
@@ -104,7 +103,7 @@ const getUserProfile = async () => {
   const token = localStorage.getItem('token')
 
   try {
-    const response = await axios.get(`http://52.200.35.19/users/${userId}`, {
+    const response = await axios.get(`http://alb-user-domain-gateway-1765996128.us-east-1.elb.amazonaws.com/users/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

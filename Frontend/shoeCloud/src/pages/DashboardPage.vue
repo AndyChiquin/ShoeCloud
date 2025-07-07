@@ -9,7 +9,6 @@
           </p>
         </div>
         <div class="hero-image">
-          <!-- Representative image defined in CSS -->
         </div>
       </section>
 
@@ -139,7 +138,6 @@ header {
   background-repeat: no-repeat;
 }
 
-/* Estilos para dispositivos móviles */
 @media only screen and (max-width: 768px) {
   .hero {
     flex-direction: column;
@@ -154,14 +152,14 @@ header {
 
   .hero-image {
     width: 100%;
-    height: 200px; /* Ajusta la altura según sea necesario */
+    height: 200px; 
   }
 
   .imagen1 {
     width: 100%;
     top: 0;
     left: 0;
-    margin-bottom: 20px; /* Añade un margen inferior para separar la imagen del texto */
+    margin-bottom: 20px; 
 
   }
 
@@ -175,7 +173,7 @@ header {
   }
 
   .feature-image {
-    max-width: 100px; /* Tamaño más pequeño para dispositivos móviles */
+    max-width: 100px; 
   }
 }
 
@@ -198,7 +196,7 @@ header {
 }
 
 .feature-image:hover {
-  transform: scale(1.1); /* Efecto de zoom al pasar el cursor */
+  transform: scale(1.1); 
 }
 
 footer {
