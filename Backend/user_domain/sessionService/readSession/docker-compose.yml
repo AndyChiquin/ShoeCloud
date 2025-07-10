@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  read-session-service:
+    build: .
+    container_name: read-session-service
+    ports:
+      - "8012:8003"
+    env_file:
+      - .env
+    restart: always
+
+  redis-session:
+    image: redis:alpine
+    container_name: redis-session
+    ports:
+      - "6378:6379"
+    restart: always

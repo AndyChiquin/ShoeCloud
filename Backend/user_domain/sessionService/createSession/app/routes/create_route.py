@@ -1,0 +1,63 @@
+from flask import Blueprint, request, jsonify
+import requests
+from app.db.redis_client import redis_client
+from app.models.session_model import Session
+
+create_session_bp = Blueprint("create_session_bp", __name__, url_prefix="/session")
+USER_SERVICE_URL = "http://52.200.35.19:8001/users"
+
+@create_session_bp.route("/", methods=["POST"])
+def create_session():
+    """
+    Create a new session for a user
+    ---
+    tags:
+      - Sessions
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required:
+            - user_id
+          properties:
+            user_id:
+              type: integer
+              example: 1
+    responses:
+      201:
+        description: Session successfully created
+        schema:
+          type: object
+          properties:
+            msg:
+              type: string
+              example: Session created
+            session_id:
+              type: string
+              example: abc123-session
+      400:
+        description: Missing user_id
+      404:
+        description: User not found
+      503:
+        description: User service unavailable
+    """
+
+    data = request.json
+    user_id = data.get("user_id")
+
+    if not user_id:
+        return jsonify({"error": "user_id is required"}), 400
+
+    try:
+        response = requests.get(f"{USER_SERVICE_URL}/{user_id}")
+        if response.status_code != 200:
+            return jsonify({"error": "User not found"}), 404
+    except Exception:
+        return jsonify({"error": "User service unavailable"}), 503
+
+    session = Session(user_id)
+    session.save()
+    return jsonify({"msg": "Session created", "session_id": session.id}), 201

@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  delete-user-service:
+    build: .
+    container_name: delete-user-service
+    ports:
+      - "8003:8000"
+    env_file:
+      - .env
+    restart: always

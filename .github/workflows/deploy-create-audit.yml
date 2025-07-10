@@ -1,0 +1,77 @@
+name: Deploy createAuditService to EC2
+
+on:
+  push:
+    branches:
+      - test2
+    paths:
+      - 'Backend/user_domain/userAuditService/createAudit/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Backend/user_domain/userAuditService/createAudit/**'
+
+jobs:
+
+
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t itsandy/audit-service:create-audit-latest ./Backend/user_domain/userAuditService/createAudit
+
+      - name: Push Docker image
+        run: |
+          docker push itsandy/audit-service:create-audit-latest
+
+  deploy-qa:
+    name: Deploy createAuditService - QA (test2)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/test2'
+
+    steps:
+      - name: Deploy to QA via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN2_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userAuditService/createAudit
+            docker pull itsandy/audit-service:create-audit-latest
+            docker stop create-audit-service || true
+            docker rm create-audit-service || true
+            docker run -d --restart=always --name create-audit-service -p 8014:8004 --env-file .env itsandy/audit-service:create-audit-latest
+
+  deploy-prod:
+    name: Deploy createAuditService - Production (main)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN2_PROD_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userAuditService/createAudit
+            docker pull itsandy/audit-service:create-audit-latest
+            docker stop create-audit-service || true
+            docker rm create-audit-service || true
+            docker run -d --restart=always --name create-audit-service -p 8014:8004 --env-file .env itsandy/audit-service:create-audit-latest

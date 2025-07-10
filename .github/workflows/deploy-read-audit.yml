@@ -1,0 +1,77 @@
+name: Deploy readAuditService to EC2
+
+on:
+  push:
+    branches:
+      - test2
+    paths:
+      - 'Backend/user_domain/userAuditService/readAudit/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Backend/user_domain/userAuditService/readAudit/**'
+
+jobs:
+  
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t itsandy/audit-service:read-audit-latest ./Backend/user_domain/userAuditService/readAudit
+
+      - name: Push Docker image
+        run: |
+          docker push itsandy/audit-service:read-audit-latest
+
+  deploy-qa:
+    name: Deploy readAuditService - QA (test2)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/test2'
+
+    steps:
+      - name: Deploy to QA via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN2_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userAuditService/readAudit
+            docker pull itsandy/audit-service:read-audit-latest
+            docker stop read-audit-service || true
+            docker rm read-audit-service || true
+            docker run -d --restart=always --name read-audit-service -p 8015:8004 --env-file .env itsandy/audit-service:read-audit-latest
+
+  deploy-prod:
+    name: Deploy readAuditService - Production (main)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN2_PROD_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userAuditService/readAudit
+            docker pull itsandy/audit-service:read-audit-latest
+            docker stop read-audit-service || true
+            docker rm read-audit-service || true
+            docker run -d --restart=always --name read-audit-service -p 8015:8004 --env-file .env itsandy/audit-service:read-audit-latest

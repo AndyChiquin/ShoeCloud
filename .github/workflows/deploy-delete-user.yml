@@ -1,0 +1,102 @@
+name: Deploy deleteUser to EC2
+
+on:
+  push:
+    branches:
+      - test2
+    paths:
+      - 'Backend/user_domain/userProfileService/deleteUser/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'Backend/user_domain/userProfileService/deleteUser/**'
+
+jobs:
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          cd Backend/user_domain/userProfileService/deleteUser
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: |
+          export FLASK_ENV=testing
+          cd Backend/user_domain/userProfileService/deleteUser
+          python -m unittest discover test
+
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t itsandy/user-profile-service:delete-user-latest ./Backend/user_domain/userProfileService/deleteUser
+
+      - name: Push Docker image
+        run: |
+          docker push itsandy/user-profile-service:delete-user-latest
+
+  deploy-qa:
+    name: Deploy to QA (test2)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/test2'
+
+    steps:
+      - name: Deploy to QA via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userProfileService/deleteUser
+            docker pull itsandy/user-profile-service:delete-user-latest
+            docker stop delete-user-service || true
+            docker rm delete-user-service || true
+            docker run -d --restart=always --name delete-user-service -p 8002:8000 --env-file .env itsandy/user-profile-service:delete-user-latest
+
+  deploy-prod:
+    name: Deploy to Production (main)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to Production via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_USER_DOMAIN_PROD_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_USER_DOMAIN_PROD_PEM_KEY }}
+          script: |
+            cd ShoeCloud/Backend/user_domain/userProfileService/deleteUser
+            docker pull itsandy/user-profile-service:delete-user-latest
+            docker stop delete-user-service || true
+            docker rm delete-user-service || true
+            docker run -d --restart=always --name delete-user-service -p 8002:8000 --env-file .env itsandy/user-profile-service:delete-user-latest

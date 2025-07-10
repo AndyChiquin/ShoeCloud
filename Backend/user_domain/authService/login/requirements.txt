@@ -1,0 +1,13 @@
+flask
+requests
+redis
+python-dotenv
+python-jose[cryptography]
+werkzeug
+passlib
+sqlalchemy
+psycopg2-binary
+zeep
+flask-cors
+flasgger
+

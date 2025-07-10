@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  create-user-service:
+    build: .
+    container_name: create-user-service
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: always
+

@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  read-role-service:
+    build: .
+    container_name: read-role-service
+    ports:
+      - "8008:8002"
+    env_file:
+      - .env
+    restart: always
+
+  postgres:
+    image: postgres:13
+    container_name: postgres-roles
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+
+volumes:
+  postgres_data:

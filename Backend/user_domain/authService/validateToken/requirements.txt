@@ -1,0 +1,8 @@
+flask
+requests
+redis
+python-dotenv
+python-jose[cryptography]
+werkzeug
+flask-cors
+flasgger

@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+
+
+.env
+
+# Docker
+*.log
+*.pid
+
+# IDEs
+.vscode/

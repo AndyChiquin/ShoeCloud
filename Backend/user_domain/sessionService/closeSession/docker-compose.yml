@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  close-session-service:
+    build: .
+    container_name: close-session-service
+    ports:
+      - "8013:8003"
+    env_file:
+      - .env
+    restart: always
+
+  redis-session:
+    image: redis:alpine
+    container_name: redis-session
+    ports:
+      - "6378:6379"
+    restart: always
